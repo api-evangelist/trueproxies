@@ -1,0 +1,89 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "$id": "https://raw.githubusercontent.com/api-evangelist/trueproxies/main/json-schema/trueproxies-endpoint-request-schema.json",
+  "title": "EndpointRequest",
+  "x-generated": "2026-09-23",
+  "x-method": "derived",
+  "x-generator": "derive-json-schema.py",
+  "x-source": "openapi/trueproxies-openapi.yml#/components/schemas/EndpointRequest",
+  "properties": {
+    "asn": {
+      "description": "1 to 10 digits, without AS prefix. Requires asn capability.",
+      "maxLength": 10,
+      "type": "string"
+    },
+    "city": {
+      "description": "Letters, digits and underscores; normalized to lowercase. Requires city capability.",
+      "maxLength": 32,
+      "type": "string"
+    },
+    "count": {
+      "default": 1,
+      "description": "Number of connection strings. Omission, null and legacy zero values use one.",
+      "maximum": 1000,
+      "minimum": 1,
+      "type": "integer"
+    },
+    "country": {
+      "description": "Two-letter country code; normalized to lowercase. Requires country capability.",
+      "type": "string"
+    },
+    "format": {
+      "default": "host:port:user:pass",
+      "enum": [
+        "host:port:user:pass",
+        "user:pass@host:port",
+        "user:pass",
+        "host:port",
+        "url",
+        "curl",
+        "custom"
+      ],
+      "type": "string"
+    },
+    "job_id": {
+      "description": "Owned active job beneath project_id. Only its validated opaque token is included in generated proxy usernames.",
+      "format": "uuid",
+      "type": "string"
+    },
+    "lifetime": {
+      "description": "Sticky session lifetime in seconds, 60 to 86400, or 1 to 86400 when the service has session_lifetime_seconds. Maximum is 1800 with session_lifetime_30m. Requires session=sticky and session_lifetime capability. Residential IPv4 Unlimited requires whole minutes. Omitted or zero leaves the lifetime unset.",
+      "type": "integer"
+    },
+    "project_id": {
+      "description": "Owned, active project access. Omit to use main access. Requires current project support.",
+      "format": "uuid",
+      "type": "string"
+    },
+    "protocol": {
+      "default": "http",
+      "enum": [
+        "http",
+        "socks5",
+        "https"
+      ],
+      "type": "string"
+    },
+    "region": {
+      "description": "Requires region capability. Services with region_code accept only an ISO 3166-2 subdivision code of 1 to 3 letters or digits without country prefix (for example CA). Other services accept letters, digits and underscores up to 32 characters. Normalized to lowercase in customer usernames.",
+      "maxLength": 32,
+      "type": "string"
+    },
+    "session": {
+      "default": "none",
+      "enum": [
+        "none",
+        "sticky",
+        "rotate"
+      ],
+      "type": "string"
+    },
+    "template": {
+      "description": "Required only for format=custom. A single line of literal text, limited to 512 UTF-8 bytes, with at least one of {HOST}, {PORT}, {USER}, {PASS} or {PROTOCOL}. Other braces and control characters are rejected. Placeholder values are substituted literally without escaping or recursive expansion. {PROTOCOL} is the connection URL scheme (http, https or socks5h).",
+      "maxLength": 512,
+      "minLength": 1,
+      "type": "string"
+    }
+  },
+  "type": "object"
+}

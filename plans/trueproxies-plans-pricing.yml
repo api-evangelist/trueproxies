@@ -1,0 +1,64 @@
+name: TrueProxies Plans and Pricing
+generated: '2026-09-23'
+method: searched
+source: https://trueproxies.com/pricing/
+audience: business-product
+pricing_basis: tiered-subscription
+published: true
+currency: USD
+delivery:
+  delivery: managed
+note: Proxy products are priced by speed tier and duration (Unlimited, Datacenter IPv6) or by GB package (GB-Based). The Customer API itself carries no separate price; it manages services bought under these plans. Page states "Last updated September 22, 2026".
+plans:
+- name: Residential IPv4 — Unlimited
+  description: Unlimited data, speed-based pricing; 1.3M+ residential IPs in a worldwide pool, country targeting, sticky or rotating sessions.
+  price: 4.08
+  price_text: From $4.08/hour
+  billing_period: Hourly/Daily/Weekly/Monthly
+  features:
+  - 1.3M+ residential IPs in a worldwide pool
+  - Country targeting
+  - Sticky or rotating sessions
+  - HTTP/HTTPS/SOCKS5
+  - Unlimited bandwidth at your selected speed
+  - IP whitelist or username/password auth
+  - 24/7 support
+  limits:
+  - Speed tiers 10 Mbps to 1000 Mbps (hourly tiers 10 Mbps to 100 Mbps)
+- name: Residential IPv4 — GB-Based
+  description: Advanced targeting, pay only for what you use; 50M+ residential IPs in 150+ countries with country, city, region and ASN targeting.
+  price: 1.64
+  price_text: From $1.64/GB
+  billing_period: Monthly
+  features:
+  - 50M+ residential IPs in 150+ countries
+  - Country, city, region, ASN
+  - Sticky or rotating sessions
+  - HTTP/HTTPS/SOCKS5
+  - Flexible bandwidth packages
+  - IP whitelist or username/password auth
+  - 24/7 support
+  limits:
+  - Packages from 1 GB to 5000 GB
+- name: Rotating IPv6 — Residential
+  description: Rotating IPs from real ISP networks; residential IPv6 on a US ISP network. Not available yet.
+  price: Coming soon
+  price_text: Coming soon
+  features:
+  - Residential IPv6 on a US ISP network
+  - Rotating-only sessions
+  limits: []
+- name: Datacenter IPv6 — Private /48
+  description: Rotating private IPv6 /48s; a private /48 in every included location.
+  price: 3.99
+  price_text: From $3.99/day
+  billing_period: Daily/Weekly/Monthly
+  features:
+  - A private /48 in every included location
+  - Fresh IPv6 on each new connection
+  - Sticky sessions from seconds to the plan term
+  - No per-GB billing; published fair-use limit
+  - IP allowlist and username/password auth together
+  - 24/7 support
+  limits:
+  - Speed tiers 25 Mbps to 400 Mbps

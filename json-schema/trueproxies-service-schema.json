@@ -1,0 +1,185 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "$id": "https://raw.githubusercontent.com/api-evangelist/trueproxies/main/json-schema/trueproxies-service-schema.json",
+  "title": "Service",
+  "x-generated": "2026-09-23",
+  "x-method": "derived",
+  "x-generator": "derive-json-schema.py",
+  "x-source": "openapi/trueproxies-openapi.yml#/components/schemas/Service",
+  "properties": {
+    "billing_read_only": {
+      "description": "Existing access remains available, but this service cannot be topped up or renewed. New plan purchases are separate.",
+      "type": "boolean"
+    },
+    "capabilities": {
+      "items": {
+        "type": "string"
+      },
+      "type": "array"
+    },
+    "city": {
+      "type": "string"
+    },
+    "comparison_pass": {
+      "description": "Free private comparison with fixed speed and expiry; cannot be purchased, topped up or renewed.",
+      "type": "boolean"
+    },
+    "connects_per_second": {
+      "description": "Effective limit for this service.",
+      "minimum": 0,
+      "type": "integer"
+    },
+    "created_at": {
+      "format": "date-time",
+      "type": "string"
+    },
+    "depleted": {
+      "type": "boolean"
+    },
+    "display_name": {
+      "description": "Unlimited service names reflect their actual speed and term; offer_key retains the original billing plan.",
+      "type": "string"
+    },
+    "expires_at": {
+      "format": "date-time",
+      "type": "string"
+    },
+    "grace_until": {
+      "format": "date-time",
+      "type": "string"
+    },
+    "host": {
+      "type": "string"
+    },
+    "id": {
+      "description": "Internal API identifier. Use reference for customer-facing display.",
+      "format": "uuid",
+      "type": "string"
+    },
+    "max_connections": {
+      "description": "Effective limit for this service.",
+      "minimum": 0,
+      "type": "integer"
+    },
+    "offer_key": {
+      "type": "string"
+    },
+    "ports": {
+      "properties": {
+        "http": {
+          "type": "integer"
+        },
+        "https": {
+          "type": "integer"
+        },
+        "socks5": {
+          "type": "integer"
+        }
+      },
+      "required": [
+        "http",
+        "socks5",
+        "https"
+      ],
+      "type": "object"
+    },
+    "product": {
+      "$ref": "#/$defs/Product"
+    },
+    "reference": {
+      "description": "Stable, unique customer-facing reference.",
+      "pattern": "^SVC-[0-9]{6,}$",
+      "type": "string"
+    },
+    "renewals_enabled": {
+      "type": "boolean"
+    },
+    "speed_bps": {
+      "description": "0 for paid residential_ipv4_gb means no additional TrueProxies speed cap. Private comparison passes have a fixed 50000000 bps cap. residential_ipv4_unlimited retains its positive plan speed. Upstream capacity and availability still apply. Trials and datacenter plans retain their speed limits.",
+      "format": "int64",
+      "minimum": 0,
+      "type": "integer"
+    },
+    "starts_at": {
+      "format": "date-time",
+      "type": "string"
+    },
+    "status": {
+      "$ref": "#/$defs/ServiceStatus"
+    },
+    "term": {
+      "$ref": "#/$defs/Term"
+    },
+    "term_label": {
+      "description": "Actual fixed duration for a free Unlimited grant, such as 3 hours. Overrides the recurring term label in customer views.",
+      "type": "string"
+    },
+    "trial_started_at": {
+      "description": "First recorded trial traffic; absent until the first request starts the 30-minute window.",
+      "format": "date-time",
+      "type": "string"
+    },
+    "usage_source": {
+      "enum": [
+        "node"
+      ],
+      "type": "string"
+    },
+    "username_base": {
+      "type": "string"
+    },
+    "whitelist_entries": {
+      "type": "integer"
+    }
+  },
+  "required": [
+    "id",
+    "reference",
+    "product",
+    "offer_key",
+    "display_name",
+    "status",
+    "host",
+    "ports",
+    "username_base",
+    "max_connections",
+    "connects_per_second",
+    "created_at",
+    "capabilities",
+    "renewals_enabled",
+    "billing_read_only",
+    "usage_source"
+  ],
+  "type": "object",
+  "$defs": {
+    "Product": {
+      "enum": [
+        "residential_ipv4_gb",
+        "residential_ipv4_unlimited",
+        "datacenter_ipv6",
+        "trial"
+      ],
+      "type": "string"
+    },
+    "ServiceStatus": {
+      "enum": [
+        "pending",
+        "active",
+        "expired",
+        "closed",
+        "suspended",
+        "failed"
+      ],
+      "type": "string"
+    },
+    "Term": {
+      "enum": [
+        "hour",
+        "day",
+        "week",
+        "month"
+      ],
+      "type": "string"
+    }
+  }
+}

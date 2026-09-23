@@ -1,0 +1,687 @@
+{
+  "@context": {
+    "@vocab": "https://trueproxies.com/schema#",
+    "schema": "https://schema.org/",
+    "xsd": "http://www.w3.org/2001/XMLSchema#",
+    "dcterms": "http://purl.org/dc/terms/",
+    "trueproxies": "https://trueproxies.com/schema#",
+    "Analytics": "trueproxies:Analytics",
+    "destinations": {
+      "@id": "trueproxies:destinations",
+      "@container": "@list"
+    },
+    "errors": {
+      "@id": "trueproxies:errors",
+      "@container": "@list"
+    },
+    "range": {
+      "@id": "trueproxies:range",
+      "@type": "xsd:string"
+    },
+    "series": {
+      "@id": "trueproxies:series",
+      "@container": "@list"
+    },
+    "success_rate": {
+      "@id": "trueproxies:success_rate",
+      "@type": "xsd:decimal"
+    },
+    "AnalyticsPoint": "trueproxies:AnalyticsPoint",
+    "avg_session_ms": {
+      "@id": "trueproxies:avg_session_ms",
+      "@type": "xsd:decimal"
+    },
+    "avg_setup_ms": {
+      "@id": "trueproxies:avg_setup_ms",
+      "@type": "xsd:decimal"
+    },
+    "bytes_in": {
+      "@id": "trueproxies:bytes_in",
+      "@type": "xsd:integer"
+    },
+    "bytes_out": {
+      "@id": "trueproxies:bytes_out",
+      "@type": "xsd:integer"
+    },
+    "failures": {
+      "@id": "trueproxies:failures",
+      "@type": "xsd:integer"
+    },
+    "requests": {
+      "@id": "trueproxies:requests",
+      "@type": "xsd:integer"
+    },
+    "session_samples": {
+      "@id": "trueproxies:session_samples",
+      "@type": "xsd:integer"
+    },
+    "setup_samples": {
+      "@id": "trueproxies:setup_samples",
+      "@type": "xsd:integer"
+    },
+    "ts": {
+      "@id": "trueproxies:ts",
+      "@type": "xsd:dateTime"
+    },
+    "Catalog": "trueproxies:Catalog",
+    "cities": {
+      "@id": "trueproxies:cities",
+      "@container": "@list"
+    },
+    "hosts": {
+      "@id": "trueproxies:hosts"
+    },
+    "offers": {
+      "@id": "trueproxies:offers",
+      "@container": "@list"
+    },
+    "payment_providers": {
+      "@id": "trueproxies:payment_providers",
+      "@container": "@list"
+    },
+    "trial_available": {
+      "@id": "trueproxies:trial_available",
+      "@type": "xsd:boolean"
+    },
+    "City": "trueproxies:City",
+    "available": {
+      "@id": "trueproxies:available",
+      "@type": "xsd:boolean"
+    },
+    "code": {
+      "@id": "trueproxies:code",
+      "@type": "xsd:string"
+    },
+    "country_code": {
+      "@id": "trueproxies:country_code",
+      "@type": "xsd:string"
+    },
+    "name": {
+      "@id": "trueproxies:name",
+      "@type": "xsd:string"
+    },
+    "CustomerBilling": "trueproxies:CustomerBilling",
+    "address_line1": {
+      "@id": "trueproxies:address_line1",
+      "@type": "xsd:string"
+    },
+    "address_line2": {
+      "@id": "trueproxies:address_line2",
+      "@type": "xsd:string"
+    },
+    "city": {
+      "@id": "trueproxies:city",
+      "@type": "xsd:string"
+    },
+    "company": {
+      "@id": "trueproxies:company",
+      "@type": "xsd:string"
+    },
+    "country": {
+      "@id": "trueproxies:country",
+      "@type": "xsd:string"
+    },
+    "postal_code": {
+      "@id": "trueproxies:postal_code",
+      "@type": "xsd:string"
+    },
+    "state": {
+      "@id": "trueproxies:state",
+      "@type": "xsd:string"
+    },
+    "vat_id": {
+      "@id": "trueproxies:vat_id",
+      "@type": "xsd:string"
+    },
+    "Destination": "trueproxies:Destination",
+    "bytes": {
+      "@id": "trueproxies:bytes",
+      "@type": "xsd:integer"
+    },
+    "host": {
+      "@id": "trueproxies:host",
+      "@type": "xsd:string"
+    },
+    "EndpointRequest": "trueproxies:EndpointRequest",
+    "asn": {
+      "@id": "trueproxies:asn",
+      "@type": "xsd:string"
+    },
+    "count": {
+      "@id": "trueproxies:count",
+      "@type": "xsd:integer"
+    },
+    "format": {
+      "@id": "trueproxies:format",
+      "@type": "xsd:string"
+    },
+    "job_id": {
+      "@id": "trueproxies:job_id",
+      "@type": "xsd:string"
+    },
+    "lifetime": {
+      "@id": "trueproxies:lifetime",
+      "@type": "xsd:integer"
+    },
+    "project_id": {
+      "@id": "trueproxies:project_id",
+      "@type": "xsd:string"
+    },
+    "protocol": {
+      "@id": "trueproxies:protocol",
+      "@type": "xsd:string"
+    },
+    "region": {
+      "@id": "trueproxies:region",
+      "@type": "xsd:string"
+    },
+    "session": {
+      "@id": "trueproxies:session",
+      "@type": "xsd:string"
+    },
+    "template": {
+      "@id": "trueproxies:template",
+      "@type": "xsd:string"
+    },
+    "EndpointResponse": "trueproxies:EndpointResponse",
+    "lines": {
+      "@id": "trueproxies:lines",
+      "@container": "@list"
+    },
+    "Error": "trueproxies:Error",
+    "details": {
+      "@id": "trueproxies:details"
+    },
+    "message": {
+      "@id": "trueproxies:message",
+      "@type": "xsd:string"
+    },
+    "ErrorClass": "trueproxies:ErrorClass",
+    "err_class": {
+      "@id": "trueproxies:err_class",
+      "@type": "xsd:string"
+    },
+    "Invoice": "trueproxies:Invoice",
+    "activated_at": {
+      "@id": "trueproxies:activated_at",
+      "@type": "xsd:dateTime"
+    },
+    "activation_failed_at": {
+      "@id": "trueproxies:activation_failed_at",
+      "@type": "xsd:dateTime"
+    },
+    "amount_cents": {
+      "@id": "trueproxies:amount_cents",
+      "@type": "xsd:integer"
+    },
+    "created_at": {
+      "@id": "trueproxies:created_at",
+      "@type": "xsd:dateTime"
+    },
+    "currency": {
+      "@id": "trueproxies:currency",
+      "@type": "xsd:string"
+    },
+    "discount_bp": {
+      "@id": "trueproxies:discount_bp",
+      "@type": "xsd:integer"
+    },
+    "display_name": {
+      "@id": "trueproxies:display_name",
+      "@type": "xsd:string"
+    },
+    "due_at": {
+      "@id": "trueproxies:due_at",
+      "@type": "xsd:dateTime"
+    },
+    "id": {
+      "@id": "trueproxies:id",
+      "@type": "xsd:string"
+    },
+    "kind": {
+      "@id": "trueproxies:kind",
+      "@type": "@id"
+    },
+    "list_amount_cents": {
+      "@id": "trueproxies:list_amount_cents",
+      "@type": "xsd:integer"
+    },
+    "offer_key": {
+      "@id": "trueproxies:offer_key",
+      "@type": "xsd:string"
+    },
+    "options": {
+      "@id": "trueproxies:options",
+      "@type": "@id"
+    },
+    "paid_at": {
+      "@id": "trueproxies:paid_at",
+      "@type": "xsd:dateTime"
+    },
+    "payments": {
+      "@id": "trueproxies:payments",
+      "@container": "@list"
+    },
+    "promo_code": {
+      "@id": "trueproxies:promo_code",
+      "@type": "xsd:string"
+    },
+    "promo_discount_cents": {
+      "@id": "trueproxies:promo_discount_cents",
+      "@type": "xsd:integer"
+    },
+    "reference": {
+      "@id": "trueproxies:reference",
+      "@type": "xsd:string"
+    },
+    "service_id": {
+      "@id": "trueproxies:service_id",
+      "@type": "xsd:string"
+    },
+    "status": {
+      "@id": "trueproxies:status",
+      "@type": "@id"
+    },
+    "InvoiceCreate": "trueproxies:InvoiceCreate",
+    "request_id": {
+      "@id": "trueproxies:request_id",
+      "@type": "xsd:string"
+    },
+    "InvoiceKind": "trueproxies:InvoiceKind",
+    "InvoiceOptions": "trueproxies:InvoiceOptions",
+    "gb": {
+      "@id": "trueproxies:gb",
+      "@type": "xsd:integer"
+    },
+    "InvoicePayment": "trueproxies:InvoicePayment",
+    "amount_received_cents": {
+      "@id": "trueproxies:amount_received_cents",
+      "@type": "xsd:integer"
+    },
+    "attempt": {
+      "@id": "trueproxies:attempt",
+      "@type": "xsd:integer"
+    },
+    "checkout_url": {
+      "@id": "trueproxies:checkout_url",
+      "@type": "xsd:string"
+    },
+    "expires_at": {
+      "@id": "trueproxies:expires_at",
+      "@type": "xsd:dateTime"
+    },
+    "provider": {
+      "@id": "trueproxies:provider"
+    },
+    "refund_amount_cents": {
+      "@id": "trueproxies:refund_amount_cents",
+      "@type": "xsd:integer"
+    },
+    "refund_amount_unknown": {
+      "@id": "trueproxies:refund_amount_unknown",
+      "@type": "xsd:boolean"
+    },
+    "refund_completed_at": {
+      "@id": "trueproxies:refund_completed_at",
+      "@type": "xsd:dateTime"
+    },
+    "refund_reason": {
+      "@id": "trueproxies:refund_reason",
+      "@type": "xsd:string"
+    },
+    "refund_reference": {
+      "@id": "trueproxies:refund_reference",
+      "@type": "xsd:string"
+    },
+    "refund_retryable": {
+      "@id": "trueproxies:refund_retryable",
+      "@type": "xsd:boolean"
+    },
+    "refund_status": {
+      "@id": "trueproxies:refund_status",
+      "@type": "xsd:string"
+    },
+    "refunded_at": {
+      "@id": "trueproxies:refunded_at",
+      "@type": "xsd:dateTime"
+    },
+    "InvoiceStatus": "trueproxies:InvoiceStatus",
+    "LiveMetrics": "trueproxies:LiveMetrics",
+    "completed_connections": {
+      "@id": "trueproxies:completed_connections",
+      "@type": "xsd:integer"
+    },
+    "connections_per_minute": {
+      "@id": "trueproxies:connections_per_minute",
+      "@type": "xsd:integer"
+    },
+    "download_bps": {
+      "@id": "trueproxies:download_bps",
+      "@type": "xsd:decimal"
+    },
+    "interval_seconds": {
+      "@id": "trueproxies:interval_seconds",
+      "@type": "xsd:integer"
+    },
+    "last_activity_at": {
+      "@id": "trueproxies:last_activity_at",
+      "@type": "xsd:dateTime"
+    },
+    "sampled_at": {
+      "@id": "trueproxies:sampled_at",
+      "@type": "xsd:dateTime"
+    },
+    "traffic_today_bytes": {
+      "@id": "trueproxies:traffic_today_bytes",
+      "@type": "xsd:integer"
+    },
+    "upload_bps": {
+      "@id": "trueproxies:upload_bps",
+      "@type": "xsd:decimal"
+    },
+    "window_end": {
+      "@id": "trueproxies:window_end",
+      "@type": "xsd:dateTime"
+    },
+    "window_start": {
+      "@id": "trueproxies:window_start",
+      "@type": "xsd:dateTime"
+    },
+    "Me": "trueproxies:Me",
+    "affiliate_enabled": {
+      "@id": "trueproxies:affiliate_enabled",
+      "@type": "xsd:boolean"
+    },
+    "billing": {
+      "@id": "trueproxies:billing",
+      "@type": "@id"
+    },
+    "email": {
+      "@id": "trueproxies:email",
+      "@type": "xsd:string"
+    },
+    "email_verified": {
+      "@id": "trueproxies:email_verified",
+      "@type": "xsd:boolean"
+    },
+    "impersonated": {
+      "@id": "trueproxies:impersonated",
+      "@type": "xsd:boolean"
+    },
+    "reseller_enabled": {
+      "@id": "trueproxies:reseller_enabled",
+      "@type": "xsd:boolean"
+    },
+    "role": {
+      "@id": "trueproxies:role",
+      "@type": "xsd:string"
+    },
+    "suspended": {
+      "@id": "trueproxies:suspended",
+      "@type": "xsd:boolean"
+    },
+    "white_label_enabled": {
+      "@id": "trueproxies:white_label_enabled",
+      "@type": "xsd:boolean"
+    },
+    "Offer": "trueproxies:Offer",
+    "allowance_bytes": {
+      "@id": "trueproxies:allowance_bytes",
+      "@type": "xsd:integer"
+    },
+    "capabilities": {
+      "@id": "trueproxies:capabilities",
+      "@container": "@list"
+    },
+    "enabled": {
+      "@id": "trueproxies:enabled",
+      "@type": "xsd:boolean"
+    },
+    "floor_price_cents": {
+      "@id": "trueproxies:floor_price_cents",
+      "@type": "xsd:integer"
+    },
+    "price_cents": {
+      "@id": "trueproxies:price_cents",
+      "@type": "xsd:integer"
+    },
+    "product": {
+      "@id": "trueproxies:product",
+      "@type": "@id"
+    },
+    "speed_bps": {
+      "@id": "trueproxies:speed_bps",
+      "@type": "xsd:integer"
+    },
+    "term": {
+      "@id": "trueproxies:term",
+      "@type": "@id"
+    },
+    "PayRequest": "trueproxies:PayRequest",
+    "PayResponse": "trueproxies:PayResponse",
+    "payment_id": {
+      "@id": "trueproxies:payment_id",
+      "@type": "xsd:string"
+    },
+    "PaymentStatus": "trueproxies:PaymentStatus",
+    "Product": "trueproxies:Product",
+    "Service": "trueproxies:Service",
+    "billing_read_only": {
+      "@id": "trueproxies:billing_read_only",
+      "@type": "xsd:boolean"
+    },
+    "comparison_pass": {
+      "@id": "trueproxies:comparison_pass",
+      "@type": "xsd:boolean"
+    },
+    "connects_per_second": {
+      "@id": "trueproxies:connects_per_second",
+      "@type": "xsd:integer"
+    },
+    "depleted": {
+      "@id": "trueproxies:depleted",
+      "@type": "xsd:boolean"
+    },
+    "grace_until": {
+      "@id": "trueproxies:grace_until",
+      "@type": "xsd:dateTime"
+    },
+    "max_connections": {
+      "@id": "trueproxies:max_connections",
+      "@type": "xsd:integer"
+    },
+    "ports": {
+      "@id": "trueproxies:ports"
+    },
+    "renewals_enabled": {
+      "@id": "trueproxies:renewals_enabled",
+      "@type": "xsd:boolean"
+    },
+    "starts_at": {
+      "@id": "trueproxies:starts_at",
+      "@type": "xsd:dateTime"
+    },
+    "term_label": {
+      "@id": "trueproxies:term_label",
+      "@type": "xsd:string"
+    },
+    "trial_started_at": {
+      "@id": "trueproxies:trial_started_at",
+      "@type": "xsd:dateTime"
+    },
+    "usage_source": {
+      "@id": "trueproxies:usage_source",
+      "@type": "xsd:string"
+    },
+    "username_base": {
+      "@id": "trueproxies:username_base",
+      "@type": "xsd:string"
+    },
+    "whitelist_entries": {
+      "@id": "trueproxies:whitelist_entries",
+      "@type": "xsd:integer"
+    },
+    "ServiceCheckResult": "trueproxies:ServiceCheckResult",
+    "checked_at": {
+      "@id": "trueproxies:checked_at",
+      "@type": "xsd:dateTime"
+    },
+    "elapsed_ms": {
+      "@id": "trueproxies:elapsed_ms",
+      "@type": "xsd:integer"
+    },
+    "exit_ip": {
+      "@id": "trueproxies:exit_ip",
+      "@type": "xsd:string"
+    },
+    "success": {
+      "@id": "trueproxies:success",
+      "@type": "xsd:boolean"
+    },
+    "ServiceSecret": "trueproxies:ServiceSecret",
+    "password": {
+      "@id": "trueproxies:password",
+      "@type": "xsd:string"
+    },
+    "rotated_at": {
+      "@id": "trueproxies:rotated_at",
+      "@type": "xsd:dateTime"
+    },
+    "ServiceStatus": "trueproxies:ServiceStatus",
+    "SubCustomer": "trueproxies:SubCustomer",
+    "active_services": {
+      "@id": "trueproxies:active_services",
+      "@type": "xsd:integer"
+    },
+    "closed_at": {
+      "@id": "trueproxies:closed_at",
+      "@type": "xsd:dateTime"
+    },
+    "label": {
+      "@id": "trueproxies:label",
+      "@type": "xsd:string"
+    },
+    "open_invoices": {
+      "@id": "trueproxies:open_invoices",
+      "@type": "xsd:integer"
+    },
+    "parent_id": {
+      "@id": "trueproxies:parent_id",
+      "@type": "xsd:string"
+    },
+    "services": {
+      "@id": "trueproxies:services",
+      "@type": "xsd:integer"
+    },
+    "suspended_at": {
+      "@id": "trueproxies:suspended_at",
+      "@type": "xsd:dateTime"
+    },
+    "SubCustomerPatch": "trueproxies:SubCustomerPatch",
+    "SubCustomerWrite": "trueproxies:SubCustomerWrite",
+    "Term": "trueproxies:Term",
+    "Usage": "trueproxies:Usage",
+    "current_period_used_bytes": {
+      "@id": "trueproxies:current_period_used_bytes",
+      "@type": "xsd:integer"
+    },
+    "gb_allocated": {
+      "@id": "trueproxies:gb_allocated",
+      "@type": "xsd:decimal"
+    },
+    "gb_remaining": {
+      "@id": "trueproxies:gb_remaining",
+      "@type": "xsd:decimal"
+    },
+    "gb_used": {
+      "@id": "trueproxies:gb_used",
+      "@type": "xsd:decimal"
+    },
+    "last_updated_at": {
+      "@id": "trueproxies:last_updated_at",
+      "@type": "xsd:dateTime"
+    },
+    "next_reset_at": {
+      "@id": "trueproxies:next_reset_at",
+      "@type": "xsd:dateTime"
+    },
+    "period_started_at": {
+      "@id": "trueproxies:period_started_at",
+      "@type": "xsd:dateTime"
+    },
+    "provider_observed_at": {
+      "@id": "trueproxies:provider_observed_at",
+      "@type": "xsd:dateTime"
+    },
+    "provider_usage_informational": {
+      "@id": "trueproxies:provider_usage_informational",
+      "@type": "xsd:boolean"
+    },
+    "reconciliation": {
+      "@id": "trueproxies:reconciliation"
+    },
+    "remaining_bytes": {
+      "@id": "trueproxies:remaining_bytes",
+      "@type": "xsd:integer"
+    },
+    "Wallet": "trueproxies:Wallet",
+    "balance_cents": {
+      "@id": "trueproxies:balance_cents",
+      "@type": "xsd:integer"
+    },
+    "daily_remaining_cents": {
+      "@id": "trueproxies:daily_remaining_cents",
+      "@type": "xsd:integer"
+    },
+    "frozen": {
+      "@id": "trueproxies:frozen",
+      "@type": "xsd:boolean"
+    },
+    "topup_daily_cap_cents": {
+      "@id": "trueproxies:topup_daily_cap_cents",
+      "@type": "xsd:integer"
+    },
+    "topup_daily_used_cents": {
+      "@id": "trueproxies:topup_daily_used_cents",
+      "@type": "xsd:integer"
+    },
+    "topup_max_cents": {
+      "@id": "trueproxies:topup_max_cents",
+      "@type": "xsd:integer"
+    },
+    "topup_min_cents": {
+      "@id": "trueproxies:topup_min_cents",
+      "@type": "xsd:integer"
+    },
+    "wallet_frozen_at": {
+      "@id": "trueproxies:wallet_frozen_at",
+      "@type": "xsd:dateTime"
+    },
+    "WalletEntry": "trueproxies:WalletEntry",
+    "ref_id": {
+      "@id": "trueproxies:ref_id",
+      "@type": "xsd:string"
+    },
+    "ref_type": {
+      "@id": "trueproxies:ref_type",
+      "@type": "xsd:string"
+    },
+    "WhitelistCreate": "trueproxies:WhitelistCreate",
+    "cidr": {
+      "@id": "trueproxies:cidr",
+      "@type": "xsd:string"
+    },
+    "move": {
+      "@id": "trueproxies:move",
+      "@type": "xsd:boolean"
+    },
+    "WhitelistEntry": "trueproxies:WhitelistEntry"
+  },
+  "@type": "schema:Dataset",
+  "schema:name": "TrueProxies API JSON-LD context",
+  "schema:description": "A JSON-LD @context for the objects TrueProxies's own API contract declares: one class per component schema, one property per declared field, typed from the contract. Derived by script (derive-json-ld.py, 2026-09-23) from openapi/trueproxies-openapi.yml.",
+  "dcterms:created": "2026-09-23",
+  "dcterms:source": [
+    "openapi/trueproxies-openapi.yml"
+  ]
+}

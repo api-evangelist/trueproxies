@@ -1,0 +1,67 @@
+name: TrueProxies Customer API Conventions
+generated: '2026-09-23'
+method: searched
+source: https://api.trueproxies.com/v1/openapi.json
+docs: https://docs.trueproxies.com/overview/
+authentication:
+  style: http bearer
+  header: 'Authorization: Bearer tp_api_…'
+  note: Named, scoped keys created in the customer dashboard; keys expire after 30, 90 or 365 days and can be revoked immediately. Management API keys are separate from proxy credentials.
+  scopes: [services:read, proxy:read, proxy:write, billing:read, billing:write, reseller:read, reseller:purchase]
+  see: authentication/trueproxies-authentication.yml
+idempotency:
+  coverage: partial
+  header: Idempotency-Key
+  scope:
+  - post_v1_invoices
+  - post_v1_invoices_id_pay
+  - post_v1_services_id_rotate_password
+  replay_signal: 'Idempotency-Replayed: true'
+  key_scope: Keys are scoped to your account and to the endpoint.
+  retention: Successful and uncertain invoice commands are retained so that an old retry cannot create another invoice. Completed definite rejections are kept for at least 24 hours; rotate-password keys are reused for retries within 23 hours.
+  conflict: Reusing a key for a different request is refused with 409, as is a repeat that arrives while the first is still running.
+  not_covered: post_v1_services_id_whitelist ("After an uncertain response, list entries before retrying."), delete_v1_services_id_whitelist_entryId
+pagination:
+  style: cursor
+  params: [cursor, limit]
+  limit: default 25, maximum 100
+  response_fields: [items, total, limit, next_cursor]
+  operations: [get_v1_invoices, get_v1_services]
+request_tracing:
+  header: X-Request-ID
+  note: Protected responses use Cache-Control no-store and X-Request-ID.
+versioning:
+  style: URI path prefix (/v1)
+  current: 1.0.0
+units:
+  timestamps: ISO-8601
+  money: integer cents
+  traffic: bytes; GB balances are decimal gigabytes (1 GB = 1,000,000,000 bytes)
+errors:
+  envelope: '{code, message, details}'
+  codes: [BAD_REQUEST, UNAUTHENTICATED, FORBIDDEN, NOT_FOUND, CONFLICT, RATE_LIMITED, SERVICE_UNAVAILABLE, OFFER_UNAVAILABLE, CITY_UNAVAILABLE, CAPACITY_UNAVAILABLE, INVOICE_NOT_PAYABLE, PROVIDER_ERROR, PIPE_UNAVAILABLE, TRIAL_NOT_ELIGIBLE, EMAIL_UNVERIFIED, INTERNAL]
+  see: errors/trueproxies-problem-types.yml
+rate_limit_signaling:
+  status: 429
+  header: Retry-After
+  see: rate-limits/trueproxies-rate-limits.yml
+multi_tenant:
+  parameter: CustomerId (customer_id)
+  note: Resellers act for an owned sub-customer; reads require reseller:read and writes reseller:purchase.
+reversibility:
+  status: documented
+  surfaces:
+  - write: post_v1_services_id_whitelist
+    reversal: delete_v1_services_id_whitelist_entryId
+    window: null
+    note: Deleting a whitelist entry reverses adding it; no window is stated.
+  - write: post_v1_services_id_rotate_password
+    reversal: null
+    note: Not reversible; the previous password remains valid for a two-minute overlap after rotation.
+  - write: post_v1_invoices_id_pay
+    reversal: null
+    note: No refund or cancel operation in the API. Refunds are requested from support under the Refund Policy (hourly and daily plans are non-refundable; weekly and monthly plans only for a verified technical issue).
+    docs: https://trueproxies.com/refund-policy/
+  - write: post_v1_invoices
+    reversal: null
+    note: No invoice cancel/void operation is published.

@@ -1,0 +1,115 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "$id": "https://raw.githubusercontent.com/api-evangelist/trueproxies/main/json-schema/trueproxies-live-metrics-schema.json",
+  "title": "LiveMetrics",
+  "x-generated": "2026-09-23",
+  "x-method": "derived",
+  "x-generator": "derive-json-schema.py",
+  "x-source": "openapi/trueproxies-openapi.yml#/components/schemas/LiveMetrics",
+  "properties": {
+    "completed_connections": {
+      "description": "Recorded proxy outcomes underlying success_rate. Selected by event timestamp, not literal completion time; delayed or long-running connections can appear later.",
+      "minimum": 0,
+      "type": "integer"
+    },
+    "connections_per_minute": {
+      "description": "Sum of recorded usage connection deltas in the minute ending at window_end.",
+      "minimum": 0,
+      "type": "integer"
+    },
+    "download_bps": {
+      "description": "Customer download bits per second in the last complete series bucket, from bytes_out. Zero is an absence of recorded bytes, not proof of healthy idle traffic.",
+      "minimum": 0,
+      "type": "number"
+    },
+    "interval_seconds": {
+      "const": 10,
+      "type": "integer"
+    },
+    "last_activity_at": {
+      "description": "Latest non-system usage event before sampled_at, scanned since the earlier of midnight UTC or window_start. Null means no observation in that bounded interval. Samples are emitted only for activity; silence cannot distinguish idle traffic from unavailable collection. Treat current rates as unavailable when this is null or older than 60 seconds.",
+      "format": "date-time",
+      "type": [
+        "string",
+        "null"
+      ]
+    },
+    "sampled_at": {
+      "description": "UTC query time; this does not prove collector health or data freshness.",
+      "format": "date-time",
+      "type": "string"
+    },
+    "series": {
+      "items": {
+        "properties": {
+          "download_bps": {
+            "minimum": 0,
+            "type": "number"
+          },
+          "ts": {
+            "description": "Inclusive UTC start of this ten-second bucket.",
+            "format": "date-time",
+            "type": "string"
+          },
+          "upload_bps": {
+            "minimum": 0,
+            "type": "number"
+          }
+        },
+        "required": [
+          "ts",
+          "download_bps",
+          "upload_bps"
+        ],
+        "type": "object"
+      },
+      "maxItems": 60,
+      "minItems": 60,
+      "type": "array"
+    },
+    "success_rate": {
+      "description": "Successful recorded proxy outcomes divided by recorded outcomes whose event timestamps fall in the minute ending at window_end. These are proxy connection outcomes, not destination HTTP status. Null when no outcomes are recorded. Event timestamps may represent connection start rather than completion time.",
+      "maximum": 1,
+      "minimum": 0,
+      "type": [
+        "number",
+        "null"
+      ]
+    },
+    "traffic_today_bytes": {
+      "description": "Observed non-system upload plus download bytes from midnight UTC up to sampled_at; delayed arrivals may revise totals.",
+      "minimum": 0,
+      "type": "integer"
+    },
+    "upload_bps": {
+      "description": "Customer upload bits per second in the last complete series bucket, from bytes_in.",
+      "minimum": 0,
+      "type": "number"
+    },
+    "window_end": {
+      "description": "Exclusive UTC end, rounded down to ten seconds and delayed twenty seconds for collection and shipping. Later arrivals may revise observations.",
+      "format": "date-time",
+      "type": "string"
+    },
+    "window_start": {
+      "description": "Inclusive UTC start of the ten-minute rate series.",
+      "format": "date-time",
+      "type": "string"
+    }
+  },
+  "required": [
+    "sampled_at",
+    "last_activity_at",
+    "window_start",
+    "window_end",
+    "interval_seconds",
+    "download_bps",
+    "upload_bps",
+    "connections_per_minute",
+    "success_rate",
+    "completed_connections",
+    "traffic_today_bytes",
+    "series"
+  ],
+  "type": "object"
+}

@@ -1,0 +1,239 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "$id": "https://raw.githubusercontent.com/api-evangelist/trueproxies/main/json-schema/trueproxies-invoice-schema.json",
+  "title": "Invoice",
+  "x-generated": "2026-09-23",
+  "x-method": "derived",
+  "x-generator": "derive-json-schema.py",
+  "x-source": "openapi/trueproxies-openapi.yml#/components/schemas/Invoice",
+  "properties": {
+    "activated_at": {
+      "description": "When this invoice's service activation, top-up, renewal, or charge-only processing committed. Payment receipt and an already-active service do not establish this outcome.",
+      "format": "date-time",
+      "type": "string"
+    },
+    "activation_failed_at": {
+      "description": "Automatic fulfillment stopped and needs operator attention. Payment remains received; this does not mean a refund completed or previously purchased service was revoked.",
+      "format": "date-time",
+      "type": "string"
+    },
+    "amount_cents": {
+      "type": "integer"
+    },
+    "created_at": {
+      "format": "date-time",
+      "type": "string"
+    },
+    "currency": {
+      "type": "string"
+    },
+    "discount_bp": {
+      "type": "integer"
+    },
+    "display_name": {
+      "type": "string"
+    },
+    "due_at": {
+      "format": "date-time",
+      "type": "string"
+    },
+    "id": {
+      "description": "Internal API identifier. Use reference for customer-facing display.",
+      "format": "uuid",
+      "type": "string"
+    },
+    "kind": {
+      "$ref": "#/$defs/InvoiceKind"
+    },
+    "list_amount_cents": {
+      "type": "integer"
+    },
+    "offer_key": {
+      "type": "string"
+    },
+    "options": {
+      "$ref": "#/$defs/InvoiceOptions"
+    },
+    "paid_at": {
+      "format": "date-time",
+      "type": "string"
+    },
+    "payments": {
+      "items": {
+        "$ref": "#/$defs/InvoicePayment"
+      },
+      "type": "array"
+    },
+    "promo_code": {
+      "type": "string"
+    },
+    "promo_discount_cents": {
+      "format": "int64",
+      "minimum": 0,
+      "type": "integer"
+    },
+    "reference": {
+      "description": "Stable, unique customer-facing reference.",
+      "pattern": "^INV-[0-9]{6,}$",
+      "type": "string"
+    },
+    "service_id": {
+      "format": "uuid",
+      "type": "string"
+    },
+    "status": {
+      "$ref": "#/$defs/InvoiceStatus"
+    }
+  },
+  "required": [
+    "id",
+    "reference",
+    "kind",
+    "offer_key",
+    "display_name",
+    "amount_cents",
+    "currency",
+    "status",
+    "due_at",
+    "created_at",
+    "payments"
+  ],
+  "type": "object",
+  "$defs": {
+    "InvoiceKind": {
+      "enum": [
+        "wallet_topup",
+        "purchase",
+        "renewal",
+        "topup",
+        "custom",
+        "white_label"
+      ],
+      "type": "string"
+    },
+    "InvoiceOptions": {
+      "properties": {
+        "city": {
+          "type": "string"
+        },
+        "gb": {
+          "description": "GB for top-ups; taken from the offer otherwise",
+          "type": "integer"
+        }
+      },
+      "type": "object"
+    },
+    "InvoicePayment": {
+      "properties": {
+        "amount_received_cents": {
+          "type": "integer"
+        },
+        "attempt": {
+          "type": "integer"
+        },
+        "checkout_url": {
+          "description": "present only while the invoice is payable and the pending checkout has not reached its known expiry",
+          "type": "string"
+        },
+        "created_at": {
+          "format": "date-time",
+          "type": "string"
+        },
+        "expires_at": {
+          "format": "date-time",
+          "type": "string"
+        },
+        "id": {
+          "format": "uuid",
+          "type": "string"
+        },
+        "provider": {
+          "description": "The payment rail, including staff-recorded manual settlements and compensation.",
+          "oneOf": [
+            {
+              "$ref": "#/$defs/PaymentProvider"
+            },
+            {
+              "enum": [
+                "manual"
+              ],
+              "type": "string"
+            }
+          ]
+        },
+        "refund_amount_cents": {
+          "minimum": 1,
+          "type": "integer"
+        },
+        "refund_amount_unknown": {
+          "description": "A provider refund was reported without a trustworthy amount. Reconciliation is required before any additional refund.",
+          "type": "boolean"
+        },
+        "refund_completed_at": {
+          "format": "date-time",
+          "type": "string"
+        },
+        "refund_reason": {
+          "type": "string"
+        },
+        "refund_reference": {
+          "type": "string"
+        },
+        "refund_retryable": {
+          "description": "The recorded request can be retried unchanged within the provider idempotency window.",
+          "type": "boolean"
+        },
+        "refund_status": {
+          "enum": [
+            "processing",
+            "uncertain",
+            "manual_required",
+            "submitted",
+            "failed",
+            "refunded"
+          ],
+          "type": "string"
+        },
+        "refunded_at": {
+          "description": "Refund request recorded at; not proof of completion",
+          "format": "date-time",
+          "type": "string"
+        },
+        "status": {
+          "$ref": "#/$defs/PaymentStatus"
+        }
+      },
+      "required": [
+        "id",
+        "attempt",
+        "provider",
+        "status",
+        "created_at"
+      ],
+      "type": "object"
+    },
+    "InvoiceStatus": {
+      "enum": [
+        "open",
+        "paid",
+        "cancelled"
+      ],
+      "type": "string"
+    },
+    "PaymentProvider": {
+      "description": "Payment provider identifier (stripe or cryptomus).",
+      "type": "string"
+    },
+    "PaymentStatus": {
+      "enum": [
+        "pending",
+        "paid",
+        "expired",
+        "failed",
+        "paid_unapplied",
+        "paid_duplicate"
+      ],
+      "type": "string"
+    }
+  }
+}

@@ -1,0 +1,207 @@
+generated: '2026-09-23'
+method: derived
+generator: derive-vocabulary.py
+source: openapi/trueproxies-openapi.yml
+vocabulary:
+  name: TrueProxies Domain Vocabulary
+  description: 'Terms declared by TrueProxies''s own API contract: its resource groups, objects and enumerations, with the contract''s definitions.
+    Derived, not authored.'
+  version: '2026-09-23'
+  terms:
+  - term: Analytics
+    definition: 'Object declared by the contract with fields: destinations, errors, range, series, success_rate.'
+    tags:
+    - Object
+    source: openapi/trueproxies-openapi.yml#/components/schemas/Analytics
+  - term: AnalyticsPoint
+    definition: 'Object declared by the contract with fields: avg_session_ms, avg_setup_ms, bytes_in, bytes_out, failures, requests, session_samples,
+      setup_samples, ts.'
+    tags:
+    - Object
+    source: openapi/trueproxies-openapi.yml#/components/schemas/AnalyticsPoint
+  - term: Catalog
+    definition: 'Object declared by the contract with fields: cities, hosts, offers, payment_providers, trial_available.'
+    tags:
+    - Object
+    source: openapi/trueproxies-openapi.yml#/components/schemas/Catalog
+  - term: City
+    definition: 'Object declared by the contract with fields: available, code, country_code, name.'
+    tags:
+    - Object
+    source: openapi/trueproxies-openapi.yml#/components/schemas/City
+  - term: CustomerBilling
+    definition: The party an invoice is issued to. Empty strings mean not provided; a name or a company must be present when setting them. Saving
+      requires a country and the address fields required for that country. Existing incomplete profiles remain readable until completed.
+    tags:
+    - Object
+    source: openapi/trueproxies-openapi.yml#/components/schemas/CustomerBilling
+  - term: Destination
+    definition: 'Object declared by the contract with fields: bytes, failures, host, requests.'
+    tags:
+    - Object
+    source: openapi/trueproxies-openapi.yml#/components/schemas/Destination
+  - term: EndpointRequest
+    definition: 'Object declared by the contract with fields: asn, city, count, country, format, job_id, lifetime, project_id, protocol, region,
+      session, template.'
+    tags:
+    - Object
+    source: openapi/trueproxies-openapi.yml#/components/schemas/EndpointRequest
+  - term: EndpointResponse
+    definition: 'Object declared by the contract with fields: lines.'
+    tags:
+    - Object
+    source: openapi/trueproxies-openapi.yml#/components/schemas/EndpointResponse
+  - term: Error
+    definition: 'Object declared by the contract with fields: code, details, message.'
+    tags:
+    - Object
+    source: openapi/trueproxies-openapi.yml#/components/schemas/Error
+  - term: ErrorClass
+    definition: 'Object declared by the contract with fields: count, err_class.'
+    tags:
+    - Object
+    source: openapi/trueproxies-openapi.yml#/components/schemas/ErrorClass
+  - term: Invoice
+    definition: 'Object declared by the contract with fields: activated_at, activation_failed_at, amount_cents, created_at, currency, discount_bp,
+      display_name, due_at, id, kind, list_amount_cents, offer_key. (8 more)'
+    tags:
+    - Object
+    source: openapi/trueproxies-openapi.yml#/components/schemas/Invoice
+  - term: InvoiceCreate
+    definition: 'Object declared by the contract with fields: offer_key, options, promo_code, request_id, service_id.'
+    tags:
+    - Object
+    source: openapi/trueproxies-openapi.yml#/components/schemas/InvoiceCreate
+  - term: InvoiceKind
+    definition: 'Enumeration declared by the contract with values: wallet_topup, purchase, renewal, topup, custom, white_label.'
+    tags:
+    - Enumeration
+    source: openapi/trueproxies-openapi.yml#/components/schemas/InvoiceKind
+  - term: InvoiceOptions
+    definition: 'Object declared by the contract with fields: city, gb.'
+    tags:
+    - Object
+    source: openapi/trueproxies-openapi.yml#/components/schemas/InvoiceOptions
+  - term: InvoicePayment
+    definition: 'Object declared by the contract with fields: amount_received_cents, attempt, checkout_url, created_at, expires_at, id, provider,
+      refund_amount_cents, refund_amount_unknown, refund_completed_at, refund_reason, refund_reference. (4 more)'
+    tags:
+    - Object
+    source: openapi/trueproxies-openapi.yml#/components/schemas/InvoicePayment
+  - term: InvoiceStatus
+    definition: 'Enumeration declared by the contract with values: open, paid, cancelled.'
+    tags:
+    - Enumeration
+    source: openapi/trueproxies-openapi.yml#/components/schemas/InvoiceStatus
+  - term: LiveMetrics
+    definition: 'Object declared by the contract with fields: completed_connections, connections_per_minute, download_bps, interval_seconds, last_activity_at,
+      sampled_at, series, success_rate, traffic_today_bytes, upload_bps, window_end, window_start.'
+    tags:
+    - Object
+    source: openapi/trueproxies-openapi.yml#/components/schemas/LiveMetrics
+  - term: Me
+    definition: 'Object declared by the contract with fields: affiliate_enabled, billing, created_at, email, email_verified, id, impersonated,
+      reference, reseller_enabled, role, suspended, white_label_enabled.'
+    tags:
+    - Object
+    source: openapi/trueproxies-openapi.yml#/components/schemas/Me
+  - term: Offer
+    definition: 'Object declared by the contract with fields: allowance_bytes, capabilities, currency, display_name, enabled, floor_price_cents,
+      offer_key, price_cents, product, speed_bps, term.'
+    tags:
+    - Object
+    source: openapi/trueproxies-openapi.yml#/components/schemas/Offer
+  - term: PayRequest
+    definition: 'Object declared by the contract with fields: provider.'
+    tags:
+    - Object
+    source: openapi/trueproxies-openapi.yml#/components/schemas/PayRequest
+  - term: PayResponse
+    definition: 'Object declared by the contract with fields: checkout_url, expires_at, payment_id.'
+    tags:
+    - Object
+    source: openapi/trueproxies-openapi.yml#/components/schemas/PayResponse
+  - term: PaymentProvider
+    definition: Payment provider identifier (stripe or cryptomus).
+    tags:
+    - Object
+    source: openapi/trueproxies-openapi.yml#/components/schemas/PaymentProvider
+  - term: PaymentStatus
+    definition: 'Enumeration declared by the contract with values: pending, paid, expired, failed, paid_unapplied, paid_duplicate.'
+    tags:
+    - Enumeration
+    source: openapi/trueproxies-openapi.yml#/components/schemas/PaymentStatus
+  - term: Product
+    definition: 'Enumeration declared by the contract with values: residential_ipv4_gb, residential_ipv4_unlimited, datacenter_ipv6, trial.'
+    tags:
+    - Enumeration
+    source: openapi/trueproxies-openapi.yml#/components/schemas/Product
+  - term: Service
+    definition: 'Object declared by the contract with fields: billing_read_only, capabilities, city, comparison_pass, connects_per_second, created_at,
+      depleted, display_name, expires_at, grace_until, host, id. (15 more)'
+    tags:
+    - Object
+    source: openapi/trueproxies-openapi.yml#/components/schemas/Service
+  - term: ServiceCheckResult
+    definition: 'Object declared by the contract with fields: checked_at, elapsed_ms, exit_ip, message, success.'
+    tags:
+    - Object
+    source: openapi/trueproxies-openapi.yml#/components/schemas/ServiceCheckResult
+  - term: ServiceSecret
+    definition: 'Object declared by the contract with fields: password, rotated_at, username_base.'
+    tags:
+    - Object
+    source: openapi/trueproxies-openapi.yml#/components/schemas/ServiceSecret
+  - term: ServiceStatus
+    definition: 'Enumeration declared by the contract with values: pending, active, expired, closed, suspended, failed.'
+    tags:
+    - Enumeration
+    source: openapi/trueproxies-openapi.yml#/components/schemas/ServiceStatus
+  - term: SubCustomer
+    definition: 'Object declared by the contract with fields: active_services, closed_at, created_at, email, id, label, open_invoices, parent_id,
+      reference, role, services, suspended_at.'
+    tags:
+    - Object
+    source: openapi/trueproxies-openapi.yml#/components/schemas/SubCustomer
+  - term: SubCustomerPatch
+    definition: Only supplied fields change. An empty email removes the optional contact email.
+    tags:
+    - Object
+    source: openapi/trueproxies-openapi.yml#/components/schemas/SubCustomerPatch
+  - term: SubCustomerWrite
+    definition: 'Object declared by the contract with fields: email, label.'
+    tags:
+    - Object
+    source: openapi/trueproxies-openapi.yml#/components/schemas/SubCustomerWrite
+  - term: Term
+    definition: 'Enumeration declared by the contract with values: hour, day, week, month.'
+    tags:
+    - Enumeration
+    source: openapi/trueproxies-openapi.yml#/components/schemas/Term
+  - term: Usage
+    definition: 'Object declared by the contract with fields: allowance_bytes, bytes_in, bytes_out, current_period_used_bytes, gb_allocated, gb_remaining,
+      gb_used, last_updated_at, next_reset_at, period_started_at, provider_observed_at, provider_usage_informational. (4 more)'
+    tags:
+    - Object
+    source: openapi/trueproxies-openapi.yml#/components/schemas/Usage
+  - term: Wallet
+    definition: 'Object declared by the contract with fields: balance_cents, currency, daily_remaining_cents, frozen, topup_daily_cap_cents, topup_daily_used_cents,
+      topup_max_cents, topup_min_cents, wallet_frozen_at.'
+    tags:
+    - Object
+    source: openapi/trueproxies-openapi.yml#/components/schemas/Wallet
+  - term: WalletEntry
+    definition: 'Object declared by the contract with fields: amount_cents, created_at, id, kind, ref_id, ref_type.'
+    tags:
+    - Object
+    source: openapi/trueproxies-openapi.yml#/components/schemas/WalletEntry
+  - term: WhitelistCreate
+    definition: 'Object declared by the contract with fields: cidr, label, move.'
+    tags:
+    - Object
+    source: openapi/trueproxies-openapi.yml#/components/schemas/WhitelistCreate
+  - term: WhitelistEntry
+    definition: 'Object declared by the contract with fields: cidr, created_at, id, label.'
+    tags:
+    - Object
+    source: openapi/trueproxies-openapi.yml#/components/schemas/WhitelistEntry

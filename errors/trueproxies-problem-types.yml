@@ -1,0 +1,76 @@
+generated: '2026-09-23'
+method: derived
+generator: derive-problem-types.py
+source:
+- openapi/trueproxies-openapi.yml
+format: custom
+envelope:
+  media_type: application/json
+  schema: Error
+coverage:
+  operations: 21
+  statuses_declared: 9
+problems:
+- status: 400
+  title: Bad Request
+  description: error
+  operations: 21
+  media_types:
+  - application/json
+  schema: Error
+- status: 401
+  title: Unauthorized
+  description: error
+  operations: 21
+  media_types:
+  - application/json
+  schema: Error
+- status: 403
+  title: Forbidden
+  description: error
+  operations: 21
+  media_types:
+  - application/json
+  schema: Error
+- status: 404
+  title: Not Found
+  description: error
+  operations: 21
+  media_types:
+  - application/json
+  schema: Error
+- status: 409
+  title: Conflict
+  description: error
+  operations: 21
+  media_types:
+  - application/json
+  schema: Error
+- status: 429
+  title: Too Many Requests
+  description: error
+  operations: 21
+  media_types:
+  - application/json
+  schema: Error
+- status: 500
+  title: Internal Server Error
+  description: error
+  operations: 21
+  media_types:
+  - application/json
+  schema: Error
+- status: 503
+  title: Service Unavailable
+  description: error
+  operations: 21
+  media_types:
+  - application/json
+  schema: Error
+- status: default
+  title: null
+  description: error
+  operations: 2
+  media_types:
+  - application/json
+  schema: Error

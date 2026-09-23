@@ -1,0 +1,112 @@
+# TrueProxies
+
+> Residential and datacenter proxy service with 50M+ ethically sourced residential IPs across 150+ countries.
+
+TrueProxies provides proxy infrastructure for teams that need reliable, geo-targeted internet access. Unlimited Residential IPv4 supports country targeting; GB-Based additionally supports city, region, and ASN targeting.
+
+## Products
+
+### Residential IPv4 — Unlimited Bandwidth
+- URL: https://trueproxies.com/proxies/unlimited-residential-proxies/
+- Pricing: Starts from $4.08/hour for 10 Mbps. Hourly, daily, weekly, monthly plans.
+- Unlimited bandwidth at your selected speed tier. A separate 1.3M+ worldwide pool with rotating or sticky residential IPs and country targeting.
+
+### Residential IPv4 — GB-Based
+- URL: https://trueproxies.com/proxies/residential-ipv4-gb/
+- Pricing: From $1.64/GB.
+- A separate 50M+ pool across 150+ countries, with country, city, region, and ASN targeting. Pay only for data transferred. Monthly plans.
+
+### Residential IPv6
+- URL: https://trueproxies.com/proxies/residential-ipv6/
+- Status: Coming soon
+- Availability: Coming soon. Join the existing waitlist for launch updates.
+- Planned service: rotating IPv6 addresses on a US ISP network. Transfer allowances and any fair-use limits are not confirmed yet.
+
+### Datacenter IPv6
+- URL: https://trueproxies.com/proxies/datacenter-ipv6/
+- Pricing: From $3.99/day at 25 Mbps. Daily, 7-day, and monthly plans up to 400 Mbps.
+- IPv6-only. A private /48 per included location, rotation on each new connection, sticky sessions by token, no per-GB charge, and a published fair-use limit per plan.
+
+## Key Features
+- 50M+ ethically sourced residential IPs
+- Unlimited supports worldwide country targeting; GB-Based covers 150+ countries with country, city, region, and ASN targeting
+- HTTP, HTTPS, and SOCKS5 protocols
+- Residential IPv4 supports sticky or rotating sessions; Residential IPv6 is rotating-only; Datacenter IPv6 rotates by default and supports sticky sessions
+- IP whitelist or username/password authentication
+- Published Residential IPv4 and Datacenter IPv6 plans do not bill concurrency as a separate item; effective capacity still depends on the plan and workload
+- Residential IPv4 publishes 10 Mbps–1 Gbps unlimited tiers and GB-Based usage plans
+- Support through the published contact channels
+- Free trials are product-specific and start from the canonical trial page
+
+## Pages
+
+- Pricing: https://trueproxies.com/pricing/
+- Locations (24 country guides; Residential IPv4 network spans 150+ countries): https://trueproxies.com/locations/
+- Use Cases: https://trueproxies.com/use-cases/
+- Provider Comparisons: https://trueproxies.com/alternatives/
+- Proxy Glossary: https://trueproxies.com/glossary/
+- Free Proxy Tools: https://trueproxies.com/tools/
+- Proxy Checker (HTTP, HTTPS, SOCKS5/H connectivity, cold response time, exit evidence, safe CSV/JSON): https://trueproxies.com/tools/proxy-checker/
+- Proxy Checker citation: method 2026.07.18; reviewed 2026-07-18 (July 18, 2026); canonical https://trueproxies.com/tools/proxy-checker/
+- Proxy Checker Methodology JSON: https://trueproxies.com/research/proxy-checker-methodology-v1.json
+- Proxy Checker Error Codes: https://trueproxies.com/tools/proxy-checker/error-codes/
+- Proxy Latency vs Speed: https://trueproxies.com/tools/proxy-checker/latency-vs-speed/
+- HTTP, HTTPS & SOCKS5 Testing: https://trueproxies.com/tools/proxy-checker/http-vs-socks5/
+- Proxy Target Reachability: https://trueproxies.com/tools/proxy-checker/target-reachability/
+- Ad Verification method and limitations: https://trueproxies.com/use-cases/ad-verification/#ad-verification-evidence-kit
+- Blank Ad Verification JSON template: https://trueproxies.com/research/ad-verification-observation-template-v1.json
+- Blank Ad Verification CSV template: https://trueproxies.com/research/ad-verification-observation-template-v1.csv
+- Ad Verification field dictionary: https://trueproxies.com/research/ad-verification-field-dictionary-v1.json
+- IP Leak Test (IPv4, IPv6, WebRTC, DNS, and saved-baseline comparison): https://trueproxies.com/tools/ip-leak-test/
+- WebRTC Leak Test Guide (ICE candidate methodology and interpretation): https://trueproxies.com/tools/webrtc-leak-test/
+- DNS Leak Test Guide (resolver callbacks, anycast, and false-positive limits): https://trueproxies.com/tools/dns-leak-test/
+- IPv6 Leak Test Guide (dual-stack and address-family coverage): https://trueproxies.com/tools/ipv6-leak-test/
+- Proxy vs VPN vs WARP Route Guide: https://trueproxies.com/tools/ip-leak-test/proxy-vs-vpn/
+- Browser Route Case Series (anonymized CSV and JSON): https://trueproxies.com/tools/ip-leak-test/research/
+- FAQ: https://trueproxies.com/faq/
+- Blog: https://trueproxies.com/blog/
+- About: https://trueproxies.com/about/
+- Contact: https://trueproxies.com/contact/
+- Documentation: https://docs.trueproxies.com/overview/
+- RSS Feed: https://trueproxies.com/feed.xml
+- JSON Feed: https://trueproxies.com/feed.json
+- Sitemap: https://trueproxies.com/sitemap.xml
+
+## Evidence-backed Country Guides
+
+Availability basis: Sanitized aggregate inventory for country-capable Residential IPv4 routes reviewed against the public gateway selector contract.
+Numeric facts basis: Sanitized aggregate inventory snapshot.
+Limit: Inventory evidence does not guarantee a particular live exit, city, or network on an individual request; customers must verify representative exits.
+
+- Argentina: https://trueproxies.com/locations/argentina-proxies/ — 228K+ residential IPs; targeting: country; evidence reviewed: 2026-07-12
+- Australia: https://trueproxies.com/locations/australia-proxies/ — 2.3M+ residential IPs; targeting: country; evidence reviewed: 2026-07-12
+- Belgium: https://trueproxies.com/locations/belgium-proxies/ — country, city, region, and ASN targeting; targeting: country; evidence reviewed: 2026-07-25
+- Brazil: https://trueproxies.com/locations/brazil-proxies/ — 3.0M+ residential IPs; targeting: country; evidence reviewed: 2026-07-12
+- Canada: https://trueproxies.com/locations/canada-proxies/ — 3.0M+ residential IPs; targeting: country; evidence reviewed: 2026-07-12
+- Estonia: https://trueproxies.com/locations/estonia-proxies/ — country, city, region, and ASN targeting; targeting: country; evidence reviewed: 2026-07-25
+- France: https://trueproxies.com/locations/france-proxies/ — 2.9M+ residential IPs; targeting: country; evidence reviewed: 2026-07-12
+- Germany: https://trueproxies.com/locations/germany-proxies/ — 3.5M+ residential IPs; targeting: country; evidence reviewed: 2026-07-12
+- India: https://trueproxies.com/locations/india-proxies/ — 794K+ residential IPs; targeting: country; evidence reviewed: 2026-07-12
+- Indonesia: https://trueproxies.com/locations/indonesia-proxies/ — 1.2M+ residential IPs; targeting: country; evidence reviewed: 2026-07-12
+- Italy: https://trueproxies.com/locations/italy-proxies/ — 1.8M+ residential IPs; targeting: country; evidence reviewed: 2026-07-12
+- Japan: https://trueproxies.com/locations/japan-proxies/ — 3.6M+ residential IPs; targeting: country; evidence reviewed: 2026-07-12
+- Mexico: https://trueproxies.com/locations/mexico-proxies/ — 3.9M+ residential IPs; targeting: country; evidence reviewed: 2026-07-12
+- Netherlands: https://trueproxies.com/locations/netherlands-proxies/ — 1.5M+ residential IPs; targeting: country; evidence reviewed: 2026-07-12
+- Norway: https://trueproxies.com/locations/norway-proxies/ — country, city, region, and ASN targeting; targeting: country; evidence reviewed: 2026-07-25
+- Poland: https://trueproxies.com/locations/poland-proxies/ — 1.3M+ residential IPs; targeting: country; evidence reviewed: 2026-07-12
+- Russia: https://trueproxies.com/locations/russia-proxies/ — 4.2M+ residential IPs; targeting: country; evidence reviewed: 2026-07-12
+- Saudi Arabia: https://trueproxies.com/locations/saudi-arabia-proxies/ — country, city, region, and ASN targeting; targeting: country; evidence reviewed: 2026-07-25
+- South Korea: https://trueproxies.com/locations/south-korea-proxies/ — 2.1M+ residential IPs; targeting: country; evidence reviewed: 2026-07-12
+- Spain: https://trueproxies.com/locations/spain-proxies/ — 4.0M+ residential IPs; targeting: country; evidence reviewed: 2026-07-12
+- Thailand: https://trueproxies.com/locations/thailand-proxies/ — 1.1M+ residential IPs; targeting: country; evidence reviewed: 2026-07-12
+- Turkey: https://trueproxies.com/locations/turkey-proxies/ — 1.4M+ residential IPs; targeting: country; evidence reviewed: 2026-07-12
+- United Kingdom: https://trueproxies.com/locations/united-kingdom-proxies/ — 3.5M+ residential IPs; targeting: country; evidence reviewed: 2026-07-12
+- United States: https://trueproxies.com/locations/usa-proxies/ — 10.5M+ residential IPs; targeting: country; evidence reviewed: 2026-07-12
+
+## Full Content
+- Complete product, use-case, glossary, and blog content in one file: https://trueproxies.com/llms-full.txt
+
+## Contact
+- Website: https://trueproxies.com/
+- Telegram: https://t.me/trueproxies
+- Email: hello@trueproxies.com

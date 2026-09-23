@@ -1,0 +1,3 @@
+Contact: mailto:security@trueproxies.com
+Preferred-Languages: en
+Canonical: https://dashboard.trueproxies.com/.well-known/security.txt

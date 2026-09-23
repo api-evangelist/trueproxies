@@ -1,0 +1,21 @@
+name: TrueProxies Customer API Rate Limits
+generated: '2026-09-23'
+method: searched
+source: https://api.trueproxies.com/v1/openapi.json
+note: Stated in the provider-published OpenAPI info.description and operation descriptions. Exhaustion returns HTTP 429 with error code RATE_LIMITED and a Retry-After header; no X-RateLimit-* / RateLimit-* headers are declared in the contract.
+status_code: 429
+headers:
+- Retry-After
+limit_count: 2
+limits:
+- name: Default account budget
+  limit_text: 300 requests per minute per account
+  max: 300
+  limit: 300
+  window: minute
+  scope: per-account
+  shared: Shared across keys and control replicas
+- name: Service check
+  limit_text: Rate limited to a few checks a minute
+  scope: per-endpoint
+  endpoint: post_v1_services_id_check

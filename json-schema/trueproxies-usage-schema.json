@@ -1,0 +1,124 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "$id": "https://raw.githubusercontent.com/api-evangelist/trueproxies/main/json-schema/trueproxies-usage-schema.json",
+  "title": "Usage",
+  "x-generated": "2026-09-23",
+  "x-method": "derived",
+  "x-generator": "derive-json-schema.py",
+  "x-source": "openapi/trueproxies-openapi.yml#/components/schemas/Usage",
+  "properties": {
+    "allowance_bytes": {
+      "format": "int64",
+      "type": "integer"
+    },
+    "bytes_in": {
+      "description": "Bytes the proxy read from the client, which is the customer's upload.",
+      "format": "int64",
+      "type": "integer"
+    },
+    "bytes_out": {
+      "description": "Bytes the proxy wrote back to the client, which is the customer's download.",
+      "format": "int64",
+      "type": "integer"
+    },
+    "current_period_used_bytes": {
+      "description": "Traffic counted against the current allowance period. Lifetime totals remain in bytes_in and bytes_out.",
+      "format": "int64",
+      "type": "integer"
+    },
+    "gb_allocated": {
+      "description": "Informational provider balance in decimal GB; billing uses node byte counters.",
+      "type": "number"
+    },
+    "gb_remaining": {
+      "description": "Informational provider balance in decimal GB; billing uses node byte counters.",
+      "type": "number"
+    },
+    "gb_used": {
+      "description": "Informational provider balance in decimal GB; billing uses node byte counters.",
+      "type": "number"
+    },
+    "last_updated_at": {
+      "format": "date-time",
+      "type": "string"
+    },
+    "next_reset_at": {
+      "description": "Next scheduled allowance reset; a past timestamp means confirmation is pending.",
+      "format": "date-time",
+      "type": "string"
+    },
+    "period_started_at": {
+      "description": "Start of the current confirmed allowance period, when applicable.",
+      "format": "date-time",
+      "type": "string"
+    },
+    "provider_observed_at": {
+      "format": "date-time",
+      "type": "string"
+    },
+    "provider_usage_informational": {
+      "const": true,
+      "type": "boolean"
+    },
+    "reconciliation": {
+      "properties": {
+        "drift_ratio": {
+          "type": "number"
+        },
+        "observed_at": {
+          "format": "date-time",
+          "type": "string"
+        },
+        "status": {
+          "description": "Compares the change in vendor balance with the change in node counters between two consecutive observations, hourly. `baseline` is the first observation for a service, which has no predecessor to compare with and therefore reports zero drift; it is not a statement that the two figures agree. Billing always uses the node counters.",
+          "enum": [
+            "baseline",
+            "ok",
+            "drift",
+            "reset",
+            "stale"
+          ],
+          "type": "string"
+        },
+        "usage_drift_bytes": {
+          "format": "int64",
+          "type": "integer"
+        }
+      },
+      "required": [
+        "status",
+        "usage_drift_bytes",
+        "drift_ratio",
+        "observed_at"
+      ],
+      "type": "object"
+    },
+    "remaining_bytes": {
+      "description": "Node allowance remaining, floored at zero.",
+      "format": "int64",
+      "type": "integer"
+    },
+    "service_id": {
+      "format": "uuid",
+      "type": "string"
+    },
+    "usage_source": {
+      "description": "Billing usage comes from durable, deduplicated node byte counters.",
+      "enum": [
+        "node"
+      ],
+      "type": "string"
+    }
+  },
+  "required": [
+    "service_id",
+    "bytes_in",
+    "bytes_out",
+    "last_updated_at",
+    "usage_source",
+    "provider_usage_informational",
+    "allowance_bytes",
+    "remaining_bytes"
+  ],
+  "type": "object"
+}

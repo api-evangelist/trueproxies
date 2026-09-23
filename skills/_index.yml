@@ -1,0 +1,8 @@
+generated: '2026-09-23'
+method: generated
+source: openapi/trueproxies-openapi.yml
+skills:
+- {name: rotate-proxy-password, file: skills/trueproxies-rotate-proxy-password.md}
+- {name: buy-and-pay-invoice, file: skills/trueproxies-buy-and-pay-invoice.md}
+- {name: diagnose-proxy-service, file: skills/trueproxies-diagnose-proxy-service.md}
+- {name: manage-ip-whitelist, file: skills/trueproxies-manage-ip-whitelist.md}

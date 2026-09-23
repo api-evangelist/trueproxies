@@ -1,0 +1,116 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "$id": "https://raw.githubusercontent.com/api-evangelist/trueproxies/main/json-schema/trueproxies-me-schema.json",
+  "title": "Me",
+  "x-generated": "2026-09-23",
+  "x-method": "derived",
+  "x-generator": "derive-json-schema.py",
+  "x-source": "openapi/trueproxies-openapi.yml#/components/schemas/Me",
+  "properties": {
+    "affiliate_enabled": {
+      "type": "boolean"
+    },
+    "billing": {
+      "$ref": "#/$defs/CustomerBilling"
+    },
+    "created_at": {
+      "format": "date-time",
+      "type": "string"
+    },
+    "email": {
+      "type": "string"
+    },
+    "email_verified": {
+      "type": "boolean"
+    },
+    "id": {
+      "description": "Internal API identifier. Use reference for customer-facing display.",
+      "format": "uuid",
+      "type": "string"
+    },
+    "impersonated": {
+      "description": "read-only support session (spec §11)",
+      "type": "boolean"
+    },
+    "reference": {
+      "description": "Stable, unique customer-facing reference.",
+      "pattern": "^ACC-[0-9]{6,}$",
+      "type": "string"
+    },
+    "reseller_enabled": {
+      "description": "Enables reseller customer management, wallet and reseller API operations.",
+      "type": "boolean"
+    },
+    "role": {
+      "description": "Account role. Sub-customers cannot join the affiliate program.",
+      "enum": [
+        "customer",
+        "reseller",
+        "sub"
+      ],
+      "type": "string"
+    },
+    "suspended": {
+      "description": "the account is suspended; proxies refuse its services and purchases are blocked",
+      "type": "boolean"
+    },
+    "white_label_enabled": {
+      "description": "Enables white-label store access. Requires reseller_enabled.",
+      "type": "boolean"
+    }
+  },
+  "required": [
+    "role",
+    "id",
+    "reference",
+    "email",
+    "email_verified",
+    "created_at"
+  ],
+  "type": "object",
+  "$defs": {
+    "CustomerBilling": {
+      "description": "The party an invoice is issued to. Empty strings mean not provided; a name or a company must be present when setting them. Saving requires a country and the address fields required for that country. Existing incomplete profiles remain readable until completed.",
+      "properties": {
+        "address_line1": {
+          "maxLength": 400,
+          "type": "string"
+        },
+        "address_line2": {
+          "maxLength": 120,
+          "type": "string"
+        },
+        "city": {
+          "maxLength": 120,
+          "type": "string"
+        },
+        "company": {
+          "maxLength": 120,
+          "type": "string"
+        },
+        "country": {
+          "description": "Two-letter ISO 3166-1 alpha-2 code.",
+          "pattern": "^([A-Z]{2})?$",
+          "type": "string"
+        },
+        "name": {
+          "maxLength": 120,
+          "type": "string"
+        },
+        "postal_code": {
+          "maxLength": 32,
+          "type": "string"
+        },
+        "state": {
+          "maxLength": 120,
+          "type": "string"
+        },
+        "vat_id": {
+          "maxLength": 120,
+          "type": "string"
+        }
+      },
+      "type": "object"
+    }
+  }
+}

@@ -1,0 +1,149 @@
+name: TrueProxies
+aid: trueproxies
+description: 'TrueProxies, LLC (USA) sells residential and datacenter proxies (HTTP/HTTPS/SOCKS5) for developers
+  and data teams, priced per hour, per GB or per day: unlimited-bandwidth Residential IPv4 at a chosen speed tier,
+  GB-based Residential IPv4 with country, city, region and ASN targeting, and Datacenter IPv6. Beyond the proxy
+  gateways it publishes the TrueProxies Customer API (OpenAPI 3.1 at api.trueproxies.com/v1/openapi.json), a scoped-Bearer-key
+  REST API for managing existing proxy services, whitelists, credentials, usage analytics and invoices, with technical
+  docs at docs.trueproxies.com.'
+url: https://raw.githubusercontent.com/api-evangelist/trueproxies/refs/heads/main/apis.yml
+x-type: company
+x-source: apis-io-submission
+x-submitted-by: accounts@trueproxies.com, apis.io/add 2026-09-22
+x-tier: profiled
+x-tier-reason: enrichment pass 2026-09-23 (local-v5; was apis.io/add submission worked by the support sweep 2026-09-23;
+  host probed healthy (root 200, invented path 404, llms.txt 200))
+specificationVersion: '0.23'
+created: '2026-09-23'
+modified: '2026-09-23'
+tags:
+- Proxies
+- Residential Proxies
+- Datacenter Proxies
+- Web Scraping
+- Networking
+- IPv6
+- SOCKS5
+- Data Collection
+common:
+- type: Security
+  url: https://dashboard.trueproxies.com/.well-known/security.txt
+- type: VulnerabilityDisclosure
+  url: security/trueproxies-vulnerability-disclosure.yml
+- type: AgenticAccess
+  url: agentic-access/trueproxies-agentic-access.yml
+- type: RateLimits
+  url: rate-limits/trueproxies-rate-limits.yml
+- type: Plans
+  url: plans/trueproxies-plans-pricing.yml
+- type: Spectral
+  url: rules/trueproxies-rules.yml
+- type: JSONLD
+  url: json-ld/trueproxies-context.jsonld
+- type: Vocabulary
+  url: vocabulary/trueproxies-vocabulary.yml
+- type: AgentSkill
+  url: skills/_index.yml
+- type: DataModel
+  url: data-model/trueproxies-data-model.yml
+- type: Idempotency
+  url: conventions/trueproxies-conventions.yml
+- type: Conventions
+  url: conventions/trueproxies-conventions.yml
+- type: ErrorCatalog
+  url: errors/trueproxies-problem-types.yml
+- type: Conformance
+  url: conformance/trueproxies-conformance.yml
+- type: Overlay
+  url: overlays/trueproxies-customer-api-overlay.yaml
+- type: LLMsTxt
+  url: llms/trueproxies-website-llms.txt
+- type: LLMsTxt
+  url: llms/trueproxies-llms.txt
+- type: SecurityTxt
+  url: well-known/trueproxies-dashboard-security.txt
+- type: WellKnown
+  url: well-known/trueproxies-well-known.yml
+- type: Hosts
+  url: hosts/trueproxies-hosts.yml
+- type: Vendors
+  url: vendors/trueproxies-vendors.yml
+- type: DomainSecurity
+  url: security/trueproxies-domain-security.yml
+- type: Authentication
+  url: authentication/trueproxies-authentication.yml
+- type: Website
+  url: https://trueproxies.com/
+- type: Documentation
+  url: https://docs.trueproxies.com/overview/
+- type: GettingStarted
+  url: https://docs.trueproxies.com/getting-started/quickstart/
+- type: Pricing
+  url: https://trueproxies.com/pricing/
+- type: Support
+  url: https://docs.trueproxies.com/support/
+- type: Contact
+  url: https://trueproxies.com/contact/
+- type: FAQ
+  url: https://trueproxies.com/faq/
+- type: Blog
+  url: https://trueproxies.com/blog/
+- type: SignUp
+  url: https://dashboard.trueproxies.com/signup
+- type: Login
+  url: https://dashboard.trueproxies.com/login
+- type: TermsOfService
+  url: https://trueproxies.com/terms/
+- type: PrivacyPolicy
+  url: https://trueproxies.com/privacy/
+- type: RefundPolicy
+  url: https://trueproxies.com/refund-policy/
+- type: AcceptableUsePolicy
+  url: https://trueproxies.com/acceptable-use/
+- type: LinkedIn
+  url: https://www.linkedin.com/company/trueproxies
+- type: X
+  url: https://x.com/trueproxiesltd
+maintainers:
+- FN: Kin Lane
+  email: kin@apievangelist.com
+apis:
+- name: TrueProxies Customer API
+  description: 'Manage existing TrueProxies proxy services using scoped Bearer keys (tp_api_…): list services and
+    their connection details, build endpoint strings, rotate proxy passwords, manage IP whitelists, run service
+    checks, read usage, analytics and live metrics, browse the public and priced catalog, and create, pay and download
+    invoices. Default budget of 300 requests per minute per account.'
+  humanURL: https://docs.trueproxies.com/overview/
+  baseURL: https://api.trueproxies.com
+  tags:
+  - Proxies
+  - Proxy Management
+  - Billing
+  - Analytics
+  - IP Whitelisting
+  properties:
+  - type: OpenAPI
+    url: openapi/trueproxies-openapi.yml
+  - type: OpenAPI
+    name: OpenAPI (provider-hosted)
+    url: https://api.trueproxies.com/v1/openapi.json
+  - type: Documentation
+    url: https://docs.trueproxies.com/overview/
+  - type: JSONSchema
+    url: json-schema/trueproxies-live-metrics-schema.json
+  - type: JSONSchema
+    url: json-schema/trueproxies-service-schema.json
+  - type: JSONSchema
+    url: json-schema/trueproxies-usage-schema.json
+  - type: JSONSchema
+    url: json-schema/trueproxies-endpoint-request-schema.json
+  - type: JSONSchema
+    url: json-schema/trueproxies-invoice-schema.json
+  - type: JSONSchema
+    url: json-schema/trueproxies-me-schema.json
+  aid: trueproxies:trueproxies-customer-api
+x-enrichment:
+  date: '2026-09-23'
+  status: enriched
+  artifacts_added: 36
+  pass: local-v5

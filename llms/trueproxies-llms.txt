@@ -1,0 +1,45 @@
+# TrueProxies Technical Documentation
+
+> Canonical connection, authentication, product-behavior, and integration references for TrueProxies. Commercial pricing and support policies live on the main website so this inventory does not duplicate them.
+
+Main website: https://trueproxies.com/
+Current pricing: https://trueproxies.com/pricing/
+Main FAQ: https://trueproxies.com/faq/
+Support: https://trueproxies.com/contact/
+Main site llms.txt: https://trueproxies.com/llms.txt
+
+## Start and connect
+- Overview: https://docs.trueproxies.com/overview/
+- Quickstart: https://docs.trueproxies.com/getting-started/quickstart/
+- Creating an account: https://docs.trueproxies.com/getting-started/creating-account/
+- Connection and username format: https://docs.trueproxies.com/proxy-instructions/how-to-connect/
+- HTTP CONNECT and SOCKS5: https://docs.trueproxies.com/proxy-instructions/proxy-protocols/
+- IP whitelisting: https://docs.trueproxies.com/proxy-instructions/ip-whitelisting/
+
+## Product behavior
+- Residential IPv4: https://docs.trueproxies.com/proxy-instructions/products/residential/
+- Residential IPv6: https://docs.trueproxies.com/proxy-instructions/products/residential-ipv6/
+- Datacenter IPv6: https://docs.trueproxies.com/proxy-instructions/products/datacenter-ipv6/
+
+## Plan and billing references
+- Billing models: https://docs.trueproxies.com/pricing/overview/
+- GB-Based plan fields: https://docs.trueproxies.com/pricing/gb-based-plans/
+- Unlimited plan fields: https://docs.trueproxies.com/pricing/unlimited-plans/
+- Speed-tier sizing: https://docs.trueproxies.com/pricing/size-your-speed-tier/
+
+## Integrations
+- Python: https://docs.trueproxies.com/integrations/python/
+- JavaScript / Node.js: https://docs.trueproxies.com/integrations/javascript/
+- cURL: https://docs.trueproxies.com/integrations/curl/
+- Go: https://docs.trueproxies.com/integrations/go/
+- Java: https://docs.trueproxies.com/integrations/java/
+- PHP: https://docs.trueproxies.com/integrations/php/
+- C#: https://docs.trueproxies.com/integrations/csharp/
+- Playwright: https://docs.trueproxies.com/integrations/playwright/
+- Puppeteer: https://docs.trueproxies.com/integrations/puppeteer/
+- Selenium: https://docs.trueproxies.com/integrations/selenium/
+- Scrapy: https://docs.trueproxies.com/integrations/scrapy/
+
+## Troubleshooting
+- Technical FAQ: https://docs.trueproxies.com/faq/
+- Support checklist: https://docs.trueproxies.com/support/

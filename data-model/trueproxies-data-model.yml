@@ -1,0 +1,123 @@
+generated: '2026-09-23'
+method: derived
+generator: derive-data-model.py
+source:
+- openapi/trueproxies-openapi.yml
+notation: has_one = property $ref; has_many = array of $ref; belongs_to = <entity>_id field
+summary:
+  entities: 30
+  entities_in_spec: 30
+  relationships: 12
+entities:
+- name: Analytics
+  fields: 5
+- name: AnalyticsPoint
+  fields: 9
+- name: Catalog
+  fields: 5
+- name: City
+  fields: 4
+- name: CustomerBilling
+  fields: 9
+  description: The party an invoice is issued to. Empty strings mean not provided; a name or a company must be present
+    when setting them. Saving requires a country and the address fields required for that country. E
+- name: Destination
+  fields: 4
+- name: EndpointRequest
+  fields: 12
+- name: EndpointResponse
+  fields: 1
+- name: Error
+  fields: 3
+- name: ErrorClass
+  fields: 2
+- name: Invoice
+  fields: 20
+- name: InvoiceCreate
+  fields: 5
+- name: InvoiceOptions
+  fields: 2
+- name: InvoicePayment
+  fields: 16
+- name: LiveMetrics
+  fields: 12
+- name: Me
+  fields: 12
+- name: Offer
+  fields: 11
+- name: PayRequest
+  fields: 1
+- name: PayResponse
+  fields: 3
+- name: Service
+  fields: 27
+- name: ServiceCheckResult
+  fields: 5
+- name: ServiceSecret
+  fields: 3
+- name: SubCustomer
+  fields: 12
+- name: SubCustomerPatch
+  fields: 2
+  description: Only supplied fields change. An empty email removes the optional contact email.
+- name: SubCustomerWrite
+  fields: 2
+- name: Usage
+  fields: 16
+- name: Wallet
+  fields: 9
+- name: WalletEntry
+  fields: 6
+- name: WhitelistCreate
+  fields: 3
+- name: WhitelistEntry
+  fields: 4
+relationships:
+- from: Analytics
+  to: Destination
+  type: has_many
+  via: destinations
+- from: Analytics
+  to: ErrorClass
+  type: has_many
+  via: errors
+- from: Analytics
+  to: AnalyticsPoint
+  type: has_many
+  via: series
+- from: Catalog
+  to: City
+  type: has_many
+  via: cities
+- from: Catalog
+  to: Offer
+  type: has_many
+  via: offers
+- from: Invoice
+  to: InvoiceOptions
+  type: has_one
+  via: options
+- from: Invoice
+  to: InvoicePayment
+  type: has_many
+  via: payments
+- from: Invoice
+  to: Service
+  type: belongs_to
+  via: service_id
+- from: InvoiceCreate
+  to: InvoiceOptions
+  type: has_one
+  via: options
+- from: InvoiceCreate
+  to: Service
+  type: belongs_to
+  via: service_id
+- from: Me
+  to: CustomerBilling
+  type: has_one
+  via: billing
+- from: Usage
+  to: Service
+  type: belongs_to
+  via: service_id

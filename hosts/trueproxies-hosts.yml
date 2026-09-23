@@ -1,0 +1,86 @@
+generated: '2026-09-23'
+method: derived
+source: the pre-flight dossier, apis.yml pointers, spec servers, well-known, vendors -- nothing fetched here
+generator: derive-hosts.py
+summary:
+  hosts: 6
+  own: 4
+  other_domain: 0
+  platform: 2
+  roles:
+  - api
+  - docs
+  - identity
+  - other
+  - website
+hosts:
+- host: api.trueproxies.com
+  found_by:
+  - apis[]
+  types: []
+  serves:
+  - api
+  registrable_domain: trueproxies.com
+  role: api
+  relation: own
+- host: dashboard.trueproxies.com
+  found_by:
+  - pointer
+  types:
+  - SignUp
+  - Login
+  serves: []
+  registrable_domain: trueproxies.com
+  role: identity
+  relation: own
+- host: docs.trueproxies.com
+  found_by:
+  - pointer
+  - apis[]
+  types:
+  - Documentation
+  - GettingStarted
+  - Support
+  serves:
+  - docs
+  registrable_domain: trueproxies.com
+  role: docs
+  relation: own
+- host: trueproxies.com
+  found_by:
+  - pointer
+  - vendor-detect
+  types:
+  - Website
+  - Pricing
+  - Contact
+  - FAQ
+  - Blog
+  - TermsOfService
+  - PrivacyPolicy
+  - RefundPolicy
+  - AcceptableUsePolicy
+  serves:
+  - cdn
+  vendor: cloudflare
+  registrable_domain: trueproxies.com
+  role: website
+  relation: own
+- host: www.linkedin.com
+  found_by:
+  - pointer
+  types:
+  - LinkedIn
+  serves: []
+  registrable_domain: linkedin.com
+  role: other
+  relation: platform
+- host: x.com
+  found_by:
+  - pointer
+  types:
+  - X
+  serves: []
+  registrable_domain: x.com
+  role: other
+  relation: platform

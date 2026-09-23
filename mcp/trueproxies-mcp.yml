@@ -1,0 +1,118 @@
+generated: '2026-09-23'
+method: derived
+generator: derive-mcp-candidate.py
+source:
+- openapi/trueproxies-openapi.yml
+status: candidate
+deployment:
+  mode: none
+  auth: unknown
+  verified: derived
+note: No MCP server was found. No probe result in the dossier. Candidate tools below are derived from the 21 operation(s) in the provider's own
+  OpenAPI (21 listed); they describe what a server WOULD expose, not one that exists.
+tools:
+- name: get_v1_analytics
+  operationId: get_v1_analytics
+  method: GET
+  path: /v1/analytics
+  description: Get account analytics
+- name: get_v1_catalog
+  operationId: get_v1_catalog
+  method: GET
+  path: /v1/catalog
+  description: Browse offers and locations
+- name: get_v1_catalog_priced
+  operationId: get_v1_catalog_priced
+  method: GET
+  path: /v1/catalog/priced
+  description: Browse your current prices
+- name: get_v1_invoices
+  operationId: get_v1_invoices
+  method: GET
+  path: /v1/invoices
+  description: List invoices
+- name: post_v1_invoices
+  operationId: post_v1_invoices
+  method: POST
+  path: /v1/invoices
+  description: Create a purchase invoice
+- name: get_v1_invoices_id
+  operationId: get_v1_invoices_id
+  method: GET
+  path: /v1/invoices/{id}
+  description: Get an invoice
+- name: post_v1_invoices_id_pay
+  operationId: post_v1_invoices_id_pay
+  method: POST
+  path: /v1/invoices/{id}/pay
+  description: Pay an invoice
+- name: get_v1_invoices_id_pdf
+  operationId: get_v1_invoices_id_pdf
+  method: GET
+  path: /v1/invoices/{id}/pdf
+  description: Download an invoice PDF
+- name: get_v1_me
+  operationId: get_v1_me
+  method: GET
+  path: /v1/me
+  description: Get your account
+- name: get_v1_services
+  operationId: get_v1_services
+  method: GET
+  path: /v1/services
+  description: List your services
+- name: get_v1_services_id
+  operationId: get_v1_services_id
+  method: GET
+  path: /v1/services/{id}
+  description: Get a service
+- name: get_v1_services_id_analytics
+  operationId: get_v1_services_id_analytics
+  method: GET
+  path: /v1/services/{id}/analytics
+  description: Get service analytics
+- name: post_v1_services_id_check
+  operationId: post_v1_services_id_check
+  method: POST
+  path: /v1/services/{id}/check
+  description: Check a service end to end
+- name: post_v1_services_id_endpoints
+  operationId: post_v1_services_id_endpoints
+  method: POST
+  path: /v1/services/{id}/endpoints
+  description: Generate connection strings
+- name: get_v1_services_id_live_metrics
+  operationId: get_v1_services_id_live_metrics
+  method: GET
+  path: /v1/services/{id}/live-metrics
+  description: Get live service metrics
+- name: post_v1_services_id_rotate_password
+  operationId: post_v1_services_id_rotate_password
+  method: POST
+  path: /v1/services/{id}/rotate-password
+  description: Change the proxy password
+- name: get_v1_services_id_secret
+  operationId: get_v1_services_id_secret
+  method: GET
+  path: /v1/services/{id}/secret
+  description: Get proxy username and password
+- name: get_v1_services_id_usage
+  operationId: get_v1_services_id_usage
+  method: GET
+  path: /v1/services/{id}/usage
+  description: Get service usage
+- name: get_v1_services_id_whitelist
+  operationId: get_v1_services_id_whitelist
+  method: GET
+  path: /v1/services/{id}/whitelist
+  description: List trusted IPs
+- name: post_v1_services_id_whitelist
+  operationId: post_v1_services_id_whitelist
+  method: POST
+  path: /v1/services/{id}/whitelist
+  description: Add a trusted IP
+- name: delete_v1_services_id_whitelist_entry_id
+  operationId: delete_v1_services_id_whitelist_entryId
+  method: DELETE
+  path: /v1/services/{id}/whitelist/{entryId}
+  description: Remove a trusted IP
