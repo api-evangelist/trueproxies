@@ -1,0 +1,245 @@
+openapi: 3.2.0
+info:
+  title: Trueproxies Catalog API
+  version: 1.0.0
+  description: 'Operations tagged Catalog across 2 of this provider''s published API definitions: trueproxies-customer-api-openapi.json, trueproxies-openapi.yml. Each path carries the servers of the definition it was published in.'
+servers:
+- url: https://api.trueproxies.com
+tags:
+- name: Catalog
+paths:
+  /v1/catalog:
+    get:
+      description: Public price list. No API key required. Check each service's capabilities before using targeting options.
+      operationId: get_v1_catalog
+      parameters:
+      - $ref: '#/components/parameters/CustomerId'
+      responses:
+        '200':
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Catalog'
+          description: ok
+        '400':
+          $ref: '#/components/responses/Error'
+        '401':
+          $ref: '#/components/responses/Error'
+        '403':
+          $ref: '#/components/responses/Error'
+        '404':
+          $ref: '#/components/responses/Error'
+        '409':
+          $ref: '#/components/responses/Error'
+        '429':
+          $ref: '#/components/responses/Error'
+        '500':
+          $ref: '#/components/responses/Error'
+        '503':
+          $ref: '#/components/responses/Error'
+      security: []
+      summary: Browse offers and locations
+      x-required-scope: ''
+      tags:
+      - Catalog
+    servers:
+    - url: https://api.trueproxies.com
+  /v1/catalog/priced:
+    get:
+      description: Authenticated offers priced for the invoice payer, including reseller terms when acting for an owned managed customer. Offers unavailable under current pricing terms are omitted. Invoice creation snapshots the final price.
+      operationId: get_v1_catalog_priced
+      parameters:
+      - $ref: '#/components/parameters/CustomerId'
+      responses:
+        '200':
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Catalog'
+          description: ok
+        '400':
+          $ref: '#/components/responses/Error'
+        '401':
+          $ref: '#/components/responses/Error'
+        '403':
+          $ref: '#/components/responses/Error'
+        '404':
+          $ref: '#/components/responses/Error'
+        '409':
+          $ref: '#/components/responses/Error'
+        '429':
+          $ref: '#/components/responses/Error'
+        '500':
+          $ref: '#/components/responses/Error'
+        '503':
+          $ref: '#/components/responses/Error'
+        default:
+          $ref: '#/components/responses/Error'
+      security:
+      - customerAPIKey: []
+      summary: Browse your current prices
+      x-api-key-scope: billing:read
+      x-required-scope: billing:read
+      tags:
+      - Catalog
+    servers:
+    - url: https://api.trueproxies.com
+components:
+  schemas:
+    Term:
+      enum:
+      - hour
+      - day
+      - week
+      - month
+      type: string
+    City:
+      properties:
+        available:
+          description: mapped to a verified /36 with free /48s
+          type: boolean
+        code:
+          type: string
+        country_code:
+          type: string
+        name:
+          type: string
+      required:
+      - code
+      - country_code
+      - name
+      - available
+      type: object
+    Error:
+      properties:
+        code:
+          enum:
+          - BAD_REQUEST
+          - UNAUTHENTICATED
+          - FORBIDDEN
+          - NOT_FOUND
+          - CONFLICT
+          - RATE_LIMITED
+          - SERVICE_UNAVAILABLE
+          - OFFER_UNAVAILABLE
+          - CITY_UNAVAILABLE
+          - CAPACITY_UNAVAILABLE
+          - INVOICE_NOT_PAYABLE
+          - PROVIDER_ERROR
+          - PIPE_UNAVAILABLE
+          - TRIAL_NOT_ELIGIBLE
+          - EMAIL_UNVERIFIED
+          - INTERNAL
+          type: string
+        details:
+          additionalProperties: true
+          description: What a client needs to act on the error (ids, flags), never display text.
+          type: object
+        message:
+          type: string
+      required:
+      - code
+      - message
+      type: object
+    Catalog:
+      properties:
+        cities:
+          items:
+            $ref: '#/components/schemas/City'
+          type: array
+        hosts:
+          additionalProperties:
+            type: string
+          description: public proxy hostnames per product
+          type: object
+        offers:
+          items:
+            $ref: '#/components/schemas/Offer'
+          type: array
+        payment_providers:
+          description: Available payment providers in the dashboard.
+          items:
+            type: string
+          type: array
+        trial_available:
+          description: the operator trial switch; false means the trial offer is listed but cannot be claimed
+          type: boolean
+      required:
+      - offers
+      - cities
+      - hosts
+      type: object
+    Product:
+      enum:
+      - residential_ipv4_gb
+      - residential_ipv4_unlimited
+      - datacenter_ipv6
+      - trial
+      type: string
+    Offer:
+      properties:
+        allowance_bytes:
+          format: int64
+          type: integer
+        capabilities:
+          items:
+            type: string
+          type: array
+        currency:
+          enum:
+          - USD
+          type: string
+        display_name:
+          type: string
+        enabled:
+          type: boolean
+        floor_price_cents:
+          description: Always 0 here. The floor is the reseller wholesale limit, an internal pricing control that the public catalog does not disclose. Staff read the real value from the admin catalog.
+          minimum: 0
+          type: integer
+        offer_key:
+          type: string
+        price_cents:
+          type: integer
+        product:
+          $ref: '#/components/schemas/Product'
+        speed_bps:
+          description: 0 for paid residential_ipv4_gb means no additional TrueProxies speed cap. residential_ipv4_unlimited retains its positive plan speed. Upstream capacity and availability still apply. Trials and datacenter plans retain their speed limits.
+          format: int64
+          minimum: 0
+          type: integer
+        term:
+          $ref: '#/components/schemas/Term'
+      required:
+      - offer_key
+      - display_name
+      - product
+      - price_cents
+      - currency
+      - enabled
+      - capabilities
+      type: object
+  responses:
+    Error:
+      content:
+        application/json:
+          schema:
+            $ref: '#/components/schemas/Error'
+      description: error
+  parameters:
+    CustomerId:
+      description: Owned sub-customer UUID. Resellers only; reads require reseller:read and writes reseller:purchase in addition to the operation scope. X-Customer-Id header is an alternative. Not allowed for me, wallet, trial, API keys, or reseller-management routes.
+      in: query
+      name: customer_id
+      schema:
+        format: uuid
+        type: string
+  securitySchemes:
+    customerAPIKey:
+      bearerFormat: API key
+      description: 'Send Authorization: Bearer tp_api_… . Create a named, scoped key in the customer dashboard. Keys expire after 30, 90 or 365 days and can be revoked immediately.'
+      scheme: bearer
+      type: http
+x-refined-from:
+- trueproxies-customer-api-openapi.json
+- trueproxies-openapi.yml

@@ -1,0 +1,1217 @@
+openapi: 3.2.0
+info:
+  title: Trueproxies Services API
+  version: 1.0.0
+  description: 'Operations tagged Services across 2 of this provider''s published API definitions: trueproxies-customer-api-openapi.json, trueproxies-openapi.yml. Each path carries the servers of the definition it was published in.'
+servers:
+- url: https://api.trueproxies.com
+tags:
+- name: Services
+paths:
+  /v1/services:
+    get:
+      description: Current services by default. Use view=history for closed services or view=all for all records. Supports cursor pagination; each view has its own total.
+      operationId: get_v1_services
+      parameters:
+      - $ref: '#/components/parameters/CustomerId'
+      - in: query
+        name: cursor
+        schema:
+          type: string
+      - in: query
+        name: limit
+        schema:
+          default: 25
+          maximum: 100
+          minimum: 1
+          type: integer
+      - description: Current includes every service that is not permanently closed, including activation failures and services needing renewal or support. History contains effectively closed services. All returns both groups for account-wide summaries and eligibility checks.
+        in: query
+        name: view
+        schema:
+          default: current
+          enum:
+          - current
+          - history
+          - all
+          type: string
+      responses:
+        '200':
+          content:
+            application/json:
+              schema:
+                properties:
+                  items:
+                    items:
+                      $ref: '#/components/schemas/Service'
+                    type: array
+                  limit:
+                    type: integer
+                  next_cursor:
+                    type: string
+                  total:
+                    type: integer
+                required:
+                - items
+                - total
+                - limit
+                type: object
+          description: ok
+        '400':
+          $ref: '#/components/responses/Error'
+        '401':
+          $ref: '#/components/responses/Error'
+        '403':
+          $ref: '#/components/responses/Error'
+        '404':
+          $ref: '#/components/responses/Error'
+        '409':
+          $ref: '#/components/responses/Error'
+        '429':
+          $ref: '#/components/responses/Error'
+        '500':
+          $ref: '#/components/responses/Error'
+        '503':
+          $ref: '#/components/responses/Error'
+      security:
+      - customerAPIKey: []
+      summary: List your services
+      x-api-key-scope: services:read
+      x-required-scope: services:read
+      tags:
+      - Services
+    servers:
+    - url: https://api.trueproxies.com
+  /v1/services/{id}:
+    get:
+      description: Connection hosts, available ports, capabilities, status, expiry and effective limits. Does not return the proxy password.
+      operationId: get_v1_services_id
+      parameters:
+      - $ref: '#/components/parameters/CustomerId'
+      - in: path
+        name: id
+        required: true
+        schema:
+          format: uuid
+          type: string
+      responses:
+        '200':
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Service'
+          description: ok
+        '400':
+          $ref: '#/components/responses/Error'
+        '401':
+          $ref: '#/components/responses/Error'
+        '403':
+          $ref: '#/components/responses/Error'
+        '404':
+          $ref: '#/components/responses/Error'
+        '409':
+          $ref: '#/components/responses/Error'
+        '429':
+          $ref: '#/components/responses/Error'
+        '500':
+          $ref: '#/components/responses/Error'
+        '503':
+          $ref: '#/components/responses/Error'
+      security:
+      - customerAPIKey: []
+      summary: Get a service
+      x-api-key-scope: services:read
+      x-required-scope: services:read
+      tags:
+      - Services
+    servers:
+    - url: https://api.trueproxies.com
+  /v1/services/{id}/analytics:
+    get:
+      description: Request success, traffic, destinations and errors for 24h, 7d or 30d. Analytics can lag recent traffic.
+      operationId: get_v1_services_id_analytics
+      parameters:
+      - $ref: '#/components/parameters/CustomerId'
+      - in: path
+        name: id
+        required: true
+        schema:
+          format: uuid
+          type: string
+      - in: query
+        name: range
+        schema:
+          default: 24h
+          enum:
+          - 24h
+          - 7d
+          - 30d
+          type: string
+      responses:
+        '200':
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Analytics'
+          description: ok
+        '400':
+          $ref: '#/components/responses/Error'
+        '401':
+          $ref: '#/components/responses/Error'
+        '403':
+          $ref: '#/components/responses/Error'
+        '404':
+          $ref: '#/components/responses/Error'
+        '409':
+          $ref: '#/components/responses/Error'
+        '429':
+          $ref: '#/components/responses/Error'
+        '500':
+          $ref: '#/components/responses/Error'
+        '503':
+          $ref: '#/components/responses/Error'
+      security:
+      - customerAPIKey: []
+      summary: Get service analytics
+      x-api-key-scope: services:read
+      x-required-scope: services:read
+      tags:
+      - Services
+    servers:
+    - url: https://api.trueproxies.com
+  /v1/services/{id}/check:
+    post:
+      description: Runs one request through the service from our side and reports the outcome. Rate limited to a few checks a minute. Use it to tell a proxy problem apart from a target that is refusing you.
+      operationId: post_v1_services_id_check
+      parameters:
+      - $ref: '#/components/parameters/CustomerId'
+      - in: path
+        name: id
+        required: true
+        schema:
+          format: uuid
+          type: string
+      requestBody:
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/EndpointRequest'
+        required: true
+      responses:
+        '200':
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ServiceCheckResult'
+          description: Check result; success=false means the bounded proxy request did not complete successfully.
+        '400':
+          $ref: '#/components/responses/Error'
+        '401':
+          $ref: '#/components/responses/Error'
+        '403':
+          $ref: '#/components/responses/Error'
+        '404':
+          $ref: '#/components/responses/Error'
+        '409':
+          $ref: '#/components/responses/Error'
+        '429':
+          $ref: '#/components/responses/Error'
+        '500':
+          $ref: '#/components/responses/Error'
+        '503':
+          $ref: '#/components/responses/Error'
+      security:
+      - customerAPIKey: []
+      summary: Check a service end to end
+      x-api-key-scope: proxy:read
+      x-required-scope: proxy:read
+      tags:
+      - Services
+    servers:
+    - url: https://api.trueproxies.com
+  /v1/services/{id}/endpoints:
+    post:
+      description: Builds connection strings without changing the service. Only use targeting and session options present in the service capabilities. Copy the returned line into your proxy client; credentials in the output are secret.
+      operationId: post_v1_services_id_endpoints
+      parameters:
+      - $ref: '#/components/parameters/CustomerId'
+      - in: path
+        name: id
+        required: true
+        schema:
+          format: uuid
+          type: string
+      requestBody:
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/EndpointRequest'
+        required: true
+      responses:
+        '200':
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/EndpointResponse'
+          description: ok
+        '400':
+          $ref: '#/components/responses/Error'
+        '401':
+          $ref: '#/components/responses/Error'
+        '403':
+          $ref: '#/components/responses/Error'
+        '404':
+          $ref: '#/components/responses/Error'
+        '409':
+          $ref: '#/components/responses/Error'
+        '429':
+          $ref: '#/components/responses/Error'
+        '500':
+          $ref: '#/components/responses/Error'
+        '503':
+          $ref: '#/components/responses/Error'
+      security:
+      - customerAPIKey: []
+      summary: Generate connection strings
+      x-api-key-scope: proxy:read
+      x-required-scope: proxy:read
+      tags:
+      - Services
+    servers:
+    - url: https://api.trueproxies.com
+  /v1/services/{id}/live-metrics:
+    get:
+      description: Ten-second observed traffic rates in bits per second, UTC daily bytes and recorded proxy outcomes. Read last_activity_at for freshness; silence does not establish healthy idle traffic. Unavailable telemetry returns 503.
+      operationId: get_v1_services_id_live_metrics
+      parameters:
+      - $ref: '#/components/parameters/CustomerId'
+      - in: path
+        name: id
+        required: true
+        schema:
+          format: uuid
+          type: string
+      responses:
+        '200':
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/LiveMetrics'
+          description: Observed metrics; sample freshness is independent of query freshness.
+        '400':
+          $ref: '#/components/responses/Error'
+        '401':
+          $ref: '#/components/responses/Error'
+        '403':
+          $ref: '#/components/responses/Error'
+        '404':
+          $ref: '#/components/responses/Error'
+        '409':
+          $ref: '#/components/responses/Error'
+        '429':
+          $ref: '#/components/responses/Error'
+        '500':
+          $ref: '#/components/responses/Error'
+        '503':
+          $ref: '#/components/responses/Error'
+        default:
+          $ref: '#/components/responses/Error'
+      security:
+      - customerAPIKey: []
+      summary: Get live service metrics
+      x-api-key-scope: services:read
+      x-required-scope: services:read
+      tags:
+      - Services
+    servers:
+    - url: https://api.trueproxies.com
+  /v1/services/{id}/rotate-password:
+    post:
+      description: Returns the new password. The previous password remains valid for a two-minute overlap. Update every client promptly. For an uncertain response, retry with the same Idempotency-Key within 23 hours; do not create a new key for that retry. A replay does not change the password again or restart the overlap. Without a retry key, retrieve the current password with proxy:read before deciding whether another password change is needed.
+      operationId: post_v1_services_id_rotate_password
+      parameters:
+      - description: Optional retry key, formatted as creation time in Unix milliseconds followed by a dot and a UUID. Reuse for retries within 23 hours. Older keys are rejected.
+        in: header
+        name: Idempotency-Key
+        schema:
+          maxLength: 200
+          type: string
+      - $ref: '#/components/parameters/CustomerId'
+      - in: path
+        name: id
+        required: true
+        schema:
+          format: uuid
+          type: string
+      responses:
+        '200':
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ServiceSecret'
+          description: ok
+        '400':
+          $ref: '#/components/responses/Error'
+        '401':
+          $ref: '#/components/responses/Error'
+        '403':
+          $ref: '#/components/responses/Error'
+        '404':
+          $ref: '#/components/responses/Error'
+        '409':
+          $ref: '#/components/responses/Error'
+        '429':
+          $ref: '#/components/responses/Error'
+        '500':
+          $ref: '#/components/responses/Error'
+        '503':
+          $ref: '#/components/responses/Error'
+      security:
+      - customerAPIKey: []
+      summary: Change the proxy password
+      x-api-key-scope: proxy:write
+      x-required-scope: proxy:write
+      tags:
+      - Services
+    servers:
+    - url: https://api.trueproxies.com
+  /v1/services/{id}/secret:
+    get:
+      description: Returns the current proxy username and password. Keep the response secret. Management API keys are separate from proxy credentials.
+      operationId: get_v1_services_id_secret
+      parameters:
+      - $ref: '#/components/parameters/CustomerId'
+      - in: path
+        name: id
+        required: true
+        schema:
+          format: uuid
+          type: string
+      responses:
+        '200':
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ServiceSecret'
+          description: ok
+        '400':
+          $ref: '#/components/responses/Error'
+        '401':
+          $ref: '#/components/responses/Error'
+        '403':
+          $ref: '#/components/responses/Error'
+        '404':
+          $ref: '#/components/responses/Error'
+        '409':
+          $ref: '#/components/responses/Error'
+        '429':
+          $ref: '#/components/responses/Error'
+        '500':
+          $ref: '#/components/responses/Error'
+        '503':
+          $ref: '#/components/responses/Error'
+      security:
+      - customerAPIKey: []
+      summary: Get proxy username and password
+      x-api-key-scope: proxy:read
+      x-required-scope: proxy:read
+      tags:
+      - Services
+    servers:
+    - url: https://api.trueproxies.com
+  /v1/services/{id}/usage:
+    get:
+      description: Traffic counters are bytes; GB balances are decimal gigabytes (1 GB = 1,000,000,000 bytes). Read last_updated_at and provider_observed_at for freshness. Provider balances are present for GB services.
+      operationId: get_v1_services_id_usage
+      parameters:
+      - $ref: '#/components/parameters/CustomerId'
+      - in: path
+        name: id
+        required: true
+        schema:
+          format: uuid
+          type: string
+      responses:
+        '200':
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Usage'
+          description: ok
+        '400':
+          $ref: '#/components/responses/Error'
+        '401':
+          $ref: '#/components/responses/Error'
+        '403':
+          $ref: '#/components/responses/Error'
+        '404':
+          $ref: '#/components/responses/Error'
+        '409':
+          $ref: '#/components/responses/Error'
+        '429':
+          $ref: '#/components/responses/Error'
+        '500':
+          $ref: '#/components/responses/Error'
+        '503':
+          $ref: '#/components/responses/Error'
+      security:
+      - customerAPIKey: []
+      summary: Get service usage
+      x-api-key-scope: services:read
+      x-required-scope: services:read
+      tags:
+      - Services
+    servers:
+    - url: https://api.trueproxies.com
+  /v1/services/{id}/whitelist:
+    get:
+      description: Addresses allowed to connect to this service without a proxy password.
+      operationId: get_v1_services_id_whitelist
+      parameters:
+      - $ref: '#/components/parameters/CustomerId'
+      - in: path
+        name: id
+        required: true
+        schema:
+          format: uuid
+          type: string
+      responses:
+        '200':
+          content:
+            application/json:
+              schema:
+                properties:
+                  items:
+                    items:
+                      $ref: '#/components/schemas/WhitelistEntry'
+                    type: array
+                required:
+                - items
+                type: object
+          description: ok
+        '400':
+          $ref: '#/components/responses/Error'
+        '401':
+          $ref: '#/components/responses/Error'
+        '403':
+          $ref: '#/components/responses/Error'
+        '404':
+          $ref: '#/components/responses/Error'
+        '409':
+          $ref: '#/components/responses/Error'
+        '429':
+          $ref: '#/components/responses/Error'
+        '500':
+          $ref: '#/components/responses/Error'
+        '503':
+          $ref: '#/components/responses/Error'
+      security:
+      - customerAPIKey: []
+      summary: List trusted IPs
+      x-api-key-scope: proxy:read
+      x-required-scope: proxy:read
+      tags:
+      - Services
+    post:
+      description: Allow a public address or supported CIDR, up to 50 entries per service. An address already assigned to another service returns CONFLICT. After an uncertain response, list entries before retrying.
+      operationId: post_v1_services_id_whitelist
+      parameters:
+      - $ref: '#/components/parameters/CustomerId'
+      - in: path
+        name: id
+        required: true
+        schema:
+          format: uuid
+          type: string
+      requestBody:
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/WhitelistCreate'
+        required: true
+      responses:
+        '201':
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/WhitelistEntry'
+          description: created
+        '400':
+          $ref: '#/components/responses/Error'
+        '401':
+          $ref: '#/components/responses/Error'
+        '403':
+          $ref: '#/components/responses/Error'
+        '404':
+          $ref: '#/components/responses/Error'
+        '409':
+          $ref: '#/components/responses/Error'
+        '429':
+          $ref: '#/components/responses/Error'
+        '500':
+          $ref: '#/components/responses/Error'
+        '503':
+          $ref: '#/components/responses/Error'
+      security:
+      - customerAPIKey: []
+      summary: Add a trusted IP
+      x-api-key-scope: proxy:write
+      x-required-scope: proxy:write
+      tags:
+      - Services
+    servers:
+    - url: https://api.trueproxies.com
+  /v1/services/{id}/whitelist/{entryId}:
+    delete:
+      description: Remove one entry owned by this service. A successful deletion returns no response body. A subsequent read confirms removal.
+      operationId: delete_v1_services_id_whitelist_entryId
+      parameters:
+      - $ref: '#/components/parameters/CustomerId'
+      - in: path
+        name: id
+        required: true
+        schema:
+          format: uuid
+          type: string
+      - in: path
+        name: entryId
+        required: true
+        schema:
+          format: uuid
+          type: string
+      responses:
+        '204':
+          description: deleted
+        '400':
+          $ref: '#/components/responses/Error'
+        '401':
+          $ref: '#/components/responses/Error'
+        '403':
+          $ref: '#/components/responses/Error'
+        '404':
+          $ref: '#/components/responses/Error'
+        '409':
+          $ref: '#/components/responses/Error'
+        '429':
+          $ref: '#/components/responses/Error'
+        '500':
+          $ref: '#/components/responses/Error'
+        '503':
+          $ref: '#/components/responses/Error'
+      security:
+      - customerAPIKey: []
+      summary: Remove a trusted IP
+      x-api-key-scope: proxy:write
+      x-required-scope: proxy:write
+      tags:
+      - Services
+    servers:
+    - url: https://api.trueproxies.com
+components:
+  schemas:
+    ServiceCheckResult:
+      properties:
+        checked_at:
+          format: date-time
+          type: string
+        elapsed_ms:
+          description: Duration of this single HTTPS check, including proxy connection setup.
+          format: int64
+          minimum: 0
+          type: integer
+        exit_ip:
+          description: Public IPv4 or IPv6 exit address returned by ipify when the check succeeds.
+          type: string
+        message:
+          description: Safe status message without proxy credentials or internal transport errors.
+          type: string
+        success:
+          type: boolean
+      required:
+      - success
+      - elapsed_ms
+      - checked_at
+      - message
+      type: object
+    WhitelistCreate:
+      properties:
+        cidr:
+          type: string
+        label:
+          maxLength: 64
+          type: string
+        move:
+          description: Take the range off the customer's other service that holds it. A range maps to one service (a passwordless connection has no other identity); a 409 with details.movable says which service has it now.
+          type: boolean
+      required:
+      - cidr
+      type: object
+    Destination:
+      properties:
+        bytes:
+          format: int64
+          type: integer
+        failures:
+          format: int64
+          type: integer
+        host:
+          type: string
+        requests:
+          format: int64
+          type: integer
+      required:
+      - host
+      - requests
+      - failures
+      - bytes
+      type: object
+    AnalyticsPoint:
+      properties:
+        avg_session_ms:
+          description: Mean elapsed milliseconds of measured completed authenticated socket sessions; null when no samples exist.
+          minimum: 0
+          type:
+          - number
+          - 'null'
+        avg_setup_ms:
+          description: Mean gateway-to-destination setup milliseconds for measured successful initial TCP tunnels; null when no samples exist.
+          minimum: 0
+          type:
+          - number
+          - 'null'
+        bytes_in:
+          format: int64
+          type: integer
+        bytes_out:
+          format: int64
+          type: integer
+        failures:
+          format: int64
+          type: integer
+        requests:
+          format: int64
+          type: integer
+        session_samples:
+          description: Number of measured completed session samples in this bucket.
+          minimum: 0
+          type: integer
+        setup_samples:
+          description: Number of measured successful setup samples in this bucket.
+          minimum: 0
+          type: integer
+        ts:
+          format: date-time
+          type: string
+      required:
+      - ts
+      - requests
+      - failures
+      - bytes_in
+      - bytes_out
+      type: object
+    Term:
+      enum:
+      - hour
+      - day
+      - week
+      - month
+      type: string
+    EndpointResponse:
+      properties:
+        lines:
+          items:
+            type: string
+          type: array
+      required:
+      - lines
+      type: object
+    ServiceStatus:
+      enum:
+      - pending
+      - active
+      - expired
+      - closed
+      - suspended
+      - failed
+      type: string
+    ErrorClass:
+      properties:
+        count:
+          format: int64
+          type: integer
+        err_class:
+          type: string
+      required:
+      - err_class
+      - count
+      type: object
+    Usage:
+      properties:
+        allowance_bytes:
+          format: int64
+          type: integer
+        bytes_in:
+          description: Bytes the proxy read from the client, which is the customer's upload.
+          format: int64
+          type: integer
+        bytes_out:
+          description: Bytes the proxy wrote back to the client, which is the customer's download.
+          format: int64
+          type: integer
+        current_period_used_bytes:
+          description: Traffic counted against the current allowance period. Lifetime totals remain in bytes_in and bytes_out.
+          format: int64
+          type: integer
+        gb_allocated:
+          description: Informational provider balance in decimal GB; billing uses node byte counters.
+          type: number
+        gb_remaining:
+          description: Informational provider balance in decimal GB; billing uses node byte counters.
+          type: number
+        gb_used:
+          description: Informational provider balance in decimal GB; billing uses node byte counters.
+          type: number
+        last_updated_at:
+          format: date-time
+          type: string
+        next_reset_at:
+          description: Next scheduled allowance reset; a past timestamp means confirmation is pending.
+          format: date-time
+          type: string
+        period_started_at:
+          description: Start of the current confirmed allowance period, when applicable.
+          format: date-time
+          type: string
+        provider_observed_at:
+          format: date-time
+          type: string
+        provider_usage_informational:
+          const: true
+          type: boolean
+        reconciliation:
+          properties:
+            drift_ratio:
+              type: number
+            observed_at:
+              format: date-time
+              type: string
+            status:
+              description: Compares the change in vendor balance with the change in node counters between two consecutive observations, hourly. `baseline` is the first observation for a service, which has no predecessor to compare with and therefore reports zero drift; it is not a statement that the two figures agree. Billing always uses the node counters.
+              enum:
+              - baseline
+              - ok
+              - drift
+              - reset
+              - stale
+              type: string
+            usage_drift_bytes:
+              format: int64
+              type: integer
+          required:
+          - status
+          - usage_drift_bytes
+          - drift_ratio
+          - observed_at
+          type: object
+        remaining_bytes:
+          description: Node allowance remaining, floored at zero.
+          format: int64
+          type: integer
+        service_id:
+          format: uuid
+          type: string
+        usage_source:
+          description: Billing usage comes from durable, deduplicated node byte counters.
+          enum:
+          - node
+          type: string
+      required:
+      - service_id
+      - bytes_in
+      - bytes_out
+      - last_updated_at
+      - usage_source
+      - provider_usage_informational
+      - allowance_bytes
+      - remaining_bytes
+      type: object
+    Service:
+      properties:
+        billing_read_only:
+          description: Existing access remains available, but this service cannot be topped up or renewed. New plan purchases are separate.
+          type: boolean
+        capabilities:
+          items:
+            type: string
+          type: array
+        city:
+          type: string
+        comparison_pass:
+          description: Free private comparison with fixed speed and expiry; cannot be purchased, topped up or renewed.
+          type: boolean
+        connects_per_second:
+          description: Effective limit for this service.
+          minimum: 0
+          type: integer
+        created_at:
+          format: date-time
+          type: string
+        depleted:
+          type: boolean
+        display_name:
+          description: Unlimited service names reflect their actual speed and term; offer_key retains the original billing plan.
+          type: string
+        expires_at:
+          format: date-time
+          type: string
+        grace_until:
+          format: date-time
+          type: string
+        host:
+          type: string
+        id:
+          description: Internal API identifier. Use reference for customer-facing display.
+          format: uuid
+          type: string
+        max_connections:
+          description: Effective limit for this service.
+          minimum: 0
+          type: integer
+        offer_key:
+          type: string
+        ports:
+          properties:
+            http:
+              type: integer
+            https:
+              type: integer
+            socks5:
+              type: integer
+          required:
+          - http
+          - socks5
+          - https
+          type: object
+        product:
+          $ref: '#/components/schemas/Product'
+        reference:
+          description: Stable, unique customer-facing reference.
+          example: SVC-001001
+          pattern: ^SVC-[0-9]{6,}$
+          type: string
+        renewals_enabled:
+          type: boolean
+        speed_bps:
+          description: 0 for paid residential_ipv4_gb means no additional TrueProxies speed cap. Private comparison passes have a fixed 50000000 bps cap. residential_ipv4_unlimited retains its positive plan speed. Upstream capacity and availability still apply. Trials and datacenter plans retain their speed limits.
+          format: int64
+          minimum: 0
+          type: integer
+        starts_at:
+          format: date-time
+          type: string
+        status:
+          $ref: '#/components/schemas/ServiceStatus'
+        term:
+          $ref: '#/components/schemas/Term'
+        term_label:
+          description: Actual fixed duration for a free Unlimited grant, such as 3 hours. Overrides the recurring term label in customer views.
+          type: string
+        trial_started_at:
+          description: First recorded trial traffic; absent until the first request starts the 30-minute window.
+          format: date-time
+          type: string
+        usage_source:
+          enum:
+          - node
+          type: string
+        username_base:
+          type: string
+        whitelist_entries:
+          type: integer
+      required:
+      - id
+      - reference
+      - product
+      - offer_key
+      - display_name
+      - status
+      - host
+      - ports
+      - username_base
+      - max_connections
+      - connects_per_second
+      - created_at
+      - capabilities
+      - renewals_enabled
+      - billing_read_only
+      - usage_source
+      type: object
+    Error:
+      properties:
+        code:
+          enum:
+          - BAD_REQUEST
+          - UNAUTHENTICATED
+          - FORBIDDEN
+          - NOT_FOUND
+          - CONFLICT
+          - RATE_LIMITED
+          - SERVICE_UNAVAILABLE
+          - OFFER_UNAVAILABLE
+          - CITY_UNAVAILABLE
+          - CAPACITY_UNAVAILABLE
+          - INVOICE_NOT_PAYABLE
+          - PROVIDER_ERROR
+          - PIPE_UNAVAILABLE
+          - TRIAL_NOT_ELIGIBLE
+          - EMAIL_UNVERIFIED
+          - INTERNAL
+          type: string
+        details:
+          additionalProperties: true
+          description: What a client needs to act on the error (ids, flags), never display text.
+          type: object
+        message:
+          type: string
+      required:
+      - code
+      - message
+      type: object
+    WhitelistEntry:
+      properties:
+        cidr:
+          description: IPv4/IPv6 address or CIDR allowed to connect without a password
+          type: string
+        created_at:
+          format: date-time
+          type: string
+        id:
+          format: uuid
+          type: string
+        label:
+          type: string
+      required:
+      - id
+      - cidr
+      - created_at
+      type: object
+    Product:
+      enum:
+      - residential_ipv4_gb
+      - residential_ipv4_unlimited
+      - datacenter_ipv6
+      - trial
+      type: string
+    LiveMetrics:
+      properties:
+        completed_connections:
+          description: Recorded proxy outcomes underlying success_rate. Selected by event timestamp, not literal completion time; delayed or long-running connections can appear later.
+          minimum: 0
+          type: integer
+        connections_per_minute:
+          description: Sum of recorded usage connection deltas in the minute ending at window_end.
+          minimum: 0
+          type: integer
+        download_bps:
+          description: Customer download bits per second in the last complete series bucket, from bytes_out. Zero is an absence of recorded bytes, not proof of healthy idle traffic.
+          minimum: 0
+          type: number
+        interval_seconds:
+          const: 10
+          type: integer
+        last_activity_at:
+          description: Latest non-system usage event before sampled_at, scanned since the earlier of midnight UTC or window_start. Null means no observation in that bounded interval. Samples are emitted only for activity; silence cannot distinguish idle traffic from unavailable collection. Treat current rates as unavailable when this is null or older than 60 seconds.
+          format: date-time
+          type:
+          - string
+          - 'null'
+        sampled_at:
+          description: UTC query time; this does not prove collector health or data freshness.
+          format: date-time
+          type: string
+        series:
+          items:
+            properties:
+              download_bps:
+                minimum: 0
+                type: number
+              ts:
+                description: Inclusive UTC start of this ten-second bucket.
+                format: date-time
+                type: string
+              upload_bps:
+                minimum: 0
+                type: number
+            required:
+            - ts
+            - download_bps
+            - upload_bps
+            type: object
+          maxItems: 60
+          minItems: 60
+          type: array
+        success_rate:
+          description: Successful recorded proxy outcomes divided by recorded outcomes whose event timestamps fall in the minute ending at window_end. These are proxy connection outcomes, not destination HTTP status. Null when no outcomes are recorded. Event timestamps may represent connection start rather than completion time.
+          maximum: 1
+          minimum: 0
+          type:
+          - number
+          - 'null'
+        traffic_today_bytes:
+          description: Observed non-system upload plus download bytes from midnight UTC up to sampled_at; delayed arrivals may revise totals.
+          minimum: 0
+          type: integer
+        upload_bps:
+          description: Customer upload bits per second in the last complete series bucket, from bytes_in.
+          minimum: 0
+          type: number
+        window_end:
+          description: Exclusive UTC end, rounded down to ten seconds and delayed twenty seconds for collection and shipping. Later arrivals may revise observations.
+          format: date-time
+          type: string
+        window_start:
+          description: Inclusive UTC start of the ten-minute rate series.
+          format: date-time
+          type: string
+      required:
+      - sampled_at
+      - last_activity_at
+      - window_start
+      - window_end
+      - interval_seconds
+      - download_bps
+      - upload_bps
+      - connections_per_minute
+      - success_rate
+      - completed_connections
+      - traffic_today_bytes
+      - series
+      type: object
+    EndpointRequest:
+      properties:
+        asn:
+          description: 1 to 10 digits, without AS prefix. Requires asn capability.
+          maxLength: 10
+          type: string
+        city:
+          description: Letters, digits and underscores; normalized to lowercase. Requires city capability.
+          maxLength: 32
+          type: string
+        count:
+          default: 1
+          description: Number of connection strings. Omission, null and legacy zero values use one.
+          maximum: 1000
+          minimum: 1
+          type: integer
+        country:
+          description: Two-letter country code; normalized to lowercase. Requires country capability.
+          type: string
+        format:
+          default: host:port:user:pass
+          enum:
+          - host:port:user:pass
+          - user:pass@host:port
+          - user:pass
+          - host:port
+          - url
+          - curl
+          - custom
+          type: string
+        job_id:
+          description: Owned active job beneath project_id. Only its validated opaque token is included in generated proxy usernames.
+          format: uuid
+          type: string
+        lifetime:
+          description: Sticky session lifetime in seconds, 60 to 86400, or 1 to 86400 when the service has session_lifetime_seconds. Maximum is 1800 with session_lifetime_30m. Requires session=sticky and session_lifetime capability. Residential IPv4 Unlimited requires whole minutes. Omitted or zero leaves the lifetime unset.
+          type: integer
+        project_id:
+          description: Owned, active project access. Omit to use main access. Requires current project support.
+          format: uuid
+          type: string
+        protocol:
+          default: http
+          enum:
+          - http
+          - socks5
+          - https
+          type: string
+        region:
+          description: Requires region capability. Services with region_code accept only an ISO 3166-2 subdivision code of 1 to 3 letters or digits without country prefix (for example CA). Other services accept letters, digits and underscores up to 32 characters. Normalized to lowercase in customer usernames.
+          maxLength: 32
+          type: string
+        session:
+          default: none
+          enum:
+          - none
+          - sticky
+          - rotate
+          type: string
+        template:
+          description: Required only for format=custom. A single line of literal text, limited to 512 UTF-8 bytes, with at least one of {HOST}, {PORT}, {USER}, {PASS} or {PROTOCOL}. Other braces and control characters are rejected. Placeholder values are substituted literally without escaping or recursive expansion. {PROTOCOL} is the connection URL scheme (http, https or socks5h).
+          maxLength: 512
+          minLength: 1
+          type: string
+      type: object
+    Analytics:
+      properties:
+        destinations:
+          items:
+            $ref: '#/components/schemas/Destination'
+          type: array
+        errors:
+          items:
+            $ref: '#/components/schemas/ErrorClass'
+          type: array
+        range:
+          type: string
+        series:
+          items:
+            $ref: '#/components/schemas/AnalyticsPoint'
+          type: array
+        success_rate:
+          type: number
+      required:
+      - range
+      - success_rate
+      - series
+      - destinations
+      - errors
+      type: object
+    ServiceSecret:
+      properties:
+        password:
+          type: string
+        rotated_at:
+          format: date-time
+          type: string
+        username_base:
+          type: string
+      required:
+      - username_base
+      - password
+      - rotated_at
+      type: object
+  parameters:
+    CustomerId:
+      description: Owned sub-customer UUID. Resellers only; reads require reseller:read and writes reseller:purchase in addition to the operation scope. X-Customer-Id header is an alternative. Not allowed for me, wallet, trial, API keys, or reseller-management routes.
+      in: query
+      name: customer_id
+      schema:
+        format: uuid
+        type: string
+  responses:
+    Error:
+      content:
+        application/json:
+          schema:
+            $ref: '#/components/schemas/Error'
+      description: error
+  securitySchemes:
+    customerAPIKey:
+      bearerFormat: API key
+      description: 'Send Authorization: Bearer tp_api_… . Create a named, scoped key in the customer dashboard. Keys expire after 30, 90 or 365 days and can be revoked immediately.'
+      scheme: bearer
+      type: http
+x-refined-from:
+- trueproxies-customer-api-openapi.json
+- trueproxies-openapi.yml

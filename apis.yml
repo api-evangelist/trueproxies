@@ -108,25 +108,16 @@ maintainers:
 - FN: Kin Lane
   email: kin@apievangelist.com
 apis:
-- name: TrueProxies Customer API
-  description: 'Manage existing TrueProxies proxy services using scoped Bearer keys (tp_api_…): list services and
-    their connection details, build endpoint strings, rotate proxy passwords, manage IP whitelists, run service
-    checks, read usage, analytics and live metrics, browse the public and priced catalog, and create, pay and download
-    invoices. Default budget of 300 requests per minute per account.'
+- aid: trueproxies:trueproxies-analytics-api
+  name: TrueProxies Analytics API
+  description: The Analytics API from TrueProxies — 1 operation(s) for analytics.
   humanURL: https://docs.trueproxies.com/overview/
   baseURL: https://api.trueproxies.com
   tags:
-  - Proxies
-  - Proxy Management
-  - Billing
   - Analytics
-  - IP Whitelisting
   properties:
   - type: OpenAPI
-    url: openapi/trueproxies-openapi.yml
-  - type: OpenAPI
-    name: OpenAPI (provider-hosted)
-    url: https://api.trueproxies.com/v1/openapi.json
+    url: openapi/trueproxies-analytics-api-openapi.yml
   - type: Documentation
     url: https://docs.trueproxies.com/overview/
   - type: JSONSchema
@@ -141,7 +132,102 @@ apis:
     url: json-schema/trueproxies-invoice-schema.json
   - type: JSONSchema
     url: json-schema/trueproxies-me-schema.json
-  aid: trueproxies:trueproxies-customer-api
+- aid: trueproxies:trueproxies-catalog-api
+  name: TrueProxies Catalog API
+  description: The Catalog API from TrueProxies — 2 operation(s) for catalog.
+  humanURL: https://docs.trueproxies.com/overview/
+  baseURL: https://api.trueproxies.com
+  tags:
+  - Catalog
+  properties:
+  - type: OpenAPI
+    url: openapi/trueproxies-catalog-api-openapi.yml
+  - type: Documentation
+    url: https://docs.trueproxies.com/overview/
+  - type: JSONSchema
+    url: json-schema/trueproxies-live-metrics-schema.json
+  - type: JSONSchema
+    url: json-schema/trueproxies-service-schema.json
+  - type: JSONSchema
+    url: json-schema/trueproxies-usage-schema.json
+  - type: JSONSchema
+    url: json-schema/trueproxies-endpoint-request-schema.json
+  - type: JSONSchema
+    url: json-schema/trueproxies-invoice-schema.json
+  - type: JSONSchema
+    url: json-schema/trueproxies-me-schema.json
+- aid: trueproxies:trueproxies-invoices-api
+  name: TrueProxies Invoices API
+  description: The Invoices API from TrueProxies — 4 operation(s) for invoices.
+  humanURL: https://docs.trueproxies.com/overview/
+  baseURL: https://api.trueproxies.com
+  tags:
+  - Invoices
+  properties:
+  - type: OpenAPI
+    url: openapi/trueproxies-invoices-api-openapi.yml
+  - type: Documentation
+    url: https://docs.trueproxies.com/overview/
+  - type: JSONSchema
+    url: json-schema/trueproxies-live-metrics-schema.json
+  - type: JSONSchema
+    url: json-schema/trueproxies-service-schema.json
+  - type: JSONSchema
+    url: json-schema/trueproxies-usage-schema.json
+  - type: JSONSchema
+    url: json-schema/trueproxies-endpoint-request-schema.json
+  - type: JSONSchema
+    url: json-schema/trueproxies-invoice-schema.json
+  - type: JSONSchema
+    url: json-schema/trueproxies-me-schema.json
+- aid: trueproxies:trueproxies-me-api
+  name: TrueProxies Me API
+  description: The Me API from TrueProxies — 1 operation(s) for me.
+  humanURL: https://docs.trueproxies.com/overview/
+  baseURL: https://api.trueproxies.com
+  tags:
+  - Me
+  properties:
+  - type: OpenAPI
+    url: openapi/trueproxies-me-api-openapi.yml
+  - type: Documentation
+    url: https://docs.trueproxies.com/overview/
+  - type: JSONSchema
+    url: json-schema/trueproxies-live-metrics-schema.json
+  - type: JSONSchema
+    url: json-schema/trueproxies-service-schema.json
+  - type: JSONSchema
+    url: json-schema/trueproxies-usage-schema.json
+  - type: JSONSchema
+    url: json-schema/trueproxies-endpoint-request-schema.json
+  - type: JSONSchema
+    url: json-schema/trueproxies-invoice-schema.json
+  - type: JSONSchema
+    url: json-schema/trueproxies-me-schema.json
+- aid: trueproxies:trueproxies-services-api
+  name: TrueProxies Services API
+  description: The Services API from TrueProxies — 11 operation(s) for services.
+  humanURL: https://docs.trueproxies.com/overview/
+  baseURL: https://api.trueproxies.com
+  tags:
+  - Services
+  properties:
+  - type: OpenAPI
+    url: openapi/trueproxies-services-api-openapi.yml
+  - type: Documentation
+    url: https://docs.trueproxies.com/overview/
+  - type: JSONSchema
+    url: json-schema/trueproxies-live-metrics-schema.json
+  - type: JSONSchema
+    url: json-schema/trueproxies-service-schema.json
+  - type: JSONSchema
+    url: json-schema/trueproxies-usage-schema.json
+  - type: JSONSchema
+    url: json-schema/trueproxies-endpoint-request-schema.json
+  - type: JSONSchema
+    url: json-schema/trueproxies-invoice-schema.json
+  - type: JSONSchema
+    url: json-schema/trueproxies-me-schema.json
 x-enrichment:
   date: '2026-09-23'
   status: enriched
