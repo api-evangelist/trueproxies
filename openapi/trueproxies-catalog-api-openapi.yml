@@ -1,8 +1,8 @@
 openapi: 3.2.0
 info:
-  title: Trueproxies Catalog API
+  description: 'Manage existing proxy services using scoped Bearer keys. Default budget: 300 requests per minute per account, shared across keys and control replicas. On HTTP 429, wait for Retry-After. Protected responses use Cache-Control: no-store and X-Request-ID. Timestamps are ISO-8601; monetary amounts are cents. Use the dashboard for API key management. Creating and paying invoices requires billing:write or reseller:purchase.'
+  title: TrueProxies Customer Catalog API
   version: 1.0.0
-  description: 'Operations tagged Catalog across 2 of this provider''s published API definitions: trueproxies-customer-api-openapi.json, trueproxies-openapi.yml. Each path carries the servers of the definition it was published in.'
 servers:
 - url: https://api.trueproxies.com
 tags:
@@ -42,8 +42,6 @@ paths:
       x-required-scope: ''
       tags:
       - Catalog
-    servers:
-    - url: https://api.trueproxies.com
   /v1/catalog/priced:
     get:
       description: Authenticated offers priced for the invoice payer, including reseller terms when acting for an owned managed customer. Offers unavailable under current pricing terms are omitted. Invoice creation snapshots the final price.
@@ -82,65 +80,8 @@ paths:
       x-required-scope: billing:read
       tags:
       - Catalog
-    servers:
-    - url: https://api.trueproxies.com
 components:
   schemas:
-    Term:
-      enum:
-      - hour
-      - day
-      - week
-      - month
-      type: string
-    City:
-      properties:
-        available:
-          description: mapped to a verified /36 with free /48s
-          type: boolean
-        code:
-          type: string
-        country_code:
-          type: string
-        name:
-          type: string
-      required:
-      - code
-      - country_code
-      - name
-      - available
-      type: object
-    Error:
-      properties:
-        code:
-          enum:
-          - BAD_REQUEST
-          - UNAUTHENTICATED
-          - FORBIDDEN
-          - NOT_FOUND
-          - CONFLICT
-          - RATE_LIMITED
-          - SERVICE_UNAVAILABLE
-          - OFFER_UNAVAILABLE
-          - CITY_UNAVAILABLE
-          - CAPACITY_UNAVAILABLE
-          - INVOICE_NOT_PAYABLE
-          - PROVIDER_ERROR
-          - PIPE_UNAVAILABLE
-          - TRIAL_NOT_ELIGIBLE
-          - EMAIL_UNVERIFIED
-          - INTERNAL
-          type: string
-        details:
-          additionalProperties: true
-          description: What a client needs to act on the error (ids, flags), never display text.
-          type: object
-        message:
-          type: string
-      required:
-      - code
-      - message
-      type: object
     Catalog:
       properties:
         cities:
@@ -219,6 +160,61 @@ components:
       - enabled
       - capabilities
       type: object
+    City:
+      properties:
+        available:
+          description: mapped to a verified /36 with free /48s
+          type: boolean
+        code:
+          type: string
+        country_code:
+          type: string
+        name:
+          type: string
+      required:
+      - code
+      - country_code
+      - name
+      - available
+      type: object
+    Error:
+      properties:
+        code:
+          enum:
+          - BAD_REQUEST
+          - UNAUTHENTICATED
+          - FORBIDDEN
+          - NOT_FOUND
+          - CONFLICT
+          - RATE_LIMITED
+          - SERVICE_UNAVAILABLE
+          - OFFER_UNAVAILABLE
+          - CITY_UNAVAILABLE
+          - CAPACITY_UNAVAILABLE
+          - INVOICE_NOT_PAYABLE
+          - PROVIDER_ERROR
+          - PIPE_UNAVAILABLE
+          - TRIAL_NOT_ELIGIBLE
+          - EMAIL_UNVERIFIED
+          - INTERNAL
+          type: string
+        details:
+          additionalProperties: true
+          description: What a client needs to act on the error (ids, flags), never display text.
+          type: object
+        message:
+          type: string
+      required:
+      - code
+      - message
+      type: object
+    Term:
+      enum:
+      - hour
+      - day
+      - week
+      - month
+      type: string
   responses:
     Error:
       content:
@@ -240,6 +236,3 @@ components:
       description: 'Send Authorization: Bearer tp_api_… . Create a named, scoped key in the customer dashboard. Keys expire after 30, 90 or 365 days and can be revoked immediately.'
       scheme: bearer
       type: http
-x-refined-from:
-- trueproxies-customer-api-openapi.json
-- trueproxies-openapi.yml

@@ -1,8 +1,8 @@
 openapi: 3.2.0
 info:
-  title: Trueproxies Invoices API
+  description: 'Manage existing proxy services using scoped Bearer keys. Default budget: 300 requests per minute per account, shared across keys and control replicas. On HTTP 429, wait for Retry-After. Protected responses use Cache-Control: no-store and X-Request-ID. Timestamps are ISO-8601; monetary amounts are cents. Use the dashboard for API key management. Creating and paying invoices requires billing:write or reseller:purchase.'
+  title: TrueProxies Customer Invoices API
   version: 1.0.0
-  description: 'Operations tagged Invoices across 2 of this provider''s published API definitions: trueproxies-customer-api-openapi.json, trueproxies-openapi.yml. Each path carries the servers of the definition it was published in.'
 servers:
 - url: https://api.trueproxies.com
 tags:
@@ -128,8 +128,6 @@ paths:
       x-required-scope: billing:write
       tags:
       - Invoices
-    servers:
-    - url: https://api.trueproxies.com
   /v1/invoices/{id}:
     get:
       description: Read invoice status, payment attempts and the associated service. No payment is initiated.
@@ -172,8 +170,6 @@ paths:
       x-required-scope: billing:read
       tags:
       - Invoices
-    servers:
-    - url: https://api.trueproxies.com
   /v1/invoices/{id}/pay:
     post:
       description: Requires billing:write; reseller:purchase also permits this operation. On-behalf payments additionally require reseller:purchase and provider wallet. Insufficient funds return 409 with balance_cents and needed_cents. Never automatically retry an uncertain payment; first read invoice status.
@@ -223,8 +219,6 @@ paths:
       x-required-scope: billing:write
       tags:
       - Invoices
-    servers:
-    - url: https://api.trueproxies.com
   /v1/invoices/{id}/pdf:
     get:
       description: Download a PDF containing the recorded invoice amounts, current payment status and refund records. Returns application/pdf as an attachment. Send customer_id when acting for a managed customer. No payment is initiated.
@@ -273,168 +267,8 @@ paths:
       x-required-scope: billing:read
       tags:
       - Invoices
-    servers:
-    - url: https://api.trueproxies.com
 components:
   schemas:
-    InvoiceStatus:
-      enum:
-      - open
-      - paid
-      - cancelled
-      type: string
-    InvoiceCreate:
-      properties:
-        offer_key:
-          type: string
-        options:
-          $ref: '#/components/schemas/InvoiceOptions'
-        promo_code:
-          maxLength: 40
-          minLength: 3
-          pattern: ^[A-Za-z0-9][A-Za-z0-9-]{2,39}$
-          type: string
-        request_id:
-          description: Required when promo_code is present; keep stable only while retrying identical invoice content.
-          format: uuid
-          type: string
-        service_id:
-          description: required for renewal and topup
-          format: uuid
-          type: string
-      required:
-      - offer_key
-      type: object
-    InvoicePayment:
-      properties:
-        amount_received_cents:
-          type: integer
-        attempt:
-          type: integer
-        checkout_url:
-          description: present only while the invoice is payable and the pending checkout has not reached its known expiry
-          type: string
-        created_at:
-          format: date-time
-          type: string
-        expires_at:
-          format: date-time
-          type: string
-        id:
-          format: uuid
-          type: string
-        provider:
-          description: The payment rail, including staff-recorded manual settlements and compensation.
-          oneOf:
-          - $ref: '#/components/schemas/PaymentProvider'
-          - enum:
-            - manual
-            type: string
-        refund_amount_cents:
-          minimum: 1
-          type: integer
-        refund_amount_unknown:
-          description: A provider refund was reported without a trustworthy amount. Reconciliation is required before any additional refund.
-          type: boolean
-        refund_completed_at:
-          format: date-time
-          type: string
-        refund_reason:
-          type: string
-        refund_reference:
-          type: string
-        refund_retryable:
-          description: The recorded request can be retried unchanged within the provider idempotency window.
-          type: boolean
-        refund_status:
-          enum:
-          - processing
-          - uncertain
-          - manual_required
-          - submitted
-          - failed
-          - refunded
-          type: string
-        refunded_at:
-          description: Refund request recorded at; not proof of completion
-          format: date-time
-          type: string
-        status:
-          $ref: '#/components/schemas/PaymentStatus'
-      required:
-      - id
-      - attempt
-      - provider
-      - status
-      - created_at
-      type: object
-    PaymentStatus:
-      enum:
-      - pending
-      - paid
-      - expired
-      - failed
-      - paid_unapplied
-      - paid_duplicate
-      type: string
-    PayRequest:
-      properties:
-        provider:
-          $ref: '#/components/schemas/PaymentProvider'
-      required:
-      - provider
-      type: object
-    InvoiceKind:
-      enum:
-      - wallet_topup
-      - purchase
-      - renewal
-      - topup
-      - custom
-      - white_label
-      type: string
-    Error:
-      properties:
-        code:
-          enum:
-          - BAD_REQUEST
-          - UNAUTHENTICATED
-          - FORBIDDEN
-          - NOT_FOUND
-          - CONFLICT
-          - RATE_LIMITED
-          - SERVICE_UNAVAILABLE
-          - OFFER_UNAVAILABLE
-          - CITY_UNAVAILABLE
-          - CAPACITY_UNAVAILABLE
-          - INVOICE_NOT_PAYABLE
-          - PROVIDER_ERROR
-          - PIPE_UNAVAILABLE
-          - TRIAL_NOT_ELIGIBLE
-          - EMAIL_UNVERIFIED
-          - INTERNAL
-          type: string
-        details:
-          additionalProperties: true
-          description: What a client needs to act on the error (ids, flags), never display text.
-          type: object
-        message:
-          type: string
-      required:
-      - code
-      - message
-      type: object
-    PaymentProvider:
-      description: Payment provider identifier (stripe or cryptomus).
-      type: string
-    InvoiceOptions:
-      properties:
-        city:
-          type: string
-        gb:
-          description: GB for top-ups; taken from the offer otherwise
-          type: integer
-      type: object
     Invoice:
       properties:
         activated_at:
@@ -507,6 +341,155 @@ components:
       - created_at
       - payments
       type: object
+    InvoiceOptions:
+      properties:
+        city:
+          type: string
+        gb:
+          description: GB for top-ups; taken from the offer otherwise
+          type: integer
+      type: object
+    InvoicePayment:
+      properties:
+        amount_received_cents:
+          type: integer
+        attempt:
+          type: integer
+        checkout_url:
+          description: present only while the invoice is payable and the pending checkout has not reached its known expiry
+          type: string
+        created_at:
+          format: date-time
+          type: string
+        expires_at:
+          format: date-time
+          type: string
+        id:
+          format: uuid
+          type: string
+        provider:
+          description: The payment rail, including staff-recorded manual settlements and compensation.
+          oneOf:
+          - $ref: '#/components/schemas/PaymentProvider'
+          - enum:
+            - manual
+            type: string
+        refund_amount_cents:
+          minimum: 1
+          type: integer
+        refund_amount_unknown:
+          description: A provider refund was reported without a trustworthy amount. Reconciliation is required before any additional refund.
+          type: boolean
+        refund_completed_at:
+          format: date-time
+          type: string
+        refund_reason:
+          type: string
+        refund_reference:
+          type: string
+        refund_retryable:
+          description: The recorded request can be retried unchanged within the provider idempotency window.
+          type: boolean
+        refund_status:
+          enum:
+          - processing
+          - uncertain
+          - manual_required
+          - submitted
+          - failed
+          - refunded
+          type: string
+        refunded_at:
+          description: Refund request recorded at; not proof of completion
+          format: date-time
+          type: string
+        status:
+          $ref: '#/components/schemas/PaymentStatus'
+      required:
+      - id
+      - attempt
+      - provider
+      - status
+      - created_at
+      type: object
+    PaymentProvider:
+      description: Payment provider identifier (stripe or cryptomus).
+      type: string
+    PayRequest:
+      properties:
+        provider:
+          $ref: '#/components/schemas/PaymentProvider'
+      required:
+      - provider
+      type: object
+    Error:
+      properties:
+        code:
+          enum:
+          - BAD_REQUEST
+          - UNAUTHENTICATED
+          - FORBIDDEN
+          - NOT_FOUND
+          - CONFLICT
+          - RATE_LIMITED
+          - SERVICE_UNAVAILABLE
+          - OFFER_UNAVAILABLE
+          - CITY_UNAVAILABLE
+          - CAPACITY_UNAVAILABLE
+          - INVOICE_NOT_PAYABLE
+          - PROVIDER_ERROR
+          - PIPE_UNAVAILABLE
+          - TRIAL_NOT_ELIGIBLE
+          - EMAIL_UNVERIFIED
+          - INTERNAL
+          type: string
+        details:
+          additionalProperties: true
+          description: What a client needs to act on the error (ids, flags), never display text.
+          type: object
+        message:
+          type: string
+      required:
+      - code
+      - message
+      type: object
+    InvoiceStatus:
+      enum:
+      - open
+      - paid
+      - cancelled
+      type: string
+    PaymentStatus:
+      enum:
+      - pending
+      - paid
+      - expired
+      - failed
+      - paid_unapplied
+      - paid_duplicate
+      type: string
+    InvoiceCreate:
+      properties:
+        offer_key:
+          type: string
+        options:
+          $ref: '#/components/schemas/InvoiceOptions'
+        promo_code:
+          maxLength: 40
+          minLength: 3
+          pattern: ^[A-Za-z0-9][A-Za-z0-9-]{2,39}$
+          type: string
+        request_id:
+          description: Required when promo_code is present; keep stable only while retrying identical invoice content.
+          format: uuid
+          type: string
+        service_id:
+          description: required for renewal and topup
+          format: uuid
+          type: string
+      required:
+      - offer_key
+      type: object
     PayResponse:
       properties:
         checkout_url:
@@ -522,13 +505,15 @@ components:
       - checkout_url
       - expires_at
       type: object
-  responses:
-    Error:
-      content:
-        application/json:
-          schema:
-            $ref: '#/components/schemas/Error'
-      description: error
+    InvoiceKind:
+      enum:
+      - wallet_topup
+      - purchase
+      - renewal
+      - topup
+      - custom
+      - white_label
+      type: string
   parameters:
     IdempotencyKey:
       description: 'Makes a retry safe. The first request carrying a given key is executed and its response recorded; repeating the same request with the same key replays that response, with Idempotency-Replayed: true, rather than buying or paying a second time. Reusing a key for a different request is refused with 409, as is a repeat that arrives while the first is still running. Keys are scoped to your account and to the endpoint. Successful and uncertain invoice commands are retained so that an old retry cannot create another invoice. Completed definite rejections are kept for at least 24 hours; after that, the same key may be evaluated again.'
@@ -545,12 +530,16 @@ components:
       schema:
         format: uuid
         type: string
+  responses:
+    Error:
+      content:
+        application/json:
+          schema:
+            $ref: '#/components/schemas/Error'
+      description: error
   securitySchemes:
     customerAPIKey:
       bearerFormat: API key
       description: 'Send Authorization: Bearer tp_api_… . Create a named, scoped key in the customer dashboard. Keys expire after 30, 90 or 365 days and can be revoked immediately.'
       scheme: bearer
       type: http
-x-refined-from:
-- trueproxies-customer-api-openapi.json
-- trueproxies-openapi.yml

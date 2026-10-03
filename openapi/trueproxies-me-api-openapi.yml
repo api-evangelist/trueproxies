@@ -1,8 +1,8 @@
 openapi: 3.2.0
 info:
-  title: Trueproxies Me API
+  description: 'Manage existing proxy services using scoped Bearer keys. Default budget: 300 requests per minute per account, shared across keys and control replicas. On HTTP 429, wait for Retry-After. Protected responses use Cache-Control: no-store and X-Request-ID. Timestamps are ISO-8601; monetary amounts are cents. Use the dashboard for API key management. Creating and paying invoices requires billing:write or reseller:purchase.'
+  title: TrueProxies Customer Me API
   version: 1.0.0
-  description: 'Operations tagged Me across 2 of this provider''s published API definitions: trueproxies-customer-api-openapi.json, trueproxies-openapi.yml. Each path carries the servers of the definition it was published in.'
 servers:
 - url: https://api.trueproxies.com
 tags:
@@ -42,41 +42,8 @@ paths:
       x-required-scope: services:read
       tags:
       - Me
-    servers:
-    - url: https://api.trueproxies.com
 components:
   schemas:
-    Error:
-      properties:
-        code:
-          enum:
-          - BAD_REQUEST
-          - UNAUTHENTICATED
-          - FORBIDDEN
-          - NOT_FOUND
-          - CONFLICT
-          - RATE_LIMITED
-          - SERVICE_UNAVAILABLE
-          - OFFER_UNAVAILABLE
-          - CITY_UNAVAILABLE
-          - CAPACITY_UNAVAILABLE
-          - INVOICE_NOT_PAYABLE
-          - PROVIDER_ERROR
-          - PIPE_UNAVAILABLE
-          - TRIAL_NOT_ELIGIBLE
-          - EMAIL_UNVERIFIED
-          - INTERNAL
-          type: string
-        details:
-          additionalProperties: true
-          description: What a client needs to act on the error (ids, flags), never display text.
-          type: object
-        message:
-          type: string
-      required:
-      - code
-      - message
-      type: object
     CustomerBilling:
       description: The party an invoice is issued to. Empty strings mean not provided; a name or a company must be present when setting them. Saving requires a country and the address fields required for that country. Existing incomplete profiles remain readable until completed.
       properties:
@@ -158,6 +125,37 @@ components:
       - email_verified
       - created_at
       type: object
+    Error:
+      properties:
+        code:
+          enum:
+          - BAD_REQUEST
+          - UNAUTHENTICATED
+          - FORBIDDEN
+          - NOT_FOUND
+          - CONFLICT
+          - RATE_LIMITED
+          - SERVICE_UNAVAILABLE
+          - OFFER_UNAVAILABLE
+          - CITY_UNAVAILABLE
+          - CAPACITY_UNAVAILABLE
+          - INVOICE_NOT_PAYABLE
+          - PROVIDER_ERROR
+          - PIPE_UNAVAILABLE
+          - TRIAL_NOT_ELIGIBLE
+          - EMAIL_UNVERIFIED
+          - INTERNAL
+          type: string
+        details:
+          additionalProperties: true
+          description: What a client needs to act on the error (ids, flags), never display text.
+          type: object
+        message:
+          type: string
+      required:
+      - code
+      - message
+      type: object
   responses:
     Error:
       content:
@@ -171,6 +169,3 @@ components:
       description: 'Send Authorization: Bearer tp_api_… . Create a named, scoped key in the customer dashboard. Keys expire after 30, 90 or 365 days and can be revoked immediately.'
       scheme: bearer
       type: http
-x-refined-from:
-- trueproxies-customer-api-openapi.json
-- trueproxies-openapi.yml

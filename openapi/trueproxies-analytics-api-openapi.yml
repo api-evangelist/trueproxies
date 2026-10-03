@@ -1,8 +1,8 @@
 openapi: 3.2.0
 info:
-  title: Trueproxies Analytics API
+  description: 'Manage existing proxy services using scoped Bearer keys. Default budget: 300 requests per minute per account, shared across keys and control replicas. On HTTP 429, wait for Retry-After. Protected responses use Cache-Control: no-store and X-Request-ID. Timestamps are ISO-8601; monetary amounts are cents. Use the dashboard for API key management. Creating and paying invoices requires billing:write or reseller:purchase.'
+  title: TrueProxies Customer Analytics API
   version: 1.0.0
-  description: 'Operations tagged Analytics across 2 of this provider''s published API definitions: trueproxies-customer-api-openapi.json, trueproxies-openapi.yml. Each path carries the servers of the definition it was published in.'
 servers:
 - url: https://api.trueproxies.com
 tags:
@@ -53,10 +53,33 @@ paths:
       x-required-scope: services:read
       tags:
       - Analytics
-    servers:
-    - url: https://api.trueproxies.com
 components:
   schemas:
+    Analytics:
+      properties:
+        destinations:
+          items:
+            $ref: '#/components/schemas/Destination'
+          type: array
+        errors:
+          items:
+            $ref: '#/components/schemas/ErrorClass'
+          type: array
+        range:
+          type: string
+        series:
+          items:
+            $ref: '#/components/schemas/AnalyticsPoint'
+          type: array
+        success_rate:
+          type: number
+      required:
+      - range
+      - success_rate
+      - series
+      - destinations
+      - errors
+      type: object
     ErrorClass:
       properties:
         count:
@@ -112,6 +135,25 @@ components:
       - bytes_in
       - bytes_out
       type: object
+    Destination:
+      properties:
+        bytes:
+          format: int64
+          type: integer
+        failures:
+          format: int64
+          type: integer
+        host:
+          type: string
+        requests:
+          format: int64
+          type: integer
+      required:
+      - host
+      - requests
+      - failures
+      - bytes
+      type: object
     Error:
       properties:
         code:
@@ -143,50 +185,6 @@ components:
       - code
       - message
       type: object
-    Analytics:
-      properties:
-        destinations:
-          items:
-            $ref: '#/components/schemas/Destination'
-          type: array
-        errors:
-          items:
-            $ref: '#/components/schemas/ErrorClass'
-          type: array
-        range:
-          type: string
-        series:
-          items:
-            $ref: '#/components/schemas/AnalyticsPoint'
-          type: array
-        success_rate:
-          type: number
-      required:
-      - range
-      - success_rate
-      - series
-      - destinations
-      - errors
-      type: object
-    Destination:
-      properties:
-        bytes:
-          format: int64
-          type: integer
-        failures:
-          format: int64
-          type: integer
-        host:
-          type: string
-        requests:
-          format: int64
-          type: integer
-      required:
-      - host
-      - requests
-      - failures
-      - bytes
-      type: object
   responses:
     Error:
       content:
@@ -208,6 +206,3 @@ components:
       description: 'Send Authorization: Bearer tp_api_… . Create a named, scoped key in the customer dashboard. Keys expire after 30, 90 or 365 days and can be revoked immediately.'
       scheme: bearer
       type: http
-x-refined-from:
-- trueproxies-customer-api-openapi.json
-- trueproxies-openapi.yml

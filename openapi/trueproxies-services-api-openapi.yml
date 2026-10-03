@@ -1,8 +1,8 @@
 openapi: 3.2.0
 info:
-  title: Trueproxies Services API
+  description: 'Manage existing proxy services using scoped Bearer keys. Default budget: 300 requests per minute per account, shared across keys and control replicas. On HTTP 429, wait for Retry-After. Protected responses use Cache-Control: no-store and X-Request-ID. Timestamps are ISO-8601; monetary amounts are cents. Use the dashboard for API key management. Creating and paying invoices requires billing:write or reseller:purchase.'
+  title: TrueProxies Customer Services API
   version: 1.0.0
-  description: 'Operations tagged Services across 2 of this provider''s published API definitions: trueproxies-customer-api-openapi.json, trueproxies-openapi.yml. Each path carries the servers of the definition it was published in.'
 servers:
 - url: https://api.trueproxies.com
 tags:
@@ -80,8 +80,6 @@ paths:
       x-required-scope: services:read
       tags:
       - Services
-    servers:
-    - url: https://api.trueproxies.com
   /v1/services/{id}:
     get:
       description: Connection hosts, available ports, capabilities, status, expiry and effective limits. Does not return the proxy password.
@@ -124,8 +122,6 @@ paths:
       x-required-scope: services:read
       tags:
       - Services
-    servers:
-    - url: https://api.trueproxies.com
   /v1/services/{id}/analytics:
     get:
       description: Request success, traffic, destinations and errors for 24h, 7d or 30d. Analytics can lag recent traffic.
@@ -177,8 +173,6 @@ paths:
       x-required-scope: services:read
       tags:
       - Services
-    servers:
-    - url: https://api.trueproxies.com
   /v1/services/{id}/check:
     post:
       description: Runs one request through the service from our side and reports the outcome. Rate limited to a few checks a minute. Use it to tell a proxy problem apart from a target that is refusing you.
@@ -227,8 +221,6 @@ paths:
       x-required-scope: proxy:read
       tags:
       - Services
-    servers:
-    - url: https://api.trueproxies.com
   /v1/services/{id}/endpoints:
     post:
       description: Builds connection strings without changing the service. Only use targeting and session options present in the service capabilities. Copy the returned line into your proxy client; credentials in the output are secret.
@@ -277,8 +269,6 @@ paths:
       x-required-scope: proxy:read
       tags:
       - Services
-    servers:
-    - url: https://api.trueproxies.com
   /v1/services/{id}/live-metrics:
     get:
       description: Ten-second observed traffic rates in bits per second, UTC daily bytes and recorded proxy outcomes. Read last_activity_at for freshness; silence does not establish healthy idle traffic. Unavailable telemetry returns 503.
@@ -323,8 +313,6 @@ paths:
       x-required-scope: services:read
       tags:
       - Services
-    servers:
-    - url: https://api.trueproxies.com
   /v1/services/{id}/rotate-password:
     post:
       description: Returns the new password. The previous password remains valid for a two-minute overlap. Update every client promptly. For an uncertain response, retry with the same Idempotency-Key within 23 hours; do not create a new key for that retry. A replay does not change the password again or restart the overlap. Without a retry key, retrieve the current password with proxy:read before deciding whether another password change is needed.
@@ -373,8 +361,6 @@ paths:
       x-required-scope: proxy:write
       tags:
       - Services
-    servers:
-    - url: https://api.trueproxies.com
   /v1/services/{id}/secret:
     get:
       description: Returns the current proxy username and password. Keep the response secret. Management API keys are separate from proxy credentials.
@@ -417,8 +403,6 @@ paths:
       x-required-scope: proxy:read
       tags:
       - Services
-    servers:
-    - url: https://api.trueproxies.com
   /v1/services/{id}/usage:
     get:
       description: Traffic counters are bytes; GB balances are decimal gigabytes (1 GB = 1,000,000,000 bytes). Read last_updated_at and provider_observed_at for freshness. Provider balances are present for GB services.
@@ -461,8 +445,6 @@ paths:
       x-required-scope: services:read
       tags:
       - Services
-    servers:
-    - url: https://api.trueproxies.com
   /v1/services/{id}/whitelist:
     get:
       description: Addresses allowed to connect to this service without a proxy password.
@@ -559,8 +541,6 @@ paths:
       x-required-scope: proxy:write
       tags:
       - Services
-    servers:
-    - url: https://api.trueproxies.com
   /v1/services/{id}/whitelist/{entryId}:
     delete:
       description: Remove one entry owned by this service. A successful deletion returns no response body. A subsequent read confirms removal.
@@ -605,10 +585,114 @@ paths:
       x-required-scope: proxy:write
       tags:
       - Services
-    servers:
-    - url: https://api.trueproxies.com
 components:
   schemas:
+    EndpointRequest:
+      properties:
+        asn:
+          description: 1 to 10 digits, without AS prefix. Requires asn capability.
+          maxLength: 10
+          type: string
+        city:
+          description: Letters, digits and underscores; normalized to lowercase. Requires city capability.
+          maxLength: 32
+          type: string
+        count:
+          default: 1
+          description: Number of connection strings. Omission, null and legacy zero values use one.
+          maximum: 1000
+          minimum: 1
+          type: integer
+        country:
+          description: Two-letter country code; normalized to lowercase. Requires country capability.
+          type: string
+        format:
+          default: host:port:user:pass
+          enum:
+          - host:port:user:pass
+          - user:pass@host:port
+          - user:pass
+          - host:port
+          - url
+          - curl
+          - custom
+          type: string
+        job_id:
+          description: Owned active job beneath project_id. Only its validated opaque token is included in generated proxy usernames.
+          format: uuid
+          type: string
+        lifetime:
+          description: Sticky session lifetime in seconds, 60 to 86400, or 1 to 86400 when the service has session_lifetime_seconds. Maximum is 1800 with session_lifetime_30m. Requires session=sticky and session_lifetime capability. Residential IPv4 Unlimited requires whole minutes. Omitted or zero leaves the lifetime unset.
+          type: integer
+        project_id:
+          description: Owned, active project access. Omit to use main access. Requires current project support.
+          format: uuid
+          type: string
+        protocol:
+          default: http
+          enum:
+          - http
+          - socks5
+          - https
+          type: string
+        region:
+          description: Requires region capability. Services with region_code accept only an ISO 3166-2 subdivision code of 1 to 3 letters or digits without country prefix (for example CA). Other services accept letters, digits and underscores up to 32 characters. Normalized to lowercase in customer usernames.
+          maxLength: 32
+          type: string
+        session:
+          default: none
+          enum:
+          - none
+          - sticky
+          - rotate
+          type: string
+        template:
+          description: Required only for format=custom. A single line of literal text, limited to 512 UTF-8 bytes, with at least one of {HOST}, {PORT}, {USER}, {PASS} or {PROTOCOL}. Other braces and control characters are rejected. Placeholder values are substituted literally without escaping or recursive expansion. {PROTOCOL} is the connection URL scheme (http, https or socks5h).
+          maxLength: 512
+          minLength: 1
+          type: string
+      type: object
+    WhitelistCreate:
+      properties:
+        cidr:
+          type: string
+        label:
+          maxLength: 64
+          type: string
+        move:
+          description: Take the range off the customer's other service that holds it. A range maps to one service (a passwordless connection has no other identity); a 409 with details.movable says which service has it now.
+          type: boolean
+      required:
+      - cidr
+      type: object
+    ServiceStatus:
+      enum:
+      - pending
+      - active
+      - expired
+      - closed
+      - suspended
+      - failed
+      type: string
+    Destination:
+      properties:
+        bytes:
+          format: int64
+          type: integer
+        failures:
+          format: int64
+          type: integer
+        host:
+          type: string
+        requests:
+          format: int64
+          type: integer
+      required:
+      - host
+      - requests
+      - failures
+      - bytes
+      type: object
     ServiceCheckResult:
       properties:
         checked_at:
@@ -633,82 +717,6 @@ components:
       - checked_at
       - message
       type: object
-    WhitelistCreate:
-      properties:
-        cidr:
-          type: string
-        label:
-          maxLength: 64
-          type: string
-        move:
-          description: Take the range off the customer's other service that holds it. A range maps to one service (a passwordless connection has no other identity); a 409 with details.movable says which service has it now.
-          type: boolean
-      required:
-      - cidr
-      type: object
-    Destination:
-      properties:
-        bytes:
-          format: int64
-          type: integer
-        failures:
-          format: int64
-          type: integer
-        host:
-          type: string
-        requests:
-          format: int64
-          type: integer
-      required:
-      - host
-      - requests
-      - failures
-      - bytes
-      type: object
-    AnalyticsPoint:
-      properties:
-        avg_session_ms:
-          description: Mean elapsed milliseconds of measured completed authenticated socket sessions; null when no samples exist.
-          minimum: 0
-          type:
-          - number
-          - 'null'
-        avg_setup_ms:
-          description: Mean gateway-to-destination setup milliseconds for measured successful initial TCP tunnels; null when no samples exist.
-          minimum: 0
-          type:
-          - number
-          - 'null'
-        bytes_in:
-          format: int64
-          type: integer
-        bytes_out:
-          format: int64
-          type: integer
-        failures:
-          format: int64
-          type: integer
-        requests:
-          format: int64
-          type: integer
-        session_samples:
-          description: Number of measured completed session samples in this bucket.
-          minimum: 0
-          type: integer
-        setup_samples:
-          description: Number of measured successful setup samples in this bucket.
-          minimum: 0
-          type: integer
-        ts:
-          format: date-time
-          type: string
-      required:
-      - ts
-      - requests
-      - failures
-      - bytes_in
-      - bytes_out
-      type: object
     Term:
       enum:
       - hour
@@ -716,35 +724,6 @@ components:
       - week
       - month
       type: string
-    EndpointResponse:
-      properties:
-        lines:
-          items:
-            type: string
-          type: array
-      required:
-      - lines
-      type: object
-    ServiceStatus:
-      enum:
-      - pending
-      - active
-      - expired
-      - closed
-      - suspended
-      - failed
-      type: string
-    ErrorClass:
-      properties:
-        count:
-          format: int64
-          type: integer
-        err_class:
-          type: string
-      required:
-      - err_class
-      - count
-      type: object
     Usage:
       properties:
         allowance_bytes:
@@ -834,6 +813,59 @@ components:
       - provider_usage_informational
       - allowance_bytes
       - remaining_bytes
+      type: object
+    AnalyticsPoint:
+      properties:
+        avg_session_ms:
+          description: Mean elapsed milliseconds of measured completed authenticated socket sessions; null when no samples exist.
+          minimum: 0
+          type:
+          - number
+          - 'null'
+        avg_setup_ms:
+          description: Mean gateway-to-destination setup milliseconds for measured successful initial TCP tunnels; null when no samples exist.
+          minimum: 0
+          type:
+          - number
+          - 'null'
+        bytes_in:
+          format: int64
+          type: integer
+        bytes_out:
+          format: int64
+          type: integer
+        failures:
+          format: int64
+          type: integer
+        requests:
+          format: int64
+          type: integer
+        session_samples:
+          description: Number of measured completed session samples in this bucket.
+          minimum: 0
+          type: integer
+        setup_samples:
+          description: Number of measured successful setup samples in this bucket.
+          minimum: 0
+          type: integer
+        ts:
+          format: date-time
+          type: string
+      required:
+      - ts
+      - requests
+      - failures
+      - bytes_in
+      - bytes_out
+      type: object
+    EndpointResponse:
+      properties:
+        lines:
+          items:
+            type: string
+          type: array
+      required:
+      - lines
       type: object
     Service:
       properties:
@@ -946,62 +978,17 @@ components:
       - billing_read_only
       - usage_source
       type: object
-    Error:
+    ErrorClass:
       properties:
-        code:
-          enum:
-          - BAD_REQUEST
-          - UNAUTHENTICATED
-          - FORBIDDEN
-          - NOT_FOUND
-          - CONFLICT
-          - RATE_LIMITED
-          - SERVICE_UNAVAILABLE
-          - OFFER_UNAVAILABLE
-          - CITY_UNAVAILABLE
-          - CAPACITY_UNAVAILABLE
-          - INVOICE_NOT_PAYABLE
-          - PROVIDER_ERROR
-          - PIPE_UNAVAILABLE
-          - TRIAL_NOT_ELIGIBLE
-          - EMAIL_UNVERIFIED
-          - INTERNAL
-          type: string
-        details:
-          additionalProperties: true
-          description: What a client needs to act on the error (ids, flags), never display text.
-          type: object
-        message:
+        count:
+          format: int64
+          type: integer
+        err_class:
           type: string
       required:
-      - code
-      - message
+      - err_class
+      - count
       type: object
-    WhitelistEntry:
-      properties:
-        cidr:
-          description: IPv4/IPv6 address or CIDR allowed to connect without a password
-          type: string
-        created_at:
-          format: date-time
-          type: string
-        id:
-          format: uuid
-          type: string
-        label:
-          type: string
-      required:
-      - id
-      - cidr
-      - created_at
-      type: object
-    Product:
-      enum:
-      - residential_ipv4_gb
-      - residential_ipv4_unlimited
-      - datacenter_ipv6
-      - trial
-      type: string
     LiveMetrics:
       properties:
         completed_connections:
@@ -1087,70 +1074,54 @@ components:
       - traffic_today_bytes
       - series
       type: object
-    EndpointRequest:
+    Error:
       properties:
-        asn:
-          description: 1 to 10 digits, without AS prefix. Requires asn capability.
-          maxLength: 10
-          type: string
-        city:
-          description: Letters, digits and underscores; normalized to lowercase. Requires city capability.
-          maxLength: 32
-          type: string
-        count:
-          default: 1
-          description: Number of connection strings. Omission, null and legacy zero values use one.
-          maximum: 1000
-          minimum: 1
-          type: integer
-        country:
-          description: Two-letter country code; normalized to lowercase. Requires country capability.
-          type: string
-        format:
-          default: host:port:user:pass
+        code:
           enum:
-          - host:port:user:pass
-          - user:pass@host:port
-          - user:pass
-          - host:port
-          - url
-          - curl
-          - custom
+          - BAD_REQUEST
+          - UNAUTHENTICATED
+          - FORBIDDEN
+          - NOT_FOUND
+          - CONFLICT
+          - RATE_LIMITED
+          - SERVICE_UNAVAILABLE
+          - OFFER_UNAVAILABLE
+          - CITY_UNAVAILABLE
+          - CAPACITY_UNAVAILABLE
+          - INVOICE_NOT_PAYABLE
+          - PROVIDER_ERROR
+          - PIPE_UNAVAILABLE
+          - TRIAL_NOT_ELIGIBLE
+          - EMAIL_UNVERIFIED
+          - INTERNAL
           type: string
-        job_id:
-          description: Owned active job beneath project_id. Only its validated opaque token is included in generated proxy usernames.
+        details:
+          additionalProperties: true
+          description: What a client needs to act on the error (ids, flags), never display text.
+          type: object
+        message:
+          type: string
+      required:
+      - code
+      - message
+      type: object
+    WhitelistEntry:
+      properties:
+        cidr:
+          description: IPv4/IPv6 address or CIDR allowed to connect without a password
+          type: string
+        created_at:
+          format: date-time
+          type: string
+        id:
           format: uuid
           type: string
-        lifetime:
-          description: Sticky session lifetime in seconds, 60 to 86400, or 1 to 86400 when the service has session_lifetime_seconds. Maximum is 1800 with session_lifetime_30m. Requires session=sticky and session_lifetime capability. Residential IPv4 Unlimited requires whole minutes. Omitted or zero leaves the lifetime unset.
-          type: integer
-        project_id:
-          description: Owned, active project access. Omit to use main access. Requires current project support.
-          format: uuid
+        label:
           type: string
-        protocol:
-          default: http
-          enum:
-          - http
-          - socks5
-          - https
-          type: string
-        region:
-          description: Requires region capability. Services with region_code accept only an ISO 3166-2 subdivision code of 1 to 3 letters or digits without country prefix (for example CA). Other services accept letters, digits and underscores up to 32 characters. Normalized to lowercase in customer usernames.
-          maxLength: 32
-          type: string
-        session:
-          default: none
-          enum:
-          - none
-          - sticky
-          - rotate
-          type: string
-        template:
-          description: Required only for format=custom. A single line of literal text, limited to 512 UTF-8 bytes, with at least one of {HOST}, {PORT}, {USER}, {PASS} or {PROTOCOL}. Other braces and control characters are rejected. Placeholder values are substituted literally without escaping or recursive expansion. {PROTOCOL} is the connection URL scheme (http, https or socks5h).
-          maxLength: 512
-          minLength: 1
-          type: string
+      required:
+      - id
+      - cidr
+      - created_at
       type: object
     Analytics:
       properties:
@@ -1177,6 +1148,13 @@ components:
       - destinations
       - errors
       type: object
+    Product:
+      enum:
+      - residential_ipv4_gb
+      - residential_ipv4_unlimited
+      - datacenter_ipv6
+      - trial
+      type: string
     ServiceSecret:
       properties:
         password:
@@ -1191,6 +1169,13 @@ components:
       - password
       - rotated_at
       type: object
+  responses:
+    Error:
+      content:
+        application/json:
+          schema:
+            $ref: '#/components/schemas/Error'
+      description: error
   parameters:
     CustomerId:
       description: Owned sub-customer UUID. Resellers only; reads require reseller:read and writes reseller:purchase in addition to the operation scope. X-Customer-Id header is an alternative. Not allowed for me, wallet, trial, API keys, or reseller-management routes.
@@ -1199,19 +1184,9 @@ components:
       schema:
         format: uuid
         type: string
-  responses:
-    Error:
-      content:
-        application/json:
-          schema:
-            $ref: '#/components/schemas/Error'
-      description: error
   securitySchemes:
     customerAPIKey:
       bearerFormat: API key
       description: 'Send Authorization: Bearer tp_api_… . Create a named, scoped key in the customer dashboard. Keys expire after 30, 90 or 365 days and can be revoked immediately.'
       scheme: bearer
       type: http
-x-refined-from:
-- trueproxies-customer-api-openapi.json
-- trueproxies-openapi.yml

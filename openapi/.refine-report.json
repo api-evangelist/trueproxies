@@ -1,8 +1,7 @@
 {
   "provider": "trueproxies",
   "sources": [
-    "_original/trueproxies-customer-api-openapi.json",
-    "trueproxies-openapi.yml"
+    "_original/trueproxies-customer-api-openapi.json"
   ],
   "outputs": [
     "trueproxies-analytics-api-openapi.yml",
@@ -11,12 +10,11 @@
     "trueproxies-me-api-openapi.yml",
     "trueproxies-services-api-openapi.yml"
   ],
-  "archived": [
-    "archived openapi/trueproxies-openapi.yml"
-  ],
+  "archived": [],
   "errors": [],
   "warnings": [],
   "notes": [
+    "1 archived document(s) dropped as subsets of other archived documents",
     "sourced from openapi/_original/ (1 archived document(s)); previously refined output at the top level was skipped rather than re-split",
     "trueproxies-customer-api-openapi.json: upgraded openapi 3.1.0 -> OpenAPI 3.2.0",
     "trueproxies-customer-api-openapi.json: tagged paths GET /v1/analytics -> Analytics",
@@ -45,39 +43,14 @@
     "trueproxies-customer-api-openapi.json: declared missing tag: Invoices",
     "trueproxies-customer-api-openapi.json: declared missing tag: Me",
     "trueproxies-customer-api-openapi.json: declared missing tag: Services",
-    "trueproxies-openapi.yml: upgraded openapi 3.1.0 -> OpenAPI 3.2.0",
-    "trueproxies-openapi.yml: tagged paths GET /v1/analytics -> Analytics",
-    "trueproxies-openapi.yml: tagged paths GET /v1/catalog -> Catalog",
-    "trueproxies-openapi.yml: tagged paths GET /v1/catalog/priced -> Catalog",
-    "trueproxies-openapi.yml: tagged paths GET /v1/invoices -> Invoices",
-    "trueproxies-openapi.yml: tagged paths POST /v1/invoices -> Invoices",
-    "trueproxies-openapi.yml: tagged paths GET /v1/invoices/{id} -> Invoices",
-    "trueproxies-openapi.yml: tagged paths POST /v1/invoices/{id}/pay -> Invoices",
-    "trueproxies-openapi.yml: tagged paths GET /v1/invoices/{id}/pdf -> Invoices",
-    "trueproxies-openapi.yml: tagged paths GET /v1/me -> Me",
-    "trueproxies-openapi.yml: tagged paths GET /v1/services -> Services",
-    "trueproxies-openapi.yml: tagged paths GET /v1/services/{id} -> Services",
-    "trueproxies-openapi.yml: tagged paths GET /v1/services/{id}/analytics -> Services",
-    "trueproxies-openapi.yml: tagged paths POST /v1/services/{id}/check -> Services",
-    "trueproxies-openapi.yml: tagged paths POST /v1/services/{id}/endpoints -> Services",
-    "trueproxies-openapi.yml: tagged paths GET /v1/services/{id}/live-metrics -> Services",
-    "trueproxies-openapi.yml: tagged paths POST /v1/services/{id}/rotate-password -> Services",
-    "trueproxies-openapi.yml: tagged paths GET /v1/services/{id}/secret -> Services",
-    "trueproxies-openapi.yml: tagged paths GET /v1/services/{id}/usage -> Services",
-    "trueproxies-openapi.yml: tagged paths GET /v1/services/{id}/whitelist -> Services",
-    "trueproxies-openapi.yml: tagged paths POST /v1/services/{id}/whitelist -> Services",
-    "trueproxies-openapi.yml: tagged paths DELETE /v1/services/{id}/whitelist/{entryId} -> Services",
-    "trueproxies-openapi.yml: declared missing tag: Analytics",
-    "trueproxies-openapi.yml: declared missing tag: Catalog",
-    "trueproxies-openapi.yml: declared missing tag: Invoices",
-    "trueproxies-openapi.yml: declared missing tag: Me",
-    "trueproxies-openapi.yml: declared missing tag: Services",
-    "tag 'Analytics' spans 2 source specs (trueproxies-customer-api-openapi.json, trueproxies-openapi.yml): per-path servers applied",
-    "tag 'Catalog' spans 2 source specs (trueproxies-customer-api-openapi.json, trueproxies-openapi.yml): per-path servers applied",
-    "tag 'Invoices' spans 2 source specs (trueproxies-customer-api-openapi.json, trueproxies-openapi.yml): per-path servers applied",
-    "tag 'Me' spans 2 source specs (trueproxies-customer-api-openapi.json, trueproxies-openapi.yml): per-path servers applied",
-    "tag 'Services' spans 2 source specs (trueproxies-customer-api-openapi.json, trueproxies-openapi.yml): per-path servers applied",
-    "apis.yml register: written (+5 apis, 5 total)"
+    "apis.yml register: already-registered"
   ],
-  "skipped": []
+  "skipped": [
+    "_original/trueproxies-openapi.yml: archived document superseded by a larger archived document",
+    "trueproxies-analytics-api-openapi.yml: previously refined output, superseded by openapi/_original/",
+    "trueproxies-catalog-api-openapi.yml: previously refined output, superseded by openapi/_original/",
+    "trueproxies-invoices-api-openapi.yml: previously refined output, superseded by openapi/_original/",
+    "trueproxies-me-api-openapi.yml: previously refined output, superseded by openapi/_original/",
+    "trueproxies-services-api-openapi.yml: previously refined output, superseded by openapi/_original/"
+  ]
 }
