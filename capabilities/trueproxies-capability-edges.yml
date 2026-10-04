@@ -1,0 +1,36 @@
+slug: trueproxies
+provider: TrueProxies
+generated_by: planning/capability-mapping/scripts/classify_capabilities.py
+model: claude-opus-5
+frame:
+- Software & Technology
+min_confidence: 0.7
+capability_model:
+  source: https://github.com/vincentmakes/turbo-ea-capabilities
+  license: CC-BY-4.0
+  attribution: Turbo EA Capabilities by Vincent Verdet — Turbo EA, https://github.com/vincentmakes/turbo-ea-capabilities,
+    CC BY 4.0
+  notice: NOTICE
+edge_count: 2
+edges:
+- tag: Invoices
+  spec_file: trueproxies-invoices-api-openapi.yml
+  capability_id: BC-4250.30
+  capability_id_l1: BC-4250
+  capability_name: Invoicing & Statement Management
+  confidence: 0.8
+  evidence: 'Create a purchase invoice / Pay an invoice / Download an invoice PDF; schemas: Invoice, InvoicePayment,
+    PaymentProvider'
+  reason: Invoice generation, delivery as PDF and payment for a metered/subscription proxy service is
+    invoicing and statement management, with adjacent payment collection.
+- tag: Catalog
+  spec_file: trueproxies-catalog-api-openapi.yml
+  capability_id: BC-440.20
+  capability_id_l1: BC-440
+  capability_name: Price List Management
+  confidence: 0.7
+  evidence: 'Browse offers and locations / Browse your current prices; schemas: Catalog, Product, Offer,
+    Term'
+  reason: Exposes the product/offer catalogue with customer-specific price lists, which realises price
+    list / price book publication. Could also be read as plan design, but the operations are explicitly
+    about browsing offers and prices.

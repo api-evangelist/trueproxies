@@ -26,6 +26,9 @@ tags:
 - SOCKS5
 - Data Collection
 common:
+- type: CapabilityMap
+  url: capabilities/trueproxies-capability-edges.yml
+  name: TrueProxies Business Capability Map
 - type: Security
   url: https://dashboard.trueproxies.com/.well-known/security.txt
 - type: VulnerabilityDisclosure
