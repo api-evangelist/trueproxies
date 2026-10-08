@@ -62,3 +62,34 @@ plans:
   - 24/7 support
   limits:
   - Speed tiers 25 Mbps to 400 Mbps
+x-canonical:
+  generated: '2026-10-08'
+  vocabulary: all/0-working/economics/plans-canonical.yml
+  models:
+  - subscription
+  units: []
+  plans:
+  - name: Residential IPv4 — Unlimited
+    access: other
+    model: subscription
+    model_how: derived
+    units: []
+    periods: []
+  - name: Residential IPv4 — GB-Based
+    access: other
+    model: subscription
+    model_how: derived
+    units: []
+    periods: []
+  - name: Rotating IPv6 — Residential
+    access: other
+    model: unstated
+    model_how: derived
+    units: []
+    periods: []
+  - name: Datacenter IPv6 — Private /48
+    access: other
+    model: subscription
+    model_how: derived
+    units: []
+    periods: []
