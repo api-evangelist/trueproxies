@@ -44,38 +44,6 @@ paths:
       - Me
 components:
   schemas:
-    CustomerBilling:
-      description: The party an invoice is issued to. Empty strings mean not provided; a name or a company must be present when setting them. Saving requires a country and the address fields required for that country. Existing incomplete profiles remain readable until completed.
-      properties:
-        address_line1:
-          maxLength: 400
-          type: string
-        address_line2:
-          maxLength: 120
-          type: string
-        city:
-          maxLength: 120
-          type: string
-        company:
-          maxLength: 120
-          type: string
-        country:
-          description: Two-letter ISO 3166-1 alpha-2 code.
-          pattern: ^([A-Z]{2})?$
-          type: string
-        name:
-          maxLength: 120
-          type: string
-        postal_code:
-          maxLength: 32
-          type: string
-        state:
-          maxLength: 120
-          type: string
-        vat_id:
-          maxLength: 120
-          type: string
-      type: object
     Me:
       properties:
         affiliate_enabled:
@@ -155,6 +123,38 @@ components:
       required:
       - code
       - message
+      type: object
+    CustomerBilling:
+      description: The party an invoice is issued to. Empty strings mean not provided; a name or a company must be present when setting them. Saving requires a country and the address fields required for that country. Existing incomplete profiles remain readable until completed.
+      properties:
+        address_line1:
+          maxLength: 400
+          type: string
+        address_line2:
+          maxLength: 120
+          type: string
+        city:
+          maxLength: 120
+          type: string
+        company:
+          maxLength: 120
+          type: string
+        country:
+          description: Two-letter ISO 3166-1 alpha-2 code.
+          pattern: ^([A-Z]{2})?$
+          type: string
+        name:
+          maxLength: 120
+          type: string
+        postal_code:
+          maxLength: 32
+          type: string
+        state:
+          maxLength: 120
+          type: string
+        vat_id:
+          maxLength: 120
+          type: string
       type: object
   responses:
     Error:

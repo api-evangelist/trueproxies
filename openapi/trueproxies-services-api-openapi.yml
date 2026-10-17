@@ -587,233 +587,6 @@ paths:
       - Services
 components:
   schemas:
-    EndpointRequest:
-      properties:
-        asn:
-          description: 1 to 10 digits, without AS prefix. Requires asn capability.
-          maxLength: 10
-          type: string
-        city:
-          description: Letters, digits and underscores; normalized to lowercase. Requires city capability.
-          maxLength: 32
-          type: string
-        count:
-          default: 1
-          description: Number of connection strings. Omission, null and legacy zero values use one.
-          maximum: 1000
-          minimum: 1
-          type: integer
-        country:
-          description: Two-letter country code; normalized to lowercase. Requires country capability.
-          type: string
-        format:
-          default: host:port:user:pass
-          enum:
-          - host:port:user:pass
-          - user:pass@host:port
-          - user:pass
-          - host:port
-          - url
-          - curl
-          - custom
-          type: string
-        job_id:
-          description: Owned active job beneath project_id. Only its validated opaque token is included in generated proxy usernames.
-          format: uuid
-          type: string
-        lifetime:
-          description: Sticky session lifetime in seconds, 60 to 86400, or 1 to 86400 when the service has session_lifetime_seconds. Maximum is 1800 with session_lifetime_30m. Requires session=sticky and session_lifetime capability. Residential IPv4 Unlimited requires whole minutes. Omitted or zero leaves the lifetime unset.
-          type: integer
-        project_id:
-          description: Owned, active project access. Omit to use main access. Requires current project support.
-          format: uuid
-          type: string
-        protocol:
-          default: http
-          enum:
-          - http
-          - socks5
-          - https
-          type: string
-        region:
-          description: Requires region capability. Services with region_code accept only an ISO 3166-2 subdivision code of 1 to 3 letters or digits without country prefix (for example CA). Other services accept letters, digits and underscores up to 32 characters. Normalized to lowercase in customer usernames.
-          maxLength: 32
-          type: string
-        session:
-          default: none
-          enum:
-          - none
-          - sticky
-          - rotate
-          type: string
-        template:
-          description: Required only for format=custom. A single line of literal text, limited to 512 UTF-8 bytes, with at least one of {HOST}, {PORT}, {USER}, {PASS} or {PROTOCOL}. Other braces and control characters are rejected. Placeholder values are substituted literally without escaping or recursive expansion. {PROTOCOL} is the connection URL scheme (http, https or socks5h).
-          maxLength: 512
-          minLength: 1
-          type: string
-      type: object
-    WhitelistCreate:
-      properties:
-        cidr:
-          type: string
-        label:
-          maxLength: 64
-          type: string
-        move:
-          description: Take the range off the customer's other service that holds it. A range maps to one service (a passwordless connection has no other identity); a 409 with details.movable says which service has it now.
-          type: boolean
-      required:
-      - cidr
-      type: object
-    ServiceStatus:
-      enum:
-      - pending
-      - active
-      - expired
-      - closed
-      - suspended
-      - failed
-      type: string
-    Destination:
-      properties:
-        bytes:
-          format: int64
-          type: integer
-        failures:
-          format: int64
-          type: integer
-        host:
-          type: string
-        requests:
-          format: int64
-          type: integer
-      required:
-      - host
-      - requests
-      - failures
-      - bytes
-      type: object
-    ServiceCheckResult:
-      properties:
-        checked_at:
-          format: date-time
-          type: string
-        elapsed_ms:
-          description: Duration of this single HTTPS check, including proxy connection setup.
-          format: int64
-          minimum: 0
-          type: integer
-        exit_ip:
-          description: Public IPv4 or IPv6 exit address returned by ipify when the check succeeds.
-          type: string
-        message:
-          description: Safe status message without proxy credentials or internal transport errors.
-          type: string
-        success:
-          type: boolean
-      required:
-      - success
-      - elapsed_ms
-      - checked_at
-      - message
-      type: object
-    Term:
-      enum:
-      - hour
-      - day
-      - week
-      - month
-      type: string
-    Usage:
-      properties:
-        allowance_bytes:
-          format: int64
-          type: integer
-        bytes_in:
-          description: Bytes the proxy read from the client, which is the customer's upload.
-          format: int64
-          type: integer
-        bytes_out:
-          description: Bytes the proxy wrote back to the client, which is the customer's download.
-          format: int64
-          type: integer
-        current_period_used_bytes:
-          description: Traffic counted against the current allowance period. Lifetime totals remain in bytes_in and bytes_out.
-          format: int64
-          type: integer
-        gb_allocated:
-          description: Informational provider balance in decimal GB; billing uses node byte counters.
-          type: number
-        gb_remaining:
-          description: Informational provider balance in decimal GB; billing uses node byte counters.
-          type: number
-        gb_used:
-          description: Informational provider balance in decimal GB; billing uses node byte counters.
-          type: number
-        last_updated_at:
-          format: date-time
-          type: string
-        next_reset_at:
-          description: Next scheduled allowance reset; a past timestamp means confirmation is pending.
-          format: date-time
-          type: string
-        period_started_at:
-          description: Start of the current confirmed allowance period, when applicable.
-          format: date-time
-          type: string
-        provider_observed_at:
-          format: date-time
-          type: string
-        provider_usage_informational:
-          const: true
-          type: boolean
-        reconciliation:
-          properties:
-            drift_ratio:
-              type: number
-            observed_at:
-              format: date-time
-              type: string
-            status:
-              description: Compares the change in vendor balance with the change in node counters between two consecutive observations, hourly. `baseline` is the first observation for a service, which has no predecessor to compare with and therefore reports zero drift; it is not a statement that the two figures agree. Billing always uses the node counters.
-              enum:
-              - baseline
-              - ok
-              - drift
-              - reset
-              - stale
-              type: string
-            usage_drift_bytes:
-              format: int64
-              type: integer
-          required:
-          - status
-          - usage_drift_bytes
-          - drift_ratio
-          - observed_at
-          type: object
-        remaining_bytes:
-          description: Node allowance remaining, floored at zero.
-          format: int64
-          type: integer
-        service_id:
-          format: uuid
-          type: string
-        usage_source:
-          description: Billing usage comes from durable, deduplicated node byte counters.
-          enum:
-          - node
-          type: string
-      required:
-      - service_id
-      - bytes_in
-      - bytes_out
-      - last_updated_at
-      - usage_source
-      - provider_usage_informational
-      - allowance_bytes
-      - remaining_bytes
-      type: object
     AnalyticsPoint:
       properties:
         avg_session_ms:
@@ -866,6 +639,187 @@ components:
           type: array
       required:
       - lines
+      type: object
+    ErrorClass:
+      properties:
+        count:
+          format: int64
+          type: integer
+        err_class:
+          type: string
+      required:
+      - err_class
+      - count
+      type: object
+    Error:
+      properties:
+        code:
+          enum:
+          - BAD_REQUEST
+          - UNAUTHENTICATED
+          - FORBIDDEN
+          - NOT_FOUND
+          - CONFLICT
+          - RATE_LIMITED
+          - SERVICE_UNAVAILABLE
+          - OFFER_UNAVAILABLE
+          - CITY_UNAVAILABLE
+          - CAPACITY_UNAVAILABLE
+          - INVOICE_NOT_PAYABLE
+          - PROVIDER_ERROR
+          - PIPE_UNAVAILABLE
+          - TRIAL_NOT_ELIGIBLE
+          - EMAIL_UNVERIFIED
+          - INTERNAL
+          type: string
+        details:
+          additionalProperties: true
+          description: What a client needs to act on the error (ids, flags), never display text.
+          type: object
+        message:
+          type: string
+      required:
+      - code
+      - message
+      type: object
+    WhitelistCreate:
+      properties:
+        cidr:
+          type: string
+        label:
+          maxLength: 64
+          type: string
+        move:
+          description: Take the range off the customer's other service that holds it. A range maps to one service (a passwordless connection has no other identity); a 409 with details.movable says which service has it now.
+          type: boolean
+      required:
+      - cidr
+      type: object
+    Analytics:
+      properties:
+        destinations:
+          items:
+            $ref: '#/components/schemas/Destination'
+          type: array
+        errors:
+          items:
+            $ref: '#/components/schemas/ErrorClass'
+          type: array
+        range:
+          type: string
+        series:
+          items:
+            $ref: '#/components/schemas/AnalyticsPoint'
+          type: array
+        success_rate:
+          type: number
+      required:
+      - range
+      - success_rate
+      - series
+      - destinations
+      - errors
+      type: object
+    Product:
+      enum:
+      - residential_ipv4_gb
+      - residential_ipv4_unlimited
+      - datacenter_ipv6
+      - trial
+      type: string
+    ServiceStatus:
+      enum:
+      - pending
+      - active
+      - expired
+      - closed
+      - suspended
+      - failed
+      type: string
+    LiveMetrics:
+      properties:
+        completed_connections:
+          description: Recorded proxy outcomes underlying success_rate. Selected by event timestamp, not literal completion time; delayed or long-running connections can appear later.
+          minimum: 0
+          type: integer
+        connections_per_minute:
+          description: Sum of recorded usage connection deltas in the minute ending at window_end.
+          minimum: 0
+          type: integer
+        download_bps:
+          description: Customer download bits per second in the last complete series bucket, from bytes_out. Zero is an absence of recorded bytes, not proof of healthy idle traffic.
+          minimum: 0
+          type: number
+        interval_seconds:
+          const: 10
+          type: integer
+        last_activity_at:
+          description: Latest non-system usage event before sampled_at, scanned since the earlier of midnight UTC or window_start. Null means no observation in that bounded interval. Samples are emitted only for activity; silence cannot distinguish idle traffic from unavailable collection. Treat current rates as unavailable when this is null or older than 60 seconds.
+          format: date-time
+          type:
+          - string
+          - 'null'
+        sampled_at:
+          description: UTC query time; this does not prove collector health or data freshness.
+          format: date-time
+          type: string
+        series:
+          items:
+            properties:
+              download_bps:
+                minimum: 0
+                type: number
+              ts:
+                description: Inclusive UTC start of this ten-second bucket.
+                format: date-time
+                type: string
+              upload_bps:
+                minimum: 0
+                type: number
+            required:
+            - ts
+            - download_bps
+            - upload_bps
+            type: object
+          maxItems: 60
+          minItems: 60
+          type: array
+        success_rate:
+          description: Successful recorded proxy outcomes divided by recorded outcomes whose event timestamps fall in the minute ending at window_end. These are proxy connection outcomes, not destination HTTP status. Null when no outcomes are recorded. Event timestamps may represent connection start rather than completion time.
+          maximum: 1
+          minimum: 0
+          type:
+          - number
+          - 'null'
+        traffic_today_bytes:
+          description: Observed non-system upload plus download bytes from midnight UTC up to sampled_at; delayed arrivals may revise totals.
+          minimum: 0
+          type: integer
+        upload_bps:
+          description: Customer upload bits per second in the last complete series bucket, from bytes_in.
+          minimum: 0
+          type: number
+        window_end:
+          description: Exclusive UTC end, rounded down to ten seconds and delayed twenty seconds for collection and shipping. Later arrivals may revise observations.
+          format: date-time
+          type: string
+        window_start:
+          description: Inclusive UTC start of the ten-minute rate series.
+          format: date-time
+          type: string
+      required:
+      - sampled_at
+      - last_activity_at
+      - window_start
+      - window_end
+      - interval_seconds
+      - download_bps
+      - upload_bps
+      - connections_per_minute
+      - success_rate
+      - completed_connections
+      - traffic_today_bytes
+      - series
       type: object
     Service:
       properties:
@@ -978,131 +932,151 @@ components:
       - billing_read_only
       - usage_source
       type: object
-    ErrorClass:
+    ServiceSecret:
       properties:
-        count:
+        password:
+          type: string
+        rotated_at:
+          format: date-time
+          type: string
+        username_base:
+          type: string
+      required:
+      - username_base
+      - password
+      - rotated_at
+      type: object
+    Usage:
+      properties:
+        allowance_bytes:
           format: int64
           type: integer
-        err_class:
-          type: string
-      required:
-      - err_class
-      - count
-      type: object
-    LiveMetrics:
-      properties:
-        completed_connections:
-          description: Recorded proxy outcomes underlying success_rate. Selected by event timestamp, not literal completion time; delayed or long-running connections can appear later.
-          minimum: 0
+        bytes_in:
+          description: Bytes the proxy read from the client, which is the customer's upload.
+          format: int64
           type: integer
-        connections_per_minute:
-          description: Sum of recorded usage connection deltas in the minute ending at window_end.
-          minimum: 0
+        bytes_out:
+          description: Bytes the proxy wrote back to the client, which is the customer's download.
+          format: int64
           type: integer
-        download_bps:
-          description: Customer download bits per second in the last complete series bucket, from bytes_out. Zero is an absence of recorded bytes, not proof of healthy idle traffic.
-          minimum: 0
+        current_period_used_bytes:
+          description: Traffic counted against the current allowance period. Lifetime totals remain in bytes_in and bytes_out.
+          format: int64
+          type: integer
+        gb_allocated:
+          description: Informational provider balance in decimal GB; billing uses node byte counters.
           type: number
-        interval_seconds:
-          const: 10
-          type: integer
-        last_activity_at:
-          description: Latest non-system usage event before sampled_at, scanned since the earlier of midnight UTC or window_start. Null means no observation in that bounded interval. Samples are emitted only for activity; silence cannot distinguish idle traffic from unavailable collection. Treat current rates as unavailable when this is null or older than 60 seconds.
-          format: date-time
-          type:
-          - string
-          - 'null'
-        sampled_at:
-          description: UTC query time; this does not prove collector health or data freshness.
-          format: date-time
-          type: string
-        series:
-          items:
-            properties:
-              download_bps:
-                minimum: 0
-                type: number
-              ts:
-                description: Inclusive UTC start of this ten-second bucket.
-                format: date-time
-                type: string
-              upload_bps:
-                minimum: 0
-                type: number
-            required:
-            - ts
-            - download_bps
-            - upload_bps
-            type: object
-          maxItems: 60
-          minItems: 60
-          type: array
-        success_rate:
-          description: Successful recorded proxy outcomes divided by recorded outcomes whose event timestamps fall in the minute ending at window_end. These are proxy connection outcomes, not destination HTTP status. Null when no outcomes are recorded. Event timestamps may represent connection start rather than completion time.
-          maximum: 1
-          minimum: 0
-          type:
-          - number
-          - 'null'
-        traffic_today_bytes:
-          description: Observed non-system upload plus download bytes from midnight UTC up to sampled_at; delayed arrivals may revise totals.
-          minimum: 0
-          type: integer
-        upload_bps:
-          description: Customer upload bits per second in the last complete series bucket, from bytes_in.
-          minimum: 0
+        gb_remaining:
+          description: Informational provider balance in decimal GB; billing uses node byte counters.
           type: number
-        window_end:
-          description: Exclusive UTC end, rounded down to ten seconds and delayed twenty seconds for collection and shipping. Later arrivals may revise observations.
+        gb_used:
+          description: Informational provider balance in decimal GB; billing uses node byte counters.
+          type: number
+        last_updated_at:
           format: date-time
           type: string
-        window_start:
-          description: Inclusive UTC start of the ten-minute rate series.
+        next_reset_at:
+          description: Next scheduled allowance reset; a past timestamp means confirmation is pending.
           format: date-time
           type: string
-      required:
-      - sampled_at
-      - last_activity_at
-      - window_start
-      - window_end
-      - interval_seconds
-      - download_bps
-      - upload_bps
-      - connections_per_minute
-      - success_rate
-      - completed_connections
-      - traffic_today_bytes
-      - series
-      type: object
-    Error:
-      properties:
-        code:
-          enum:
-          - BAD_REQUEST
-          - UNAUTHENTICATED
-          - FORBIDDEN
-          - NOT_FOUND
-          - CONFLICT
-          - RATE_LIMITED
-          - SERVICE_UNAVAILABLE
-          - OFFER_UNAVAILABLE
-          - CITY_UNAVAILABLE
-          - CAPACITY_UNAVAILABLE
-          - INVOICE_NOT_PAYABLE
-          - PROVIDER_ERROR
-          - PIPE_UNAVAILABLE
-          - TRIAL_NOT_ELIGIBLE
-          - EMAIL_UNVERIFIED
-          - INTERNAL
+        period_started_at:
+          description: Start of the current confirmed allowance period, when applicable.
+          format: date-time
           type: string
-        details:
-          additionalProperties: true
-          description: What a client needs to act on the error (ids, flags), never display text.
+        provider_observed_at:
+          format: date-time
+          type: string
+        provider_usage_informational:
+          const: true
+          type: boolean
+        reconciliation:
+          properties:
+            drift_ratio:
+              type: number
+            observed_at:
+              format: date-time
+              type: string
+            status:
+              description: Compares the change in vendor balance with the change in node counters between two consecutive observations, hourly. `baseline` is the first observation for a service, which has no predecessor to compare with and therefore reports zero drift; it is not a statement that the two figures agree. Billing always uses the node counters.
+              enum:
+              - baseline
+              - ok
+              - drift
+              - reset
+              - stale
+              type: string
+            usage_drift_bytes:
+              format: int64
+              type: integer
+          required:
+          - status
+          - usage_drift_bytes
+          - drift_ratio
+          - observed_at
           type: object
-        message:
+        remaining_bytes:
+          description: Node allowance remaining, floored at zero.
+          format: int64
+          type: integer
+        service_id:
+          format: uuid
+          type: string
+        usage_source:
+          description: Billing usage comes from durable, deduplicated node byte counters.
+          enum:
+          - node
           type: string
       required:
-      - code
+      - service_id
+      - bytes_in
+      - bytes_out
+      - last_updated_at
+      - usage_source
+      - provider_usage_informational
+      - allowance_bytes
+      - remaining_bytes
+      type: object
+    Destination:
+      properties:
+        bytes:
+          format: int64
+          type: integer
+        failures:
+          format: int64
+          type: integer
+        host:
+          type: string
+        requests:
+          format: int64
+          type: integer
+      required:
+      - host
+      - requests
+      - failures
+      - bytes
+      type: object
+    ServiceCheckResult:
+      properties:
+        checked_at:
+          format: date-time
+          type: string
+        elapsed_ms:
+          description: Duration of this single HTTPS check, including proxy connection setup.
+          format: int64
+          minimum: 0
+          type: integer
+        exit_ip:
+          description: Public IPv4 or IPv6 exit address returned by ipify when the check succeeds.
+          type: string
+        message:
+          description: Safe status message without proxy credentials or internal transport errors.
+          type: string
+        success:
+          type: boolean
+      required:
+      - success
+      - elapsed_ms
+      - checked_at
       - message
       type: object
     WhitelistEntry:
@@ -1123,51 +1097,77 @@ components:
       - cidr
       - created_at
       type: object
-    Analytics:
-      properties:
-        destinations:
-          items:
-            $ref: '#/components/schemas/Destination'
-          type: array
-        errors:
-          items:
-            $ref: '#/components/schemas/ErrorClass'
-          type: array
-        range:
-          type: string
-        series:
-          items:
-            $ref: '#/components/schemas/AnalyticsPoint'
-          type: array
-        success_rate:
-          type: number
-      required:
-      - range
-      - success_rate
-      - series
-      - destinations
-      - errors
-      type: object
-    Product:
+    Term:
       enum:
-      - residential_ipv4_gb
-      - residential_ipv4_unlimited
-      - datacenter_ipv6
-      - trial
+      - hour
+      - day
+      - week
+      - month
       type: string
-    ServiceSecret:
+    EndpointRequest:
       properties:
-        password:
+        asn:
+          description: 1 to 10 digits, without AS prefix. Requires asn capability.
+          maxLength: 10
           type: string
-        rotated_at:
-          format: date-time
+        city:
+          description: Letters, digits and underscores; normalized to lowercase. Requires city capability.
+          maxLength: 32
           type: string
-        username_base:
+        count:
+          default: 1
+          description: Number of connection strings. Omission, null and legacy zero values use one.
+          maximum: 1000
+          minimum: 1
+          type: integer
+        country:
+          description: Two-letter country code; normalized to lowercase. Requires country capability.
           type: string
-      required:
-      - username_base
-      - password
-      - rotated_at
+        format:
+          default: host:port:user:pass
+          enum:
+          - host:port:user:pass
+          - user:pass@host:port
+          - user:pass
+          - host:port
+          - url
+          - curl
+          - custom
+          type: string
+        job_id:
+          description: Owned active job beneath project_id. Only its validated opaque token is included in generated proxy usernames.
+          format: uuid
+          type: string
+        lifetime:
+          description: Sticky session lifetime in seconds, 60 to 86400, or 1 to 86400 when the service has session_lifetime_seconds. Maximum is 1800 with session_lifetime_30m. Requires session=sticky and session_lifetime capability. Residential IPv4 Unlimited requires whole minutes. Omitted or zero leaves the lifetime unset.
+          type: integer
+        project_id:
+          description: Owned, active project access. Omit to use main access. Requires current project support.
+          format: uuid
+          type: string
+        protocol:
+          default: http
+          enum:
+          - http
+          - socks5
+          - https
+          type: string
+        region:
+          description: Requires region capability. Services with region_code accept only an ISO 3166-2 subdivision code of 1 to 3 letters or digits without country prefix (for example CA). Other services accept letters, digits and underscores up to 32 characters. Normalized to lowercase in customer usernames.
+          maxLength: 32
+          type: string
+        session:
+          default: none
+          enum:
+          - none
+          - sticky
+          - rotate
+          type: string
+        template:
+          description: Required only for format=custom. A single line of literal text, limited to 512 UTF-8 bytes, with at least one of {HOST}, {PORT}, {USER}, {PASS} or {PROTOCOL}. Other braces and control characters are rejected. Placeholder values are substituted literally without escaping or recursive expansion. {PROTOCOL} is the connection URL scheme (http, https or socks5h).
+          maxLength: 512
+          minLength: 1
+          type: string
       type: object
   responses:
     Error:

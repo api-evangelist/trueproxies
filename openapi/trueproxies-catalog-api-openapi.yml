@@ -82,6 +82,13 @@ paths:
       - Catalog
 components:
   schemas:
+    Term:
+      enum:
+      - hour
+      - day
+      - week
+      - month
+      type: string
     Catalog:
       properties:
         cities:
@@ -110,13 +117,37 @@ components:
       - cities
       - hosts
       type: object
-    Product:
-      enum:
-      - residential_ipv4_gb
-      - residential_ipv4_unlimited
-      - datacenter_ipv6
-      - trial
-      type: string
+    Error:
+      properties:
+        code:
+          enum:
+          - BAD_REQUEST
+          - UNAUTHENTICATED
+          - FORBIDDEN
+          - NOT_FOUND
+          - CONFLICT
+          - RATE_LIMITED
+          - SERVICE_UNAVAILABLE
+          - OFFER_UNAVAILABLE
+          - CITY_UNAVAILABLE
+          - CAPACITY_UNAVAILABLE
+          - INVOICE_NOT_PAYABLE
+          - PROVIDER_ERROR
+          - PIPE_UNAVAILABLE
+          - TRIAL_NOT_ELIGIBLE
+          - EMAIL_UNVERIFIED
+          - INTERNAL
+          type: string
+        details:
+          additionalProperties: true
+          description: What a client needs to act on the error (ids, flags), never display text.
+          type: object
+        message:
+          type: string
+      required:
+      - code
+      - message
+      type: object
     Offer:
       properties:
         allowance_bytes:
@@ -177,51 +208,13 @@ components:
       - name
       - available
       type: object
-    Error:
-      properties:
-        code:
-          enum:
-          - BAD_REQUEST
-          - UNAUTHENTICATED
-          - FORBIDDEN
-          - NOT_FOUND
-          - CONFLICT
-          - RATE_LIMITED
-          - SERVICE_UNAVAILABLE
-          - OFFER_UNAVAILABLE
-          - CITY_UNAVAILABLE
-          - CAPACITY_UNAVAILABLE
-          - INVOICE_NOT_PAYABLE
-          - PROVIDER_ERROR
-          - PIPE_UNAVAILABLE
-          - TRIAL_NOT_ELIGIBLE
-          - EMAIL_UNVERIFIED
-          - INTERNAL
-          type: string
-        details:
-          additionalProperties: true
-          description: What a client needs to act on the error (ids, flags), never display text.
-          type: object
-        message:
-          type: string
-      required:
-      - code
-      - message
-      type: object
-    Term:
+    Product:
       enum:
-      - hour
-      - day
-      - week
-      - month
+      - residential_ipv4_gb
+      - residential_ipv4_unlimited
+      - datacenter_ipv6
+      - trial
       type: string
-  responses:
-    Error:
-      content:
-        application/json:
-          schema:
-            $ref: '#/components/schemas/Error'
-      description: error
   parameters:
     CustomerId:
       description: Owned sub-customer UUID. Resellers only; reads require reseller:read and writes reseller:purchase in addition to the operation scope. X-Customer-Id header is an alternative. Not allowed for me, wallet, trial, API keys, or reseller-management routes.
@@ -230,6 +223,13 @@ components:
       schema:
         format: uuid
         type: string
+  responses:
+    Error:
+      content:
+        application/json:
+          schema:
+            $ref: '#/components/schemas/Error'
+      description: error
   securitySchemes:
     customerAPIKey:
       bearerFormat: API key

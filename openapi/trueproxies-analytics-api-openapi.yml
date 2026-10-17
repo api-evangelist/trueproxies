@@ -55,31 +55,6 @@ paths:
       - Analytics
 components:
   schemas:
-    Analytics:
-      properties:
-        destinations:
-          items:
-            $ref: '#/components/schemas/Destination'
-          type: array
-        errors:
-          items:
-            $ref: '#/components/schemas/ErrorClass'
-          type: array
-        range:
-          type: string
-        series:
-          items:
-            $ref: '#/components/schemas/AnalyticsPoint'
-          type: array
-        success_rate:
-          type: number
-      required:
-      - range
-      - success_rate
-      - series
-      - destinations
-      - errors
-      type: object
     ErrorClass:
       properties:
         count:
@@ -90,6 +65,37 @@ components:
       required:
       - err_class
       - count
+      type: object
+    Error:
+      properties:
+        code:
+          enum:
+          - BAD_REQUEST
+          - UNAUTHENTICATED
+          - FORBIDDEN
+          - NOT_FOUND
+          - CONFLICT
+          - RATE_LIMITED
+          - SERVICE_UNAVAILABLE
+          - OFFER_UNAVAILABLE
+          - CITY_UNAVAILABLE
+          - CAPACITY_UNAVAILABLE
+          - INVOICE_NOT_PAYABLE
+          - PROVIDER_ERROR
+          - PIPE_UNAVAILABLE
+          - TRIAL_NOT_ELIGIBLE
+          - EMAIL_UNVERIFIED
+          - INTERNAL
+          type: string
+        details:
+          additionalProperties: true
+          description: What a client needs to act on the error (ids, flags), never display text.
+          type: object
+        message:
+          type: string
+      required:
+      - code
+      - message
       type: object
     AnalyticsPoint:
       properties:
@@ -154,36 +160,30 @@ components:
       - failures
       - bytes
       type: object
-    Error:
+    Analytics:
       properties:
-        code:
-          enum:
-          - BAD_REQUEST
-          - UNAUTHENTICATED
-          - FORBIDDEN
-          - NOT_FOUND
-          - CONFLICT
-          - RATE_LIMITED
-          - SERVICE_UNAVAILABLE
-          - OFFER_UNAVAILABLE
-          - CITY_UNAVAILABLE
-          - CAPACITY_UNAVAILABLE
-          - INVOICE_NOT_PAYABLE
-          - PROVIDER_ERROR
-          - PIPE_UNAVAILABLE
-          - TRIAL_NOT_ELIGIBLE
-          - EMAIL_UNVERIFIED
-          - INTERNAL
+        destinations:
+          items:
+            $ref: '#/components/schemas/Destination'
+          type: array
+        errors:
+          items:
+            $ref: '#/components/schemas/ErrorClass'
+          type: array
+        range:
           type: string
-        details:
-          additionalProperties: true
-          description: What a client needs to act on the error (ids, flags), never display text.
-          type: object
-        message:
-          type: string
+        series:
+          items:
+            $ref: '#/components/schemas/AnalyticsPoint'
+          type: array
+        success_rate:
+          type: number
       required:
-      - code
-      - message
+      - range
+      - success_rate
+      - series
+      - destinations
+      - errors
       type: object
   responses:
     Error:

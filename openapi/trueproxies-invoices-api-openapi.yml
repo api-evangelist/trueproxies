@@ -269,6 +269,21 @@ paths:
       - Invoices
 components:
   schemas:
+    PayResponse:
+      properties:
+        checkout_url:
+          type: string
+        expires_at:
+          format: date-time
+          type: string
+        payment_id:
+          format: uuid
+          type: string
+      required:
+      - payment_id
+      - checkout_url
+      - expires_at
+      type: object
     Invoice:
       properties:
         activated_at:
@@ -341,6 +356,74 @@ components:
       - created_at
       - payments
       type: object
+    InvoiceStatus:
+      enum:
+      - open
+      - paid
+      - cancelled
+      type: string
+    InvoiceCreate:
+      properties:
+        offer_key:
+          type: string
+        options:
+          $ref: '#/components/schemas/InvoiceOptions'
+        promo_code:
+          maxLength: 40
+          minLength: 3
+          pattern: ^[A-Za-z0-9][A-Za-z0-9-]{2,39}$
+          type: string
+        request_id:
+          description: Required when promo_code is present; keep stable only while retrying identical invoice content.
+          format: uuid
+          type: string
+        service_id:
+          description: required for renewal and topup
+          format: uuid
+          type: string
+      required:
+      - offer_key
+      type: object
+    Error:
+      properties:
+        code:
+          enum:
+          - BAD_REQUEST
+          - UNAUTHENTICATED
+          - FORBIDDEN
+          - NOT_FOUND
+          - CONFLICT
+          - RATE_LIMITED
+          - SERVICE_UNAVAILABLE
+          - OFFER_UNAVAILABLE
+          - CITY_UNAVAILABLE
+          - CAPACITY_UNAVAILABLE
+          - INVOICE_NOT_PAYABLE
+          - PROVIDER_ERROR
+          - PIPE_UNAVAILABLE
+          - TRIAL_NOT_ELIGIBLE
+          - EMAIL_UNVERIFIED
+          - INTERNAL
+          type: string
+        details:
+          additionalProperties: true
+          description: What a client needs to act on the error (ids, flags), never display text.
+          type: object
+        message:
+          type: string
+      required:
+      - code
+      - message
+      type: object
+    InvoiceKind:
+      enum:
+      - wallet_topup
+      - purchase
+      - renewal
+      - topup
+      - custom
+      - white_label
+      type: string
     InvoiceOptions:
       properties:
         city:
@@ -348,6 +431,16 @@ components:
         gb:
           description: GB for top-ups; taken from the offer otherwise
           type: integer
+      type: object
+    PaymentProvider:
+      description: Payment provider identifier (stripe or cryptomus).
+      type: string
+    PayRequest:
+      properties:
+        provider:
+          $ref: '#/components/schemas/PaymentProvider'
+      required:
+      - provider
       type: object
     InvoicePayment:
       properties:
@@ -412,53 +505,6 @@ components:
       - status
       - created_at
       type: object
-    PaymentProvider:
-      description: Payment provider identifier (stripe or cryptomus).
-      type: string
-    PayRequest:
-      properties:
-        provider:
-          $ref: '#/components/schemas/PaymentProvider'
-      required:
-      - provider
-      type: object
-    Error:
-      properties:
-        code:
-          enum:
-          - BAD_REQUEST
-          - UNAUTHENTICATED
-          - FORBIDDEN
-          - NOT_FOUND
-          - CONFLICT
-          - RATE_LIMITED
-          - SERVICE_UNAVAILABLE
-          - OFFER_UNAVAILABLE
-          - CITY_UNAVAILABLE
-          - CAPACITY_UNAVAILABLE
-          - INVOICE_NOT_PAYABLE
-          - PROVIDER_ERROR
-          - PIPE_UNAVAILABLE
-          - TRIAL_NOT_ELIGIBLE
-          - EMAIL_UNVERIFIED
-          - INTERNAL
-          type: string
-        details:
-          additionalProperties: true
-          description: What a client needs to act on the error (ids, flags), never display text.
-          type: object
-        message:
-          type: string
-      required:
-      - code
-      - message
-      type: object
-    InvoiceStatus:
-      enum:
-      - open
-      - paid
-      - cancelled
-      type: string
     PaymentStatus:
       enum:
       - pending
@@ -467,52 +513,6 @@ components:
       - failed
       - paid_unapplied
       - paid_duplicate
-      type: string
-    InvoiceCreate:
-      properties:
-        offer_key:
-          type: string
-        options:
-          $ref: '#/components/schemas/InvoiceOptions'
-        promo_code:
-          maxLength: 40
-          minLength: 3
-          pattern: ^[A-Za-z0-9][A-Za-z0-9-]{2,39}$
-          type: string
-        request_id:
-          description: Required when promo_code is present; keep stable only while retrying identical invoice content.
-          format: uuid
-          type: string
-        service_id:
-          description: required for renewal and topup
-          format: uuid
-          type: string
-      required:
-      - offer_key
-      type: object
-    PayResponse:
-      properties:
-        checkout_url:
-          type: string
-        expires_at:
-          format: date-time
-          type: string
-        payment_id:
-          format: uuid
-          type: string
-      required:
-      - payment_id
-      - checkout_url
-      - expires_at
-      type: object
-    InvoiceKind:
-      enum:
-      - wallet_topup
-      - purchase
-      - renewal
-      - topup
-      - custom
-      - white_label
       type: string
   parameters:
     IdempotencyKey:
