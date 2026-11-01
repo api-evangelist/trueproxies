@@ -64,4 +64,153 @@
 > Full detail: **[Where this data comes from](https://apievangelist.com/about/where-our-data-comes-from)**
 <!-- API-EVANGELIST-PROVENANCE:END -->
 
-TrueProxies sells residential and datacenter proxies and publishes the TrueProxies Customer API (https://api.trueproxies.com/v1/openapi.json) for managing proxy services, whitelists, credentials, usage and invoices. Docs: https://docs.trueproxies.com/overview/
+TrueProxies, LLC (USA) sells residential and datacenter proxies (HTTP/HTTPS/SOCKS5) for developers and data teams, priced per hour, per GB or per day: unlimited-bandwidth Residential IPv4 at a chosen speed tier, GB-based Residential IPv4 with country, city, region and ASN targeting, and Datacenter IPv6. Beyond the proxy gateways it publishes the TrueProxies Customer API (OpenAPI 3.1 at api.trueproxies.com/v1/openapi.json), a scoped-Bearer-key REST API for managing existing proxy services, whitelists, credentials, usage analytics and invoices, with technical docs at docs.trueproxies.com.
+
+**Areas:** Proxies · Residential Proxies · Datacenter Proxies · Web Scraping · Networking · IPv6 · SOCKS5 · Data Collection
+
+## TrueProxies on APIs.io
+
+Everything profiled for TrueProxies is published on APIs.io rather than in this repository. Start at the provider page — **[apis.io/providers/trueproxies/](https://apis.io/providers/trueproxies/)** — or go straight to one of the APIs or properties below.
+
+### APIs (5)
+
+- [TrueProxies Analytics API](https://apis.io/apis/trueproxies/trueproxies-analytics-api/) — The Analytics API from TrueProxies — 1 operation(s) for analytics.
+- [TrueProxies Catalog API](https://apis.io/apis/trueproxies/trueproxies-catalog-api/) — The Catalog API from TrueProxies — 2 operation(s) for catalog.
+- [TrueProxies Invoices API](https://apis.io/apis/trueproxies/trueproxies-invoices-api/) — The Invoices API from TrueProxies — 4 operation(s) for invoices.
+- [TrueProxies Me API](https://apis.io/apis/trueproxies/trueproxies-me-api/) — The Me API from TrueProxies — 1 operation(s) for me.
+- [TrueProxies Services API](https://apis.io/apis/trueproxies/trueproxies-services-api/) — The Services API from TrueProxies — 11 operation(s) for services.
+
+### Published properties
+
+Each property below is a page on APIs.io carrying the machine-readable artifact and what it says.
+
+#### MCP servers (1)
+
+Model Context Protocol servers that expose the API to agents.
+
+- [trueproxies-mcp.yml](https://apis.io/servers/trueproxies/trueproxies-mcp-yml/)
+
+#### Agentic access (1)
+
+Which operations an agent can call, which act, and which need a human in the loop.
+
+- [Trueproxies Agentic Access](https://apis.io/agentic-access/trueproxies/trueproxies-agentic-access/)
+
+#### JSON Schema (6)
+
+The data models the API reads and writes.
+
+- [EndpointRequest](https://apis.io/schemas/trueproxies/trueproxies-endpoint-request/)
+- [Invoice](https://apis.io/schemas/trueproxies/trueproxies-invoice/)
+- [LiveMetrics](https://apis.io/schemas/trueproxies/trueproxies-live-metrics/)
+- [Me](https://apis.io/schemas/trueproxies/trueproxies-me/)
+- [Service](https://apis.io/schemas/trueproxies/trueproxies-service/)
+- [Usage](https://apis.io/schemas/trueproxies/trueproxies-usage/)
+
+#### JSON-LD (1)
+
+Linked-data contexts for the provider's vocabulary.
+
+- [Trueproxies Context](https://apis.io/jsonld/trueproxies/trueproxies-context/)
+
+#### Overlays (1)
+
+OpenAPI overlays, including conversational phrasing for each operation.
+
+- [Trueproxies Customer Api Overlay](https://apis.io/overlays/trueproxies/trueproxies-customer-api-overlay/)
+
+#### Governance rules (1)
+
+Spectral rulesets for the provider's contracts.
+
+- [TrueProxies API Rules](https://apis.io/rules/trueproxies/trueproxies-rules/)
+
+#### Security (3)
+
+Authentication, trust centre, and vulnerability disclosure.
+
+- [Trueproxies Authentication](https://apis.io/security/trueproxies/trueproxies-authentication/)
+- [Trueproxies Domain Security](https://apis.io/security/trueproxies/trueproxies-domain-security/)
+- [Trueproxies Vulnerability Disclosure](https://apis.io/security/trueproxies/trueproxies-vulnerability-disclosure/)
+
+#### Plans and pricing (1)
+
+Published plans, tiers and prices.
+
+- [Trueproxies Plans Pricing](https://apis.io/plans/trueproxies/trueproxies-plans-pricing/)
+
+#### Rate limits (1)
+
+Published request limits.
+
+- [Trueproxies Rate Limits](https://apis.io/rate-limits/trueproxies/trueproxies-rate-limits/)
+
+## Where to find this API
+
+Links to the company's own pages. This repository publishes no copy of their specifications — the canonical document is theirs and lives at the URLs below.
+
+- [Website](https://trueproxies.com/)
+- [Documentation](https://docs.trueproxies.com/overview/)
+- [Getting started](https://docs.trueproxies.com/getting-started/quickstart/)
+- [Pricing](https://trueproxies.com/pricing/)
+- [Sign up](https://dashboard.trueproxies.com/signup)
+- [Support](https://docs.trueproxies.com/support/)
+- [Blog](https://trueproxies.com/blog/)
+- [Security](https://dashboard.trueproxies.com/.well-known/security.txt)
+- [Terms of service](https://trueproxies.com/terms/)
+- [Privacy policy](https://trueproxies.com/privacy/)
+
+## API Evangelist rating
+
+**Kin Score 55.0** — strong · rubric 0.25.0 · scored 2026-10-23
+
+| Facet | Score |
+|---|---|
+| Discoverability | 69.6 |
+| Contract quality | 64.1 |
+| Contract governance | 22.0 |
+| Operational transparency | 31.6 |
+| Developer ergonomics | 42.3 |
+| Access clarity | 76.3 |
+
+**Agent readiness 30.1** — agent-ready
+
+| Agent-readiness dimension | Result |
+|---|---|
+| Spec Presence | yes |
+| Agentic Access | derived (partial credit) |
+| Reversibility Documented | — |
+| MCP Server | — |
+| Auth Clarity | bearer (partial credit) |
+| Idempotency | verified |
+| Error Semantics | derived (partial credit) |
+| OpenAPI Examples | — |
+| Rate Limit Signal | documented (partial credit) |
+| Event Surface Described | — |
+| Agent Skills | derived (partial credit) |
+| Well Known Catalog | — |
+| Consent Identity | — |
+| Agent Card | — |
+| Dry Run Mode | — |
+| Delegated Identity | — |
+| Protected Resource Metadata | — |
+| Dynamic Client Registration | — |
+| Agentic Commerce | — |
+| Pagination Ratio | partial |
+| Operation Distinctiveness | distinct |
+
+**Regulatory alignment 30.4** — Horizontal (data, software, accessibility, platform)
+
+The rubric is published at [github.com/api-evangelist/kin-score](https://github.com/api-evangelist/kin-score). The per-check breakdown behind these numbers — which checks were earned, partial or missed — along with score history and how this provider compares to its peers, is available at [apis.io/providers/trueproxies/](https://apis.io/providers/trueproxies/).
+
+## How this profile is made
+
+API Evangelist profiles a company's public API surface the way a developer would find it: the website, developer portal and documentation, the specifications it publishes, its public repositories, and its pricing, status and changelog pages. From that it derives the properties above — contracts split per API, workflows, schemas, collections, governance rules, plans and rate limits — and scores them against the published [Kin Score rubric](https://github.com/api-evangelist/kin-score).
+
+The artifacts are published on [APIs.io](https://apis.io), not in this repository. This repository is the public record for TrueProxies: the place to say something is wrong, missing or out of date, and to ask for a re-score or a removal.
+
+## Open an issue
+
+- **Something about this listing** — a wrong description, a missing API, a stale artifact or a question about the rating: [open an issue on this repository](https://github.com/api-evangelist/trueproxies/issues/new).
+- **A new API, or one that is not in the catalog yet** — [submit it on APIs.io](https://apis.io/add/).
+- **Anything else** — [the APIs.io inbox](https://github.com/api-search/inbox/issues/new) or [info@apievangelist.com](mailto:info@apievangelist.com).
